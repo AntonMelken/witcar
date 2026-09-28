@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# witcar
+/.pglite
+/playwright-report
+/test-results
+/blob-report
+!.env.example

@@ -6,22 +6,66 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "typecheck": "WITCAR_ENV_CHECK=off next typegen && tsc --noEmit",
+    "lint": "eslint . --max-warnings=0",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "e2e": "playwright test",
+    "e2e:install": "playwright install chromium",
+    "prepare": "husky"
   },
   "dependencies": {
+    "@dnd-kit/core": "^6.3.1",
+    "@electric-sql/pglite": "^0.5.8",
+    "@supabase/ssr": "^0.12.7",
+    "@supabase/supabase-js": "^2.117.2",
+    "@upstash/redis": "^1.39.0",
+    "lucide-react": "^1.48.0",
     "next": "16.3.6",
+    "next-intl": "^4.14.7",
+    "postgres": "^3.4.9",
+    "qrcode": "^1.5.4",
     "react": "19.2.8",
-    "react-dom": "19.2.8"
+    "react-dom": "19.2.8",
+    "server-only": "^0.0.1",
+    "stripe": "^22.6.2",
+    "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@fontsource-variable/inter": "^5.3.0",
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4",
-    "@types/node": "^20",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^24.19.0",
+    "@types/qrcode": "^1.5.6",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@vitejs/plugin-react": "^6.1.1",
     "eslint": "^9",
     "eslint-config-next": "16.3.6",
+    "eslint-config-prettier": "^10.1.8",
+    "husky": "^9.1.7",
+    "jsdom": "^30.1.1",
+    "lint-staged": "^17.6.0",
+    "prettier": "^3.9.9",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^5.0.2"
   },
-  "packageManager": "pnpm@12.6.0"
+  "packageManager": "pnpm@12.6.0",
+  "engines": {
+    "node": ">=20.9"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mjs,js}": [
+      "prettier --write",
+      "eslint --max-warnings=0 --no-warn-ignored"
+    ],
+    "*.{json,md,css,yml,yaml}": [
+      "prettier --write"
+    ]
+  }
 }
