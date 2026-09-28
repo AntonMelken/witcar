@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>WitCar – offline</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #0f1114; color: #f2f4f6; font-family: system-ui, sans-serif; }
+      main { height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; text-align: center; padding: 24px; }
+      p { color: #9aa3ad; max-width: 32rem; }
+    </style>
+  </head>
+  <body>
+    <main>
+      <h1>Keine Verbindung</h1>
+      <p>WitCar lädt automatisch neu, sobald wieder Internet verfügbar ist. Tipp: Prüfe, ob der Handy-Hotspot aktiv ist.</p>
+    </main>
+    <script>
+      window.addEventListener("online", function () { location.reload(); });
+      setInterval(function () { if (navigator.onLine) location.reload(); }, 30000);
+    </script>
+  </body>
+</html>

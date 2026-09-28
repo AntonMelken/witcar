@@ -1,0 +1,411 @@
+{
+  "nav": {
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "login": "Anmelden"
+  },
+  "footer": {
+    "navLabel": "Rechtliches",
+    "pricing": "Preise",
+    "faq": "FAQ",
+    "imprint": "Impressum",
+    "privacy": "Datenschutz",
+    "terms": "AGB",
+    "withdrawal": "Widerruf",
+    "disclaimer": "Hinweise & Haftung",
+    "independence": "WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc.",
+    "safety": "Bedienung nur im Stand. Der Fahrer bleibt jederzeit für die sichere Führung des Fahrzeugs verantwortlich."
+  },
+  "landing": {
+    "headline": "Dein Überblick im Auto-Browser.",
+    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, getestet mit Tesla-Fahrzeugen.",
+    "ctaStart": "Kostenlos starten",
+    "ctaCar": "Im Auto anmelden (QR)",
+    "ctaDemo": "Demo ansehen",
+    "positioning": "Ideal beim Laden und Parken. Fahrmodus experimentell.",
+    "f1Title": "Große, klare Widgets",
+    "f1Text": "Wenige Informationen, große Zahlen, ruhige Darstellung. Du ordnest alles im Stand an.",
+    "f2Title": "Anmelden per QR-Code",
+    "f2Text": "Im Auto tippt niemand Passwörter: QR-Code mit dem Handy scannen, bestätigen, fertig.",
+    "f3Title": "Funktioniert auch bei Funklöchern",
+    "f3Text": "Letzte Daten bleiben sichtbar und werden dezent als „veraltet“ markiert. Die Verbindung kommt von allein zurück.",
+    "f4Title": "Wetter für deine Stadt",
+    "f4Text": "Aktuelle Temperatur und Tageswerte für einen Ort deiner Wahl – ohne Standortabfrage.",
+    "f5Title": "Aktien & Krypto",
+    "f5Text": "Verzögerte Kurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
+    "f6Title": "Datensparsam & aus der EU",
+    "f6Text": "Hosting in Frankfurt, keine Tracker, keine Werbung. Export und Löschung jederzeit.",
+    "pricingTitle": "Kostenlos starten, Pro bei Bedarf",
+    "pricingText": "Free mit 3 Widgets. Pro mit allen Widgets, mehreren Layouts und bis zu 5 Geräten.",
+    "pricingCta": "Preise ansehen"
+  },
+  "pricing": {
+    "title": "Preise",
+    "subtitle": "Starte kostenlos. Upgrade jederzeit, monatlich kündbar.",
+    "cancelled": "Der Kauf wurde abgebrochen. Es wurde nichts berechnet.",
+    "rowWidgets": "Widgets pro Layout",
+    "rowLayouts": "Layouts",
+    "rowTickers": "Ticker/Coins pro Widget",
+    "rowDevices": "Gekoppelte Geräte",
+    "rowNotes": "Notizen",
+    "all": "alle",
+    "multiple": "mehrere",
+    "upTo": "bis {n}",
+    "startFree": "Kostenlos starten",
+    "perMonth": "{amount} / Monat",
+    "priceTbd": "Preis folgt",
+    "orYearly": "oder {amount} / Jahr",
+    "loginToUpgrade": "Anmelden und upgraden",
+    "taxNote": "Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
+  },
+  "billing": {
+    "notConfigured": "Der Kauf ist noch nicht freigeschaltet.",
+    "alreadyPro": "Du hast bereits Pro.",
+    "failed": "Checkout konnte nicht gestartet werden. Bitte später erneut versuchen.",
+    "interval": "Abrechnungszeitraum",
+    "monthly": "Monatlich",
+    "yearly": "Jährlich",
+    "waiver": "Ich verlange ausdrücklich, dass WitCar vor Ablauf der Widerrufsfrist mit der Leistung beginnt, und habe zur Kenntnis genommen, dass mein Widerrufsrecht dadurch nach den gesetzlichen Vorgaben erlöschen kann.",
+    "redirecting": "Weiterleitung …",
+    "upgrade": "Zu Pro upgraden"
+  },
+  "faq": {
+    "title": "Häufige Fragen",
+    "what": {
+      "q": "Was ist WitCar?",
+      "a": "Eine Web-App, die im Browser deines Fahrzeugs ein anpassbares Dashboard mit Uhrzeit, Wetter, Kursen, Timer und Notizen anzeigt."
+    },
+    "tesla": {
+      "q": "Ist WitCar ein Tesla-Produkt?",
+      "a": "Nein. WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc. Wir testen mit Tesla-Fahrzeugen, weil deren Browser verbreitet ist."
+    },
+    "driving": {
+      "q": "Kann ich WitCar während der Fahrt nutzen?",
+      "a": "Bedienung ist nur im Stand vorgesehen. Ob der Fahrzeug-Browser während der Fahrt Webseiten anzeigt, hängt vom Hersteller, der Software und der Region ab. Der Fahrmodus ist experimentell und zeigt nur wenige große Werte ohne Animation."
+    },
+    "hotspot": {
+      "q": "Wie kommt das Auto ins Internet?",
+      "a": "Über das WLAN deines Fahrzeugs, z. B. mit dem Hotspot deines Handys, oder über die Konnektivität des Fahrzeugs, sofern der Browser diese nutzt."
+    },
+    "login": {
+      "q": "Wie melde ich mich im Auto an?",
+      "a": "Öffne WitCar im Auto und wähle „Mit Handy anmelden“. Scanne den QR-Code mit dem Handy und bestätige. Alternativ gibst du den Code am Handy von Hand ein."
+    },
+    "offline": {
+      "q": "Was passiert bei Funklöchern?",
+      "a": "Die zuletzt geladenen Daten bleiben sichtbar und werden dezent als veraltet markiert. Sobald wieder Netz da ist, aktualisiert sich alles von selbst."
+    },
+    "data": {
+      "q": "Welche Daten speichert WitCar?",
+      "a": "Nur das Nötigste: E-Mail, deine Layouts und Einstellungen, gekoppelte Geräte und den Abo-Status. Keine Tracker, keine Standortabfrage."
+    },
+    "cancel": {
+      "q": "Wie kündige ich Pro?",
+      "a": "Jederzeit in den Einstellungen über „Abo verwalten“. Bei einem Downgrade werden keine Daten gelöscht."
+    }
+  },
+  "auth": {
+    "title": "Anmelden",
+    "subtitle": "Wir schicken dir einen Anmeldelink per E-Mail. Kein Passwort nötig.",
+    "linkError": "Der Anmeldelink ist ungültig oder abgelaufen. Bitte fordere einen neuen an.",
+    "carHint": "Bist du gerade im Auto? Melde dich bequem per QR-Code mit dem Handy an.",
+    "carButton": "Mit Handy koppeln",
+    "sent": "Link gesendet an {email}. Öffne die E-Mail auf diesem Gerät.",
+    "email": "E-Mail-Adresse",
+    "devLogin": "Anmelden (lokal)",
+    "sendLink": "Anmeldelink senden",
+    "devHint": "Lokaler Entwicklungsmodus: Anmeldung ohne E-Mail.",
+    "error": "Das hat nicht geklappt. Bitte prüfe die Adresse und versuche es erneut."
+  },
+  "pair": {
+    "revoked": "Dieses Gerät wurde abgemeldet. Bitte erneut koppeln.",
+    "hotspotHint": "Hinweis: Der Handy-Hotspot oder das Fahrzeug-WLAN muss aktiv sein.",
+    "error": "Der Kopplungscode konnte nicht erzeugt werden.",
+    "retry": "Erneut versuchen",
+    "success": "Verbunden! Dashboard wird geladen …",
+    "loading": "Code wird erzeugt …",
+    "qrLabel": "QR-Code zum Koppeln",
+    "title": "Mit Handy anmelden",
+    "step1": "QR-Code mit der Handy-Kamera scannen",
+    "step2": "oder am Handy {url} öffnen und den Code eingeben",
+    "step3": "Am Handy bestätigen – dieses Display lädt automatisch",
+    "expires": "Code gültig: {min}:{sec} min"
+  },
+  "link": {
+    "title": "Gerät verbinden",
+    "subtitle": "Gib den Code ein, der im Auto angezeigt wird.",
+    "success": "Gerät verbunden. Das Display im Auto lädt jetzt dein Dashboard.",
+    "manageDevices": "Geräte verwalten",
+    "code": "Code",
+    "label": "Bezeichnung (optional)",
+    "labelPlaceholder": "z. B. Auto",
+    "submit": "Gerät verbinden",
+    "errors": {
+      "invalid_code": "Der Code hat nicht das richtige Format (8 Zeichen).",
+      "not_found": "Code unbekannt oder abgelaufen. Lass im Auto einen neuen Code anzeigen.",
+      "device_limit": "Gerätelimit erreicht. Entferne ein Gerät in den Einstellungen oder upgrade auf Pro.",
+      "rate_limited": "Zu viele Versuche. Bitte warte kurz.",
+      "error": "Das hat nicht geklappt. Bitte erneut versuchen."
+    }
+  },
+  "dashboard": {
+    "toolbar": "Dashboard-Aktionen",
+    "startFree": "Kostenlos starten",
+    "edit": "Bearbeiten",
+    "driveMode": "Fahrmodus",
+    "settings": "Einstellungen",
+    "empty": "Noch keine Widgets. Richte dein Layout im Editor oder am Handy ein."
+  },
+  "drive": {
+    "exitHint": "Halten zum Beenden",
+    "exitHolding": "Loslassen bricht ab …",
+    "safety": {
+      "title": "Sicherheitshinweis zum Fahrmodus",
+      "body": "Der Fahrmodus zeigt wenige große Werte ohne Animation. Er ersetzt keine sichere Fahrweise.",
+      "rule1": "Bediene WitCar nur im Stand. Während der Fahrt ist keine Eingabe vorgesehen.",
+      "rule2": "Ein Blick auf das Display nur kurz und der Verkehrssituation angepasst (§ 23 StVO).",
+      "rule3": "Du bleibst jederzeit für die sichere Führung des Fahrzeugs verantwortlich.",
+      "experimental": "Der Fahrmodus ist experimentell: Ob dein Fahrzeug-Browser während der Fahrt Webseiten anzeigt, ist nicht garantiert.",
+      "confirm": "Ich habe den Hinweis gelesen und verstanden.",
+      "error": "Speichern fehlgeschlagen. Bitte erneut versuchen.",
+      "start": "Fahrmodus starten",
+      "back": "Zurück"
+    }
+  },
+  "widgets": {
+    "locked": "Mit Pro verfügbar",
+    "crashed": "Widget konnte nicht angezeigt werden.",
+    "staleTitle": "Daten sind nicht aktuell",
+    "staleAge": "{age}",
+    "clock": {
+      "title": "Uhr",
+      "localTime": "Ortszeit",
+      "fields": {
+        "showSeconds": "Sekunden anzeigen",
+        "timeZone": "Zeitzone",
+        "label": "Beschriftung"
+      }
+    },
+    "date": {
+      "title": "Datum",
+      "styleLong": "Lang (Montag, 28. September)",
+      "styleShort": "Kurz (Mo., 28.09.2026)",
+      "fields": {
+        "style": "Format"
+      }
+    },
+    "weather": {
+      "title": "Wetter",
+      "noLocation": "Kein Ort gewählt",
+      "unavailable": "Wetter gerade nicht verfügbar",
+      "loading": "Lädt …",
+      "codes": {
+        "clear": "Klar",
+        "partly": "Teils bewölkt",
+        "cloudy": "Bewölkt",
+        "fog": "Nebel",
+        "drizzle": "Nieselregen",
+        "rain": "Regen",
+        "snow": "Schnee",
+        "storm": "Gewitter"
+      },
+      "fields": {
+        "location": "Ort"
+      }
+    },
+    "stocks": {
+      "title": "Aktien",
+      "demoData": "Demo-Daten",
+      "disclaimer": "Kurse verzögert, keine Anlageberatung",
+      "unavailable": "Kurs nicht verfügbar",
+      "loading": "Lädt …",
+      "fields": {
+        "symbols": "Ticker-Symbole",
+        "showChange": "Veränderung anzeigen"
+      }
+    },
+    "crypto": {
+      "title": "Krypto",
+      "demoData": "Demo-Daten",
+      "unavailable": "Kurs nicht verfügbar",
+      "loading": "Lädt …",
+      "fields": {
+        "coins": "Coins (CoinGecko-ID, z. B. bitcoin)",
+        "vs": "Währung"
+      }
+    },
+    "timer": {
+      "title": "Timer",
+      "done": "Fertig",
+      "pause": "Pause",
+      "start": "Start",
+      "reset": "Zurücksetzen",
+      "fields": {
+        "durationMin": "Dauer (Minuten)",
+        "label": "Beschriftung"
+      }
+    },
+    "notes": {
+      "title": "Notiz",
+      "empty": "Leere Notiz",
+      "fields": {
+        "text": "Text"
+      }
+    }
+  },
+  "editor": {
+    "defaultName": "Mein Dashboard",
+    "location": {
+      "placeholder": "Stadt suchen",
+      "search": "Suchen",
+      "error": "Suche gerade nicht möglich.",
+      "none": "Keine Treffer."
+    },
+    "removeItem": "{item} entfernen",
+    "addItem": "Hinzufügen",
+    "listFull": "Maximal {max} Einträge in deinem Plan.",
+    "dragMove": "Ziehen zum Verschieben",
+    "dragResize": "Ziehen zum Vergrößern/Verkleinern",
+    "types": {
+      "clock": "Uhr",
+      "date": "Datum",
+      "weather": "Wetter",
+      "stocks": "Aktien",
+      "crypto": "Krypto",
+      "timer": "Timer",
+      "notes": "Notiz",
+      "calendar": "Kalender"
+    },
+    "noSpace": "Kein freier Platz. Verkleinere oder entferne ein Widget.",
+    "collision": "Dort ist kein Platz – Widgets dürfen sich nicht überlappen.",
+    "newLayoutName": "Layout {n}",
+    "confirmDelete": "Dieses Layout wirklich löschen?",
+    "defaultSet": "Als Standard gesetzt.",
+    "errors": {
+      "overlap": "Widgets überlappen sich. Änderung zurückgesetzt.",
+      "too_many_widgets": "Zu viele Widgets für deinen Plan. Änderung zurückgesetzt.",
+      "pro_widget": "Dieses Widget ist Pro vorbehalten. Änderung zurückgesetzt.",
+      "too_many_tickers": "Zu viele Ticker für deinen Plan. Änderung zurückgesetzt.",
+      "invalid_config": "Ungültige Einstellung. Änderung zurückgesetzt.",
+      "layout_limit": "Weitere Layouts gibt es mit Pro.",
+      "read_only": "Dieses Layout ist im Free-Plan schreibgeschützt.",
+      "not_found": "Layout nicht gefunden.",
+      "too_small": "Widget zu klein. Änderung zurückgesetzt.",
+      "out_of_bounds": "Widget außerhalb des Rasters. Änderung zurückgesetzt.",
+      "rate_limited": "Zu viele Änderungen in kurzer Zeit. Bitte kurz warten.",
+      "unauthorized": "Sitzung abgelaufen. Bitte neu anmelden.",
+      "generic": "Speichern fehlgeschlagen. Änderung zurückgesetzt."
+    },
+    "status": {
+      "saved": "Gespeichert",
+      "dirty": "Ungespeicherte Änderungen …",
+      "saving": "Speichert …"
+    },
+    "toDashboard": "Zum Dashboard",
+    "layout": "Layout",
+    "readOnlyShort": "schreibgeschützt",
+    "driveLayout": "Fahrmodus-Layout",
+    "undo": "Rückgängig",
+    "redo": "Wiederholen",
+    "save": "Speichern",
+    "startDrive": "Fahrmodus starten",
+    "readOnly": "Dieses Layout ist im Free-Plan schreibgeschützt. Deine Daten bleiben erhalten – upgrade auf Pro, um es wieder zu bearbeiten.",
+    "layoutName": "Name des Layouts",
+    "preset": "Bildschirm",
+    "driveIntro": "Fahrmodus: bis zu {max} große Kacheln, automatisch angeordnet. Nur Anzeige, keine Bedienung.",
+    "proLayouts": "Mehrere Layouts mit Pro",
+    "newLayout": "Neues Layout",
+    "duplicate": "Duplizieren",
+    "makeDefault": "Als Standard",
+    "deleteLayout": "Löschen",
+    "addWidget": "Widget hinzufügen",
+    "limitReached": "Free erlaubt {max} Widgets pro Layout.",
+    "upgrade": "Upgrade auf Pro",
+    "removeWidget": "Widget entfernen",
+    "size": "Größe",
+    "narrower": "Schmaler",
+    "wider": "Breiter",
+    "shorter": "Niedriger",
+    "taller": "Höher",
+    "position": "Position",
+    "up": "Nach oben",
+    "left": "Nach links",
+    "down": "Nach unten",
+    "right": "Nach rechts",
+    "earlier": "Früher",
+    "later": "Später",
+    "selectHint": "Tippe auf ein Widget, um es zu konfigurieren."
+  },
+  "presets": {
+    "compact": {
+      "name": "Querformat 16:10 (kompakt)",
+      "hint": "Mittiges Querformat-Display, ca. 15 Zoll"
+    },
+    "wide": {
+      "name": "Querformat breit",
+      "hint": "Großes Querformat-Display, ca. 17 Zoll"
+    },
+    "ultrawide": {
+      "name": "Ultrabreit",
+      "hint": "Sehr breites Display, ca. 18,5 Zoll"
+    },
+    "generic": {
+      "name": "Allgemein (Querformat)",
+      "hint": "Jeder andere Auto-Browser oder Bildschirm"
+    }
+  },
+  "onboarding": {
+    "layoutName": "Mein Dashboard",
+    "progress": "Fortschritt",
+    "stepPreset": "Bildschirm wählen",
+    "stepWidgets": "Start-Widgets wählen",
+    "stepCar": "Im Auto verbinden",
+    "presetIntro": "Welche Bildschirmform hat dein Fahrzeug? Du kannst das später ändern.",
+    "presetEstimate": "Die Maße sind Schätzwerte; das Layout passt sich automatisch an den Bildschirm an.",
+    "widgetsIntro": "Wähle bis zu {max} Widgets. Weitere kannst du im Editor hinzufügen.",
+    "car1": "Öffne im Auto-Browser {host}",
+    "car2": "Tippe auf „Im Auto anmelden (QR)“",
+    "car3": "Scanne den QR-Code mit diesem Handy und bestätige",
+    "hotspot": "Der Handy-Hotspot oder das Fahrzeug-WLAN muss aktiv sein, damit das Auto Daten laden kann.",
+    "safety": "Ich bediene WitCar nur im Stand und bleibe während der Fahrt für die sichere Führung des Fahrzeugs verantwortlich (§ 23 StVO).",
+    "error": "Speichern fehlgeschlagen. Bitte erneut versuchen.",
+    "back": "Zurück",
+    "next": "Weiter",
+    "finish": "Fertig – zum Dashboard"
+  },
+  "settings": {
+    "toDashboard": "Zum Dashboard",
+    "title": "Einstellungen",
+    "checkoutSuccess": "Danke! Dein Pro-Abo wird aktiviert, sobald die Zahlung bestätigt ist.",
+    "appearance": "Darstellung",
+    "theme": "Farbschema",
+    "themeDark": "Dunkel",
+    "themeLight": "Hell",
+    "themeAuto": "Automatisch",
+    "preset": "Bildschirm",
+    "saved": "Gespeichert.",
+    "devices": "Geräte",
+    "devicesHint": "{count} von {max} Geräten verbunden.",
+    "deviceUnnamed": "Unbenanntes Gerät",
+    "lastSeen": "Zuletzt aktiv: {date}",
+    "revoke": "Entfernen",
+    "noDevices": "Noch kein Gerät verbunden.",
+    "error": "Das hat nicht geklappt. Bitte erneut versuchen.",
+    "pairDevice": "Neues Gerät verbinden",
+    "billing": "Abo",
+    "currentPlan": "Aktueller Plan",
+    "pastDue": "Zahlung offen",
+    "endsOn": "Endet am {date}",
+    "renewsOn": "Verlängert sich am {date}",
+    "upgrade": "Upgrade auf Pro",
+    "manageSubscription": "Abo verwalten",
+    "downgradeNote": "Bei einem Downgrade werden keine Daten gelöscht; Widgets über dem Free-Limit werden gesperrt angezeigt.",
+    "account": "Konto",
+    "signedInAs": "Angemeldet als {email}",
+    "export": "Daten exportieren (JSON)",
+    "signOut": "Abmelden",
+    "deleteHint": "Konto endgültig löschen: Tippe LÖSCHEN zur Bestätigung. Ein laufendes Abo wird beendet.",
+    "deleteConfirmLabel": "Bestätigung",
+    "delete": "Konto löschen"
+  }
+}
