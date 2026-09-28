@@ -1,26 +1,169 @@
 @import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "../styles/tokens.css";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-border: var(--border);
+  --color-text: var(--text);
+  --color-dim: var(--text-dim);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-positive: var(--positive);
+  --color-negative: var(--negative);
+  --color-warning: var(--warning);
+  --radius-tile: var(--radius);
+  --font-sans: var(--font-inter), system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Buttons & inputs: touch targets >= 48px (masterplan §10.3) */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 1.1rem;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+  touch-action: manipulation;
+}
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-contrast);
+}
+.btn-ghost {
+  background: transparent;
+}
+.btn-danger {
+  color: var(--negative);
+  border-color: color-mix(in srgb, var(--negative) 50%, transparent);
+  background: transparent;
+}
+.btn:focus-visible,
+.input:focus-visible,
+a:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.input {
+  min-height: var(--tap);
+  width: 100%;
+  padding: 0 0.9rem;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  font-size: 1rem;
+}
+textarea.input {
+  padding: 0.75rem 0.9rem;
+  min-height: 7rem;
+}
+
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+/* ------------------------------------------------------------------ */
+/* Dashboard grid: 12 x 8 scaled to the viewport (masterplan §10.1)    */
+/* ------------------------------------------------------------------ */
+.wc-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: repeat(8, minmax(0, 1fr));
+  gap: clamp(6px, 0.8vw, 14px);
+  height: 100dvh;
+  width: 100%;
+  padding: clamp(6px, 0.8vw, 14px);
+  overflow: hidden;
+}
+.wc-cell {
+  grid-column: var(--x) / span var(--w);
+  grid-row: var(--y) / span var(--h);
+  min-width: 0;
+  min-height: 0;
+}
+.wc-tile {
+  container-type: size;
+  height: 100%;
+  width: 100%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Narrow screens (phones): stack widgets vertically instead of the grid */
+@media (max-width: 640px) {
+  .wc-grid {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+    overflow: visible;
+  }
+  .wc-cell {
+    height: max(120px, calc(var(--h) * 60px));
+  }
+}
+
+/* Drive mode: no animation, no transitions, no scrolling (masterplan §14) */
+.wc-drive,
+.wc-drive * {
+  animation: none !important;
+  transition: none !important;
+  scroll-behavior: auto !important;
+}
+.wc-drive {
+  overflow: hidden !important;
+  touch-action: none;
+  user-select: none;
+}
+.wc-drive[data-night="true"] {
+  --text: #cfd5db;
+  --text-dim: #7f8993;
+  --accent: #2c9fd0;
+  --surface: #121418;
+  --border: #1d2227;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
 }
