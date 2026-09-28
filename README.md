@@ -16,6 +16,14 @@ pnpm dev            # http://localhost:3000 – PGlite + Dev-Login + Mock-Daten 
 - Auto simulieren: zweites Browserfenster (privat) → `/pair`, Code am „Handy“ unter `/link` eingeben
 - Demo ohne Konto: `/demo` · Werkzeuge: `/tools/drive-test`, `/tools/calibrate`
 
+## Im echten Auto testen (ohne Hosting-Konto)
+
+```bash
+pnpm tesla   # baut die App und macht sie über einen Cloudflare-Tunnel öffentlich erreichbar
+```
+
+Im Tesla-Browser die angezeigte Adresse mit `/test` öffnen. Details: [docs/incar-test-protocol.md](docs/incar-test-protocol.md).
+
 ## Qualität
 
 ```bash

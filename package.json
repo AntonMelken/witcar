@@ -14,7 +14,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "e2e:install": "playwright install chromium",
-    "prepare": "husky"
+    "prepare": "husky",
+    "tesla": "bash scripts/tesla-tunnel.sh"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

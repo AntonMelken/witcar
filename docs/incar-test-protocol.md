@@ -6,10 +6,29 @@ und die echten Viewport-Maße/Farben je Modell messen (G1). Ergebnisse fließen 
 > Sicherheit zuerst: Der **Fahrer bedient nichts**. Alle Eingaben macht der Beifahrer oder sie erfolgen im Stand.
 > Test nur auf ruhiger Strecke, StVO beachten (§ 23 StVO).
 
+## Die App fürs Auto erreichbar machen (ohne Hosting-Konto)
+
+Am Mac im Projektordner:
+
+```bash
+pnpm tesla
+```
+
+Das Skript baut die App, startet sie lokal und macht sie über einen kostenlosen Cloudflare-Tunnel
+(`https://<zufall>.trycloudflare.com`) öffentlich erreichbar. Es zeigt die Adresse und einen QR-Code fürs Handy.
+
+- Der Mac muss während des Tests eingeschaltet und online bleiben (das Skript verhindert den Ruhezustand).
+- Die Adresse ändert sich bei jedem Start. Danach im Auto neu eingeben und neu koppeln.
+- Beenden mit Ctrl+C. Danach ist nichts mehr öffentlich erreichbar.
+- Test-Modus: Anmeldung ohne E-Mail, echte Wetter- und Kryptodaten (kostenlose APIs, privater Test), Aktien als Demo-Daten.
+  Daten liegen nur lokal in `.pglite-tesla/`.
+- Für das eigene Dashboard im Auto: am Handy zuerst `…/login` → Onboarding (Start-Widgets) durchlaufen,
+  dann im Auto `…/pair` öffnen und den QR-Code scannen.
+
 ## Vorbereitung (im Stand)
 
 1. Handy-Hotspot einschalten, Fahrzeug mit dem Hotspot verbinden (oder Fahrzeug-Konnektivität, falls der Browser sie nutzt).
-2. Im Fahrzeug-Browser `https://<domain>/tools/drive-test` öffnen.
+2. Im Fahrzeug-Browser `<adresse>/test` öffnen (Adresse aus `pnpm tesla`) und „1 · Fahrtest (G0)“ antippen.
 3. Prüfen: Uhr läuft, Zähler zählt, „Ping: n ok“ steigt alle 5 s, Netz „online“.
 4. Notieren: Modell (neutral beschreiben, z. B. „Limousine 2021“), Baujahr, Software-Version (Fahrzeugmenü), Region.
 
@@ -29,7 +48,7 @@ und die echten Viewport-Maße/Farben je Modell messen (G1). Ergebnisse fließen 
 
 ## Kalibrierung G1 (im Stand)
 
-8. `https://<domain>/tools/calibrate` öffnen.
+8. `<adresse>/test` → „2 · Kalibrierung (G1)“ öffnen.
 9. Viewport-Werte ablesen (steht oben im Kasten, auch als JSON).
 10. Rand-Lineale (alle 10 px): zählen, wie viele Linien oben/unten/links/rechts von der Fahrzeug-UI verdeckt sind → Safe-Insets in px.
 11. Farbfelder antippen (Vollbild) und das Feld wählen, das am besten zum Display-Schwarz der Fahrzeug-UI passt → Wert für `--bg`.
