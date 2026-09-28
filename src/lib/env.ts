@@ -73,7 +73,14 @@ const schema = z
   })
   .transform((env) => {
     const db = env.WITCAR_DB ?? (env.DATABASE_URL ? "postgres" : "pglite");
-    const auth = env.WITCAR_AUTH ?? (env.NEXT_PUBLIC_SUPABASE_URL ? "supabase" : "dev");
+    // Supabase Auth only when everything it needs is configured (users live in the Supabase DB)
+    const supabaseReady = !!(
+      env.DATABASE_URL &&
+      env.NEXT_PUBLIC_SUPABASE_URL &&
+      env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+      env.SUPABASE_SERVICE_ROLE_KEY
+    );
+    const auth = env.WITCAR_AUTH ?? (supabaseReady ? "supabase" : "dev");
     return {
       ...env,
       WITCAR_DB: db,
@@ -89,6 +96,9 @@ const schema = z
 
     if (env.WITCAR_DB === "postgres" && !env.DATABASE_URL) {
       issue("DATABASE_URL is required when WITCAR_DB=postgres");
+    }
+    if (env.WITCAR_AUTH === "supabase" && env.WITCAR_DB !== "postgres") {
+      issue("WITCAR_AUTH=supabase needs the Supabase database (DATABASE_URL): users live in auth.users there");
     }
     if (env.WITCAR_AUTH === "supabase") {
       if (!env.NEXT_PUBLIC_SUPABASE_URL) issue("NEXT_PUBLIC_SUPABASE_URL is required");

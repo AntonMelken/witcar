@@ -28,13 +28,21 @@ for _ in $(seq 1 60); do
 done
 [ -n "$URL" ] || { echo "Tunnel-URL nicht erhalten:"; cat "$LOG"; exit 1; }
 
-# Local backend (persistent PGlite in .pglite-tesla), dev login, test mode only.
 export NEXT_PUBLIC_SITE_URL="$URL"
-export WITCAR_DB=pglite PGLITE_DATA_DIR=.pglite-tesla
-export WITCAR_AUTH=dev WITCAR_ALLOW_DEV_BACKEND=1
-export WITCAR_SESSION_SECRET="$(openssl rand -hex 32)"
 # Personal, non-commercial test: real weather/crypto from the free APIs, stocks as demo data.
 export WEATHER_PROVIDER="${WEATHER_PROVIDER:-open-meteo}" CRYPTO_PROVIDER="${CRYPTO_PROVIDER:-coingecko}" STOCKS_PROVIDER=mock
+
+if grep -Eq '^DATABASE_URL=.+' .env.local 2>/dev/null && grep -Eq '^SUPABASE_SERVICE_ROLE_KEY=.+' .env.local 2>/dev/null; then
+  # Supabase configured in .env.local: real database + magic-link login.
+  # Needs "https://*.trycloudflare.com/**" in Supabase Auth -> URL Configuration -> Redirect URLs.
+  echo "Backend: Supabase (aus .env.local)"
+else
+  # Local backend (persistent PGlite in .pglite-tesla), dev login, test mode only.
+  echo "Backend: lokal (PGlite + Dev-Login)"
+  export WITCAR_DB=pglite PGLITE_DATA_DIR=.pglite-tesla
+  export WITCAR_AUTH=dev WITCAR_ALLOW_DEV_BACKEND=1
+  export WITCAR_SESSION_SECRET="$(openssl rand -hex 32)"
+fi
 
 echo "Baue die App für ${URL} …"
 pnpm -s build >/dev/null

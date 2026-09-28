@@ -32,11 +32,29 @@ pnpm e2e:install                           # einmalig: Chromium für Playwright
 pnpm e2e                                   # Build + Start auf :3100 + E2E
 ```
 
+## Supabase (Projekt „WitCar“, Frankfurt)
+
+Das Projekt ist angelegt (`smyejbxtbivqvztpvnye`, eu-central-1, Free-Plan), beide Migrationen aus
+`supabase/migrations/` sind eingespielt, RLS ist aktiv. URL und Publishable Key stehen bereits in `.env.local`.
+Einmalig im [Dashboard](https://supabase.com/dashboard/project/smyejbxtbivqvztpvnye) erledigen:
+
+1. **Datenbank-Passwort**: Project Settings → Database → _Reset database password_ (neues Passwort notieren).
+2. **DATABASE_URL**: oben _Connect_ → _Transaction pooler_ → URI kopieren, `[YOUR-PASSWORD]` ersetzen,
+   in `.env.local` bei `DATABASE_URL=` eintragen.
+3. **Secret Key**: Project Settings → API Keys → _Secret keys_ → Key (`sb_secret_…`) in `.env.local` bei
+   `SUPABASE_SERVICE_ROLE_KEY=` eintragen.
+4. **Login-Weiterleitungen**: Authentication → URL Configuration
+   - Site URL: `http://localhost:3000` (später die echte Domain)
+   - Redirect URLs: `http://localhost:3000/**` und `https://*.trycloudflare.com/**`
+
+Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch Supabase (Magic-Link-Login per E-Mail).
+Hinweis: Der eingebaute Supabase-Mailversand schickt nur an Mitglieder des Supabase-Teams (also deine eigene
+Adresse) und ist nicht für den Produktivbetrieb gedacht → vor dem Launch eigenes SMTP einrichten.
+
 ## Produktion (Owner)
 
-1. Supabase-Projekt (Region Frankfurt) anlegen, Migration `supabase/migrations/*.sql` anwenden
-   (**nicht** `supabase/local/*` – das ist nur der lokale Stub).
-2. Supabase Auth: Magic Link aktivieren, Site-URL + Redirect `https://<domain>/auth/callback` eintragen.
+1. ~~Supabase-Projekt anlegen, Migrationen anwenden~~ (erledigt, siehe oben; **nie** `supabase/local/*` anwenden – das ist nur der lokale Stub).
+2. Supabase Auth: Site-URL + Redirect `https://<domain>/auth/callback` auf die echte Domain umstellen, eigenes SMTP.
 3. Vercel-Projekt (Region `fra1`), Env-Variablen laut `.env.example` setzen (`DATABASE_URL` = Pooler-URL, Transaction-Mode).
 4. Upstash Redis (EU) für Cache/Rate-Limits → `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
 5. Stripe **Test-Modus**: Produkt „WitCar Pro“ mit Monats-/Jahrespreis, Webhook auf `/api/stripe/webhook`

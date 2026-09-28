@@ -17,10 +17,19 @@ describe("env validation", () => {
     expect(() =>
       parseEnv({
         NODE_ENV: "production",
+        WITCAR_AUTH: "supabase",
         DATABASE_URL: "postgres://x",
         NEXT_PUBLIC_SUPABASE_URL: "https://x.supabase.co",
       }),
     ).toThrow(/NEXT_PUBLIC_SUPABASE_ANON_KEY/);
+    expect(() => parseEnv({ WITCAR_AUTH: "supabase", WITCAR_DB: "pglite" })).toThrow(/needs the Supabase database/);
+    // partial Supabase config (secrets not filled in yet) keeps the local backend
+    const partial = parseEnv({
+      NEXT_PUBLIC_SUPABASE_URL: "https://x.supabase.co",
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: "sb_publishable_x",
+    });
+    expect(partial.WITCAR_AUTH).toBe("dev");
+    expect(partial.WITCAR_DB).toBe("pglite");
     const ok = parseEnv({
       NODE_ENV: "production",
       DATABASE_URL: "postgres://x",

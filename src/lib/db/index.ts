@@ -11,7 +11,14 @@ const g = globalThis as GlobalWithDb;
 async function createPostgresDb(url: string): Promise<Db> {
   const { default: postgres } = await import("postgres");
   // Supabase pooler (transaction mode) does not support prepared statements.
-  const sql = postgres(url, { prepare: false, max: 3, idle_timeout: 20, connect_timeout: 10 });
+  const local = /@(localhost|127\.0\.0\.1)[:/]/.test(url);
+  const sql = postgres(url, {
+    prepare: false,
+    max: 3,
+    idle_timeout: 20,
+    connect_timeout: 10,
+    ssl: local ? false : "require",
+  });
   // postgres.js generics are stricter than our minimal interface
   type Unsafe = { unsafe: (text: string, params?: never[]) => PromiseLike<unknown> };
   const wrap = (q: Unsafe, isTx: boolean): Db => ({
