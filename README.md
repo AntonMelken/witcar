@@ -1,36 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# WitCar
 
-## Getting Started
+Anpassbares Widget-Dashboard für den Browser im Auto (PWA). Next.js 16 · Supabase · Stripe · Vercel.
+Masterplan: [docs/WITCAR_MASTERPLAN.md](docs/WITCAR_MASTERPLAN.md) · Entscheidungen: [DECISIONS.md](DECISIONS.md) · Änderungen: [CHANGELOG.md](CHANGELOG.md)
 
-First, run the development server:
+> WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc.
+
+## Schnellstart (lokal, ohne externe Dienste)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev            # http://localhost:3000 – PGlite + Dev-Login + Mock-Daten (siehe .env.local)
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- Anmelden: `/login` → beliebige E-Mail → „Anmelden (lokal)“
+- Auto simulieren: zweites Browserfenster (privat) → `/pair`, Code am „Handy“ unter `/link` eingeben
+- Demo ohne Konto: `/demo` · Werkzeuge: `/tools/drive-test`, `/tools/calibrate`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Qualität
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm typecheck && pnpm lint && pnpm test   # vor jedem "fertig"
+pnpm e2e:install                           # einmalig: Chromium für Playwright
+pnpm e2e                                   # Build + Start auf :3100 + E2E
+```
 
-## Learn More
+## Produktion (Owner)
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Supabase-Projekt (Region Frankfurt) anlegen, Migration `supabase/migrations/*.sql` anwenden
+   (**nicht** `supabase/local/*` – das ist nur der lokale Stub).
+2. Supabase Auth: Magic Link aktivieren, Site-URL + Redirect `https://<domain>/auth/callback` eintragen.
+3. Vercel-Projekt (Region `fra1`), Env-Variablen laut `.env.example` setzen (`DATABASE_URL` = Pooler-URL, Transaction-Mode).
+4. Upstash Redis (EU) für Cache/Rate-Limits → `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+5. Stripe **Test-Modus**: Produkt „WitCar Pro“ mit Monats-/Jahrespreis, Webhook auf `/api/stripe/webhook`
+   (Events: `checkout.session.completed`, `customer.subscription.*`, `invoice.payment_failed`), Customer Portal aktivieren.
+6. Datenanbieter nach Gate G2 (siehe DECISIONS D-007–D-009) konfigurieren.
+7. Live-Schaltung erst nach „GO LIVE“ des Owners: `sk_live_…` + `WITCAR_STRIPE_LIVE=GO_LIVE`.
