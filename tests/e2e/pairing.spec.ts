@@ -68,3 +68,25 @@ test("pairing requires a logged-in phone and valid codes", async ({ browser }) =
   expect(unknown.status()).toBe(404);
   await ctx.close();
 });
+
+test("car browser: login page leads with the QR pairing and offers the e-mail code", async ({ browser }) => {
+  const car = await browser.newContext({
+    viewport: { width: 1920, height: 1200 },
+    userAgent:
+      "Mozilla/5.0 (X11; GNU/Linux) AppleWebKit/537.36 (KHTML, like Gecko) Chromium/136.0.0.0 Chrome/136.0.0.0 Safari/537.36 Tesla/2025.20.6",
+  });
+  const page = await car.newPage();
+  await page.goto("/login?next=/settings");
+  await expect(page.getByTestId("user-code")).toHaveText(/^[A-Z2-9]{4}-[A-Z2-9]{4}$/);
+  await expect(page.getByRole("heading", { name: "Oder mit E-Mail-Code anmelden" })).toBeVisible();
+  await expect(page.getByRole("link", { name: "Mit Handy koppeln" })).toHaveCount(0);
+  await car.close();
+});
+
+test("magic-link landing without tokens shows a way back to the login", async ({ page }) => {
+  await page.goto("/auth/confirm?next=/settings#error=access_denied&error_code=otp_expired");
+  await expect(page.getByText("Der Anmeldelink ist ungültig oder abgelaufen")).toBeVisible();
+  // the fragment (tokens or error) is removed from the address bar
+  expect(page.url()).not.toContain("#");
+  await expect(page.getByRole("link", { name: "Zur Anmeldung" })).toHaveAttribute("href", "/login?next=%2Fsettings");
+});

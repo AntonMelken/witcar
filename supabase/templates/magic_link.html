@@ -1,0 +1,38 @@
+<!-- Supabase > Authentication > Emails > "Magic Link". Subject: Dein WitCar-Code: {{ .Token }} -->
+<div
+  style="
+    font-family:
+      -apple-system,
+      Segoe UI,
+      Roboto,
+      sans-serif;
+    max-width: 480px;
+    margin: 0 auto;
+    color: #111;
+  "
+>
+  <h2 style="margin: 0 0 16px">Bei WitCar anmelden</h2>
+  <p>Dein Anmeldecode:</p>
+  <p style="font-size: 32px; font-weight: 700; letter-spacing: 6px; margin: 8px 0 20px">{{ .Token }}</p>
+  <p>Tippe den Code im Auto oder auf dem Gerät ein, auf dem du die Anmeldung gestartet hast.</p>
+  <p>Oder melde dich direkt auf diesem Gerät an:</p>
+  <p>
+    <a
+      href="{{ .ConfirmationURL }}"
+      style="
+        display: inline-block;
+        background: #5eb6f0;
+        color: #0f1114;
+        padding: 12px 20px;
+        border-radius: 12px;
+        text-decoration: none;
+        font-weight: 600;
+      "
+      >Jetzt anmelden</a
+    >
+  </p>
+  <p style="color: #666; font-size: 13px">
+    Code und Link sind eine Stunde gültig und funktionieren nur einmal. Du hast das nicht angefordert? Dann ignoriere
+    diese E-Mail.
+  </p>
+</div>

@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { isCarBrowser } from "@/lib/auth/carBrowser";
 import { decodeDevSession, encodeDevSession } from "@/lib/auth/dev";
 import { safeNext } from "@/lib/auth/redirect";
 import { formatUserCode, generateUserCode, normalizeUserCode, sha256, USER_CODE_ALPHABET } from "@/lib/auth/tokens";
@@ -23,6 +24,23 @@ describe("device codes", () => {
 
   it("hashes tokens (only hashes are stored)", () => {
     expect(sha256("x")).toMatch(/^[0-9a-f]{64}$/);
+  });
+});
+
+describe("car browser detection", () => {
+  it("recognizes the Tesla browser and nothing else", () => {
+    expect(
+      isCarBrowser(
+        "Mozilla/5.0 (X11; GNU/Linux) AppleWebKit/537.36 (KHTML, like Gecko) Chromium/136.0.0.0 Chrome/136.0.0.0 Safari/537.36 Tesla/2025.20.6-a5a2b5b5b4b",
+      ),
+    ).toBe(true);
+    expect(
+      isCarBrowser(
+        "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1",
+      ),
+    ).toBe(false);
+    expect(isCarBrowser("TeslaFanBot")).toBe(false);
+    expect(isCarBrowser(null)).toBe(false);
   });
 });
 

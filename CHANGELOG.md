@@ -1,5 +1,18 @@
 # Changelog
 
+## [Unreleased]
+
+### Fixed
+
+- Login: Der Anmeldelink funktioniert jetzt in jedem Browser (Mail-App, anderes Gerät). Bisher brauchte der PKCE-Link das Cookie aus dem Browser, der ihn angefordert hat → „Anmeldelink ungültig oder abgelaufen“.
+
+### Added
+
+- Login per 6-stelligem E-Mail-Code (`/api/auth/verify-code`): Code im Auto eintippen, Mail am Handy lesen.
+- Tesla-Browser: `/login` zeigt direkt den QR-Code zum Koppeln, E-Mail-Code als Alternative.
+- Eigene deutsche E-Mail-Vorlagen mit Code und Link (`supabase/templates/`).
+- Eigene Fehlermeldung bei Rate-Limit (429) statt „Adresse prüfen“.
+
 ## [0.1.0] – 2026-09-28 – MVP (Phasen 0–4, Test-Modus)
 
 ### Phase 0 – Fundament und Validierung

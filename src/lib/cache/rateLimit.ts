@@ -37,6 +37,7 @@ export const RULES = {
   widgetsAnon: { name: "widgets-anon", limit: 20, windowSec: 60 },
   geo: { name: "geo", limit: 30, windowSec: 60 },
   magicLink: { name: "magic-link", limit: 5, windowSec: 3600 },
+  loginVerify: { name: "login-verify", limit: 10, windowSec: 900 },
   report: { name: "incar-report", limit: 20, windowSec: 3600 },
   ping: { name: "ping", limit: 120, windowSec: 60 },
   write: { name: "write", limit: 120, windowSec: 60 },

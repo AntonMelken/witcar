@@ -22,6 +22,19 @@ export async function createSupabaseServerClient() {
   });
 }
 
+/**
+ * Client for sending sign-in e-mails. Implicit flow on purpose: a PKCE link only
+ * works in the browser that requested it (code verifier cookie), but users open
+ * the mail on another device or in a mail app's in-app browser. The landing
+ * page (/auth/confirm) hands the tokens from the URL fragment to the server.
+ */
+export function createSupabaseEmailClient() {
+  const env = getEnv();
+  return createClient(env.NEXT_PUBLIC_SUPABASE_URL!, env.NEXT_PUBLIC_SUPABASE_ANON_KEY!, {
+    auth: { flowType: "implicit", persistSession: false, autoRefreshToken: false, detectSessionInUrl: false },
+  });
+}
+
 /** Service-role admin client. Server only, never exposed to the browser. */
 export function createSupabaseAdminClient() {
   const env = getEnv();
