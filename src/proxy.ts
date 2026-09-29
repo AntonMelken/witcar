@@ -1,5 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
+import { getEnv } from "@/lib/env";
 
 /**
  * Proxy (formerly middleware):
@@ -7,8 +8,7 @@ import { NextResponse, type NextRequest } from "next/server";
  * 2. Supabase session refresh when Supabase Auth is configured
  */
 
-function buildCsp(nonce: string, isDev: boolean, supabaseUrl: string | undefined, https: boolean): string {
-  const connect = ["'self'", supabaseUrl].filter(Boolean).join(" ");
+function buildCsp(nonce: string, isDev: boolean, https: boolean): string {
   return [
     "default-src 'self'",
     `script-src 'self' 'nonce-${nonce}' 'strict-dynamic'${isDev ? " 'unsafe-eval'" : ""}`,
@@ -16,7 +16,8 @@ function buildCsp(nonce: string, isDev: boolean, supabaseUrl: string | undefined
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob:",
     "font-src 'self'",
-    `connect-src ${connect}`,
+    // the browser only talks to our own origin (auth and data go through the server)
+    "connect-src 'self'",
     "worker-src 'self'",
     "manifest-src 'self'",
     "object-src 'none'",
@@ -30,13 +31,14 @@ function buildCsp(nonce: string, isDev: boolean, supabaseUrl: string | undefined
 export async function proxy(request: NextRequest) {
   const isApi = request.nextUrl.pathname.startsWith("/api/");
   const isDev = process.env.NODE_ENV === "development";
-  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  const useSupabase = (process.env.WITCAR_AUTH ?? (supabaseUrl ? "supabase" : "dev")) === "supabase";
+  const env = getEnv();
+  const supabaseUrl = env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseKey = env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  const useSupabase = env.WITCAR_AUTH === "supabase";
 
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const https = (process.env.NEXT_PUBLIC_SITE_URL ?? "").startsWith("https://");
-  const csp = buildCsp(nonce, isDev, supabaseUrl, https);
+  const csp = buildCsp(nonce, isDev, https);
 
   const requestHeaders = () => {
     const h = new Headers(request.headers);

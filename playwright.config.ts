@@ -33,7 +33,9 @@ export default defineConfig({
   },
   projects: [{ name: "chromium", use: { ...devices["Desktop Chrome"], viewport: { width: 1280, height: 800 } } }],
   webServer: {
-    command: process.env.E2E_SKIP_BUILD ? `pnpm start -p ${PORT}` : `pnpm build && pnpm start -p ${PORT}`,
+    // Start Next directly (not via `pnpm start`): the pnpm wrapper detaches the
+    // server, so Playwright could not stop it and the run never finished.
+    command: `${process.env.E2E_SKIP_BUILD ? "" : "pnpm build && "}exec node node_modules/next/dist/bin/next start -p ${PORT}`,
     url: `${BASE_URL}/api/health`,
     timeout: 300_000,
     reuseExistingServer: !process.env.CI,

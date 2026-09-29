@@ -46,8 +46,10 @@ fi
 
 echo "Baue die App für ${URL} …"
 pnpm -s build >/dev/null
-caffeinate -dimsu pnpm start -p "$PORT" >/dev/null 2>&1 &
+# Start Next directly so Ctrl+C really stops it (pnpm would detach the server).
+node node_modules/next/dist/bin/next start -p "$PORT" >/dev/null 2>&1 &
 SERVER_PID=$!
+caffeinate -dimsu -w "$SERVER_PID" &
 for _ in $(seq 1 60); do curl -sf "http://localhost:${PORT}/api/health" >/dev/null && break; sleep 1; done
 for _ in $(seq 1 30); do curl -sf "${URL}/api/health" >/dev/null && break; sleep 2; done
 
