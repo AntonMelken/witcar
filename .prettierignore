@@ -6,4 +6,6 @@ playwright-report
 test-results
 .pglite
 public/offline.html
+public/third-party-licenses.txt
+src/lib/legal/third-party.json
 docs/WITCAR_MASTERPLAN.md

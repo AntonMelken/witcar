@@ -3,6 +3,8 @@ import type { CSSProperties } from "react";
 /**
  * Tiny stroke icon set for the dashboard/drive bundle (§17 budget).
  * Editor and marketing pages use lucide-react.
+ * Some paths (sun, gauge, reset) are adapted from Lucide, ISC License,
+ * Copyright (c) Lucide Icons and Contributors; credited on /lizenzen.
  */
 const CLOUD = "M6.5 18a4.5 4.5 0 0 1-.4-8.98A6 6 0 0 1 17.6 8.1 5 5 0 0 1 17.5 18z";
 const CLOUD_HIGH = "M6.5 14a4.5 4.5 0 0 1-.4-8.98A6 6 0 0 1 17.6 4.1 5 5 0 0 1 17.5 14z";

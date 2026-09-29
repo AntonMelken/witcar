@@ -9,6 +9,7 @@ const PAGES = [
   "/agb",
   "/widerruf",
   "/disclaimer",
+  "/lizenzen",
   "/login",
   "/pair",
   "/demo",
@@ -39,6 +40,17 @@ test.describe("marketing & legal", () => {
     for (const img of await page.locator("img, svg[aria-label]").all()) {
       expect((await img.getAttribute("alt")) ?? (await img.getAttribute("aria-label")) ?? "").not.toMatch(/tesla/i);
     }
+  });
+
+  test("licence notices: page lists dependencies and serves the full texts", async ({ page, request }) => {
+    await page.goto("/lizenzen");
+    await expect(page.getByRole("cell", { name: "lucide-react" })).toBeVisible();
+    await expect(page.getByText("Open-Meteo.com").first()).toBeVisible();
+    const res = await request.get("/third-party-licenses.txt");
+    expect(res.status()).toBe(200);
+    const text = await res.text();
+    expect(text).toContain("SIL OPEN FONT LICENSE");
+    expect(text).toContain("Lucide Icons and Contributors");
   });
 
   test("legal placeholders are clearly marked for the owner", async ({ page }) => {

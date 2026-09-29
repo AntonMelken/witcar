@@ -14,6 +14,8 @@
     "test:watch": "vitest",
     "e2e": "playwright test",
     "e2e:install": "playwright install chromium",
+    "licenses:gen": "node scripts/gen-licenses.mjs",
+    "licenses:check": "node scripts/gen-licenses.mjs --check",
     "prepare": "husky",
     "tesla": "bash scripts/tesla-tunnel.sh",
     "deploy:vercel": "bash scripts/vercel-deploy.sh"

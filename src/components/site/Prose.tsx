@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 export function Prose({ title, children }: { title: string; children: ReactNode }) {
   return (
-    <article className="mx-auto max-w-3xl px-5 py-10 space-y-4 leading-relaxed [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-8 [&_p]:text-dim [&_li]:text-dim [&_ul]:list-disc [&_ul]:pl-6">
+    <article className="mx-auto max-w-3xl px-5 py-10 space-y-4 leading-relaxed [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:mt-8 [&_p]:text-dim [&_li]:text-dim [&_ul]:list-disc [&_ul]:pl-6 [&_a]:underline [&_a]:underline-offset-2">
       <h1 className="text-3xl font-bold tracking-tight">{title}</h1>
       {children}
     </article>
