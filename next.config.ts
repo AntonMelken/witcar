@@ -7,7 +7,9 @@ import { parseEnv } from "./src/lib/env";
 if (process.env.WITCAR_ENV_CHECK !== "off") parseEnv();
 const isHttps = (process.env.NEXT_PUBLIC_SITE_URL ?? "").startsWith("https://");
 
-const buildId = process.env.VERCEL_GIT_COMMIT_SHA?.slice(0, 12) ?? `local-${Date.now().toString(36)}`;
+// Vercel sets VERCEL_GIT_COMMIT_SHA, Coolify passes SOURCE_COMMIT (Dockerfile build arg)
+const commit = process.env.VERCEL_GIT_COMMIT_SHA || process.env.SOURCE_COMMIT;
+const buildId = commit?.slice(0, 12) ?? `local-${Date.now().toString(36)}`;
 
 const securityHeaders = [
   { key: "X-Frame-Options", value: "DENY" },
@@ -21,6 +23,8 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  // Self-hosting (Dockerfile, Hetzner + Coolify): minimal server in .next/standalone
+  output: process.env.NEXT_OUTPUT === "standalone" ? "standalone" : undefined,
   poweredByHeader: false,
   reactStrictMode: true,
   serverExternalPackages: ["@electric-sql/pglite", "postgres"],
