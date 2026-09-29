@@ -137,3 +137,65 @@ describe("drive mode rendering", () => {
     expect(big.style.fontSize).toContain("max(64px");
   });
 });
+
+describe("data-source credits (provider terms)", () => {
+  const weather: RenderWidget = {
+    ...stock,
+    widgetId: "w",
+    type: "weather",
+    config: { location: { name: "Berlin", lat: 52.52, lon: 13.41 } },
+  };
+  const weatherKey = dataKey({ kind: "weather", params: { lat: 52.52, lon: 13.41 } });
+  const weatherEntry = (source: string): DataEntry => ({
+    result: {
+      data: { tempC: 18, code: 0, isDay: true, highC: 20, lowC: 10, windKmh: 5, precipProb: 0 },
+      fetchedAt: new Date().toISOString(),
+      source,
+      stale: false,
+    },
+    error: null,
+  });
+  const crypto: RenderWidget = { ...stock, widgetId: "c", type: "crypto", config: { coins: ["bitcoin"], vs: "eur" } };
+  const cryptoKey = dataKey({ kind: "crypto", params: { id: "bitcoin", vs: "eur" } });
+  const cryptoEntry: DataEntry = {
+    result: {
+      data: { id: "bitcoin", price: 60000, change24hPct: 1, currency: "eur", asOf: null },
+      fetchedAt: new Date().toISOString(),
+      source: "coingecko",
+      stale: false,
+    },
+    error: null,
+  };
+
+  it("weather links Open-Meteo next to the data", () => {
+    wrap(<WidgetCell widget={weather} mode="standard" entries={{ [weatherKey]: weatherEntry("open-meteo") }} />);
+    const link = screen.getByRole("link", { name: "Wetterdaten: Open-Meteo.com" });
+    expect(link.getAttribute("href")).toBe("https://open-meteo.com/");
+    expect(link.getAttribute("rel")).toContain("noopener");
+  });
+
+  it("weather demo data is labeled as such", () => {
+    wrap(<WidgetCell widget={weather} mode="standard" entries={{ [weatherKey]: weatherEntry("mock") }} />);
+    expect(screen.getByText("Demo-Daten")).toBeTruthy();
+    expect(screen.queryByText(/Open-Meteo/)).toBeNull();
+  });
+
+  it("crypto links CoinGecko in standard mode", () => {
+    wrap(<WidgetCell widget={crypto} mode="standard" entries={{ [cryptoKey]: cryptoEntry }} />);
+    expect(screen.getByRole("link", { name: "Powered by CoinGecko" }).getAttribute("href")).toBe(
+      "https://www.coingecko.com/",
+    );
+  });
+
+  it("drive mode keeps the credits as plain text (no links)", () => {
+    const { container } = wrap(
+      <>
+        <WidgetCell widget={weather} mode="drive" entries={{ [weatherKey]: weatherEntry("open-meteo") }} />
+        <WidgetCell widget={crypto} mode="drive" entries={{ [cryptoKey]: cryptoEntry }} />
+      </>,
+    );
+    expect(screen.getByText("Wetterdaten: Open-Meteo.com")).toBeTruthy();
+    expect(screen.getByText("Powered by CoinGecko")).toBeTruthy();
+    expect(container.querySelectorAll("a")).toHaveLength(0);
+  });
+});

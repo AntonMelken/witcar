@@ -197,6 +197,7 @@
     "weather": {
       "title": "Wetter",
       "noLocation": "Kein Ort gewählt",
+      "demoData": "Demo-Daten",
       "unavailable": "Wetter gerade nicht verfügbar",
       "loading": "Lädt …",
       "codes": {

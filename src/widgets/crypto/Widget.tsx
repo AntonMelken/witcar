@@ -5,6 +5,7 @@ import { BigNumber } from "@/components/dashboard/BigNumber";
 import { StaleBadge } from "@/components/dashboard/StaleBadge";
 import { Tile } from "@/components/dashboard/Tile";
 import { Change, QuoteRow } from "@/widgets/shared/Quote";
+import { SourceCredit } from "@/widgets/shared/SourceCredit";
 import { formatPrice } from "@/lib/client/format";
 import { dataKey, type WidgetProps } from "../types";
 import { cryptoMeta, type CryptoConfig, type CryptoQuote } from "./definition";
@@ -16,11 +17,13 @@ export default function CryptoWidget({ config, mode, data }: WidgetProps<CryptoC
   const coins = mode === "drive" ? config.coins.slice(0, 1) : config.coins;
   const entries = coins.map((id) => ({ id, entry: data[dataKey({ kind: "crypto", params: { id, vs: config.vs } })] }));
   const newest = entries.map((e) => e.entry?.result).filter(Boolean)[0];
-  const attribution =
-    newest?.source === "coingecko" ? "Powered by CoinGecko" : newest?.source === "mock" ? t("demoData") : "";
   const footer = (
     <span className="flex items-center gap-2 justify-between">
-      <span className="truncate">{attribution}</span>
+      {newest?.source === "coingecko" ? (
+        <SourceCredit label="Powered by CoinGecko" href="https://www.coingecko.com/" mode={mode} />
+      ) : (
+        <span className="truncate">{newest?.source === "mock" ? t("demoData") : ""}</span>
+      )}
       {newest ? (
         <StaleBadge
           fetchedAt={newest.fetchedAt}
@@ -35,7 +38,7 @@ export default function CryptoWidget({ config, mode, data }: WidgetProps<CryptoC
   if (coins.length === 1) {
     const q = entries[0]!.entry?.result?.data as CryptoQuote | undefined;
     return (
-      <Tile label={pretty(coins[0]!)} footer={mode === "drive" ? undefined : footer}>
+      <Tile label={pretty(coins[0]!)} footer={footer}>
         {q ? (
           <>
             <BigNumber mode={mode}>{formatPrice(q.price, q.currency)}</BigNumber>
