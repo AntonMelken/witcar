@@ -19,7 +19,7 @@
   },
   "landing": {
     "headline": "Dein Überblick im Auto-Browser.",
-    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, getestet mit Tesla-Fahrzeugen.",
+    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, mit Fokus auf Tesla-Fahrzeuge.",
     "ctaStart": "Kostenlos starten",
     "ctaCar": "Im Auto anmelden (QR)",
     "ctaDemo": "Demo ansehen",
@@ -34,8 +34,8 @@
     "f4Text": "Aktuelle Temperatur und Tageswerte für einen Ort deiner Wahl – ohne Standortabfrage.",
     "f5Title": "Aktien & Krypto",
     "f5Text": "Verzögerte Kurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
-    "f6Title": "Datensparsam & aus der EU",
-    "f6Text": "Hosting in Frankfurt, keine Tracker, keine Werbung. Export und Löschung jederzeit.",
+    "f6Title": "Datensparsam, gehostet in Frankfurt",
+    "f6Text": "Datenbank und App-Server in Frankfurt am Main (EU), keine Tracker, keine Werbung. Export und Löschung jederzeit.",
     "pricingTitle": "Kostenlos starten, Pro bei Bedarf",
     "pricingText": "Free mit 3 Widgets. Pro mit allen Widgets, mehreren Layouts und bis zu 5 Geräten.",
     "pricingCta": "Preise ansehen"
@@ -78,7 +78,7 @@
     },
     "tesla": {
       "q": "Ist WitCar ein Tesla-Produkt?",
-      "a": "Nein. WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc. Wir testen mit Tesla-Fahrzeugen, weil deren Browser verbreitet ist."
+      "a": "Nein. WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc. Wir entwickeln WitCar zuerst für den Browser in Tesla-Fahrzeugen, weil er verbreitet ist."
     },
     "driving": {
       "q": "Kann ich WitCar während der Fahrt nutzen?",
