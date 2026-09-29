@@ -80,6 +80,13 @@ test("car browser: login page leads with the QR pairing and offers the e-mail co
   await expect(page.getByTestId("user-code")).toHaveText(/^[A-Z2-9]{4}-[A-Z2-9]{4}$/);
   await expect(page.getByRole("heading", { name: "Oder mit E-Mail-Code anmelden" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Mit Handy koppeln" })).toHaveCount(0);
+
+  // one tap, no e-mail: starter dashboard in the car
+  await page.getByRole("button", { name: "Jetzt starten" }).click();
+  await expect(page).toHaveURL(/\/dashboard/);
+  await expect(page.locator("[data-widget]")).toHaveCount(3);
+  const device = (await car.cookies()).find((c) => c.name === "wc_device");
+  expect(device?.httpOnly).toBe(true);
   await car.close();
 });
 

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
+import { QuickStart } from "@/components/auth/QuickStart";
 import { PairScreen } from "@/components/pairing/PairScreen";
 import { IntlProvider } from "@/components/site/IntlProvider";
 import { Logo } from "@/components/site/Logo";
@@ -17,6 +18,11 @@ export default async function PairPage(props: PageProps<"/pair">) {
     <main className="min-h-dvh flex flex-col items-center justify-center gap-8 p-6">
       <Logo size={40} />
       {sp.revoked ? <p className="text-warning">{t("revoked")}</p> : null}
+      <div className="w-full max-w-3xl">
+        <IntlProvider namespaces={["auth"]}>
+          <QuickStart />
+        </IntlProvider>
+      </div>
       <IntlProvider namespaces={["pair"]}>
         <PairScreen />
       </IntlProvider>

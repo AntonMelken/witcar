@@ -31,6 +31,7 @@ export async function rateLimit(
 /** Rate-limit rules (masterplan §8.3, §11.3). */
 export const RULES = {
   deviceStart: { name: "device-start", limit: 10, windowSec: 3600 },
+  quickStart: { name: "quick-start", limit: 5, windowSec: 3600 },
   devicePoll: { name: "device-poll", limit: 1, windowSec: 2 },
   deviceApprove: { name: "device-approve", limit: 10, windowSec: 3600 },
   widgetsUser: { name: "widgets", limit: 60, windowSec: 60 },

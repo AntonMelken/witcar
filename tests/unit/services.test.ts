@@ -255,3 +255,20 @@ describe("PostgresKV (api_cache fallback)", () => {
     expect(await kv.get("a")).toBeNull();
   });
 });
+
+describe("car quick start (no e-mail)", () => {
+  it("creates a car-only account with a starter dashboard and a working device token", async () => {
+    const { startCarWithoutAccount } = await import("@/lib/services/carStart");
+    const res = await startCarWithoutAccount(db, "model-3-y", "Mein Dashboard");
+    expect(res.userId).not.toBe(user);
+    const device = await findActiveDeviceByTokenHash(db, sha256(res.deviceToken));
+    expect(device?.userId).toBe(res.userId);
+    const layout = await getDefaultLayout(db, res.userId, "standard");
+    expect(layout?.widgets.map((w) => w.type)).toEqual(["clock", "weather", "stocks"]);
+    const [u] = await db.query<{ email: string | null; is_anonymous: boolean }>(
+      "select email, is_anonymous from auth.users where id = $1",
+      [res.userId],
+    );
+    expect(u).toEqual({ email: null, is_anonymous: true });
+  });
+});

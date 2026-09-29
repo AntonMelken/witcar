@@ -4,6 +4,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { LoginForm } from "@/components/auth/LoginForm";
+import { QuickStart } from "@/components/auth/QuickStart";
 import { PairScreen } from "@/components/pairing/PairScreen";
 import { IntlProvider } from "@/components/site/IntlProvider";
 import { Logo } from "@/components/site/Logo";
@@ -20,7 +21,7 @@ export default async function LoginPage(props: PageProps<"/login">) {
   if (await getUserSession()) redirect(next);
   const t = await getTranslations("auth");
   const car = isCarBrowser((await headers()).get("user-agent"));
-  // In the car, scanning the QR code with the phone is the quickest way in (no typing).
+  // In the car: one-tap start first, then QR pairing with the phone, e-mail code last.
   const showPairing = car && !(await getDevicePrincipal());
 
   const emailCard = (
@@ -40,6 +41,12 @@ export default async function LoginPage(props: PageProps<"/login">) {
     return (
       <main className="min-h-dvh flex flex-col items-center justify-center gap-6 p-6">
         <Logo size={40} />
+        <div className="w-full max-w-3xl">
+          <IntlProvider namespaces={["auth"]}>
+            <QuickStart />
+          </IntlProvider>
+        </div>
+        <p className="text-dim text-lg">{t("orPhone")}</p>
         <IntlProvider namespaces={["pair"]}>
           <PairScreen />
         </IntlProvider>

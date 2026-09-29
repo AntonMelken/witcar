@@ -23,6 +23,14 @@ create table if not exists auth.users (
   email text unique,
   created_at timestamptz not null default now()
 );
+-- columns written for car-only (anonymous) accounts, see src/lib/repo/users.ts
+alter table auth.users add column if not exists instance_id uuid;
+alter table auth.users add column if not exists aud text;
+alter table auth.users add column if not exists role text;
+alter table auth.users add column if not exists is_anonymous boolean not null default false;
+alter table auth.users add column if not exists updated_at timestamptz;
+alter table auth.users add column if not exists raw_app_meta_data jsonb;
+alter table auth.users add column if not exists raw_user_meta_data jsonb;
 
 create or replace function auth.uid()
 returns uuid

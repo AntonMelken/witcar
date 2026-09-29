@@ -8,6 +8,7 @@
 
 ### Added
 
+- „Sofort starten“ im Auto (`/api/device/quick-start`): ein Tipp, kein E-Mail, kein Handy. Legt ein Auto-Konto ohne E-Mail an, mit Start-Dashboard (Uhr, Wetter, Aktien), und meldet das Auto per Gerätetoken an. Auf `/login` im Tesla-Browser und auf `/pair` ganz oben.
 - Login per 6-stelligem E-Mail-Code (`/api/auth/verify-code`): Code im Auto eintippen, Mail am Handy lesen.
 - Tesla-Browser: `/login` zeigt direkt den QR-Code zum Koppeln, E-Mail-Code als Alternative.
 - Eigene deutsche E-Mail-Vorlagen mit Code und Link (`supabase/templates/`).
