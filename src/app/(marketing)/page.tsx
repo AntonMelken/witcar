@@ -22,9 +22,9 @@ function PreviewMock() {
         <span className="text-3xl font-semibold tabular">18°</span>
       </div>
       <div className={tile}>
-        <span className="text-dim text-xs">AAPL</span>
-        <span className="text-2xl font-semibold tabular">231,40</span>
-        <span className="text-positive text-xs tabular">▲ +1,24 %</span>
+        <span className="text-dim text-xs">EUR/USD</span>
+        <span className="text-2xl font-semibold tabular">1,1712</span>
+        <span className="text-positive text-xs tabular">▲ +0,21 %</span>
       </div>
       <div className={`${tile} col-span-2`}>
         <span className="text-dim text-xs">Timer</span>

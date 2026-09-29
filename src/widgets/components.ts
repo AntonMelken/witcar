@@ -3,6 +3,7 @@ import type { WidgetComponent } from "./types";
 import ClockWidget from "./clock/Widget";
 import CryptoWidget from "./crypto/Widget";
 import DateWidget from "./date/Widget";
+import FxWidget from "./fx/Widget";
 import NotesWidget from "./notes/Widget";
 import StocksWidget from "./stocks/Widget";
 import TimerWidget from "./timer/Widget";
@@ -15,6 +16,7 @@ export const widgetComponents: Record<ActiveWidgetType, WidgetComponent<never>> 
   weather: WeatherWidget,
   stocks: StocksWidget,
   crypto: CryptoWidget,
+  fx: FxWidget,
   timer: TimerWidget,
   notes: NotesWidget,
 };

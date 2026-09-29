@@ -21,6 +21,8 @@ export const weatherMeta: WidgetBaseMeta<WeatherConfig> = {
   defaultConfig: { location: { name: "Berlin", lat: 52.52, lon: 13.41 } },
   driveSafe: true,
   refreshMs: 10 * 60_000,
+  // MET Norway is cached 30 min server-side (Expires), + one poll interval
+  staleAfterMs: 40 * 60_000,
   proOnly: false,
   fields: [{ key: "location", kind: "location", label: "weather.fields.location" }],
   dataRequests: (config) =>

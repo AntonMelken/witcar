@@ -40,7 +40,13 @@ describe("env validation", () => {
     });
     expect(ok.WITCAR_DB).toBe("postgres");
     expect(ok.WITCAR_AUTH).toBe("supabase");
-    expect(ok.WEATHER_PROVIDER).toBe("open-meteo");
+    // a real deployment defaults to the free commercial sources, stocks stay off without a licensed key
+    expect(ok.WEATHER_PROVIDER).toBe("met-norway");
+    expect(ok.FX_PROVIDER).toBe("ecb");
+    expect(ok.STOCKS_PROVIDER).toBe("off");
+    expect(ok.CRYPTO_PROVIDER).toBe("mock");
+    expect(parseEnv({ CMC_API_KEY: "k" }).CRYPTO_PROVIDER).toBe("coinmarketcap");
+    expect(parseEnv({ STOCKS_API_KEY: "k" }).STOCKS_PROVIDER).toBe("finnhub");
   });
 
   it("refuses Stripe live keys until the owner says GO LIVE", () => {
@@ -51,8 +57,8 @@ describe("env validation", () => {
     expect(parseEnv({ STRIPE_SECRET_KEY: "sk_test_123" }).STRIPE_SECRET_KEY).toBe("sk_test_123");
   });
 
-  it("validates secrets and paired KV settings", () => {
+  it("validates secrets and provider keys", () => {
     expect(() => parseEnv({ WITCAR_SESSION_SECRET: "short" })).toThrow(/32/);
-    expect(() => parseEnv({ KV_REST_API_URL: "https://kv" })).toThrow(/together/);
+    expect(() => parseEnv({ CRYPTO_PROVIDER: "coinmarketcap" })).toThrow(/CMC_API_KEY/);
   });
 });

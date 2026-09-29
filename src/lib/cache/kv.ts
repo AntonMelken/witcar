@@ -49,38 +49,18 @@ export class MemoryKV implements KV {
   }
 }
 
-/** Upstash Redis (REST). Used when KV_REST_API_URL/TOKEN are set. */
-export class UpstashKV implements KV {
-  private redisPromise: Promise<import("@upstash/redis").Redis>;
-  constructor(url: string, token: string) {
-    this.redisPromise = import("@upstash/redis").then(
-      ({ Redis }) => new Redis({ url, token, automaticDeserialization: false }),
-    );
-  }
-  async get(key: string) {
-    const redis = await this.redisPromise;
-    const v = await redis.get<string>(key);
-    return v == null ? null : String(v);
-  }
-  async set(key: string, value: string, ttlSec: number) {
-    const redis = await this.redisPromise;
-    await redis.set(key, value, { ex: Math.max(1, Math.ceil(ttlSec)) });
-  }
-  async incr(key: string, ttlSec: number, by = 1) {
-    const redis = await this.redisPromise;
-    const n = await redis.incrby(key, by);
-    if (n === by) await redis.expire(key, Math.max(1, Math.ceil(ttlSec)));
-    return n;
-  }
-  async del(key: string) {
-    const redis = await this.redisPromise;
-    await redis.del(key);
-  }
-}
-
-/** Postgres fallback using public.api_cache. */
+/** Production KV on the Postgres table public.api_cache (D-010). */
 export class PostgresKV implements KV {
-  constructor(private getDb: () => Promise<Db>) {}
+  constructor(
+    private getDb: () => Promise<Db>,
+    private sweepChance = 0.01,
+  ) {}
+
+  /** get() ignores expired rows; every ~100th write deletes them so the table stays small. */
+  private async maybeSweep(db: Db) {
+    if (Math.random() >= this.sweepChance) return;
+    await db.query("delete from public.api_cache where expires_at < now()").catch(() => undefined);
+  }
 
   async get(key: string) {
     const db = await this.getDb();
@@ -99,6 +79,7 @@ export class PostgresKV implements KV {
        on conflict (key) do update set value = excluded.value, expires_at = excluded.expires_at`,
       [key, value, ttlSec],
     );
+    await this.maybeSweep(db);
   }
 
   async incr(key: string, ttlSec: number, by = 1) {
@@ -114,6 +95,7 @@ export class PostgresKV implements KV {
        returning (value->>'v')::int as n`,
       [key, ttlSec, by],
     );
+    await this.maybeSweep(db);
     return rows[0]?.n ?? by;
   }
 

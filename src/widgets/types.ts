@@ -1,19 +1,30 @@
 import type { ComponentType } from "react";
 import type { z } from "zod";
 
-export const WIDGET_TYPES = ["clock", "date", "weather", "stocks", "crypto", "timer", "notes", "calendar"] as const;
+export const WIDGET_TYPES = [
+  "clock",
+  "date",
+  "weather",
+  "stocks",
+  "crypto",
+  "fx",
+  "timer",
+  "notes",
+  "calendar",
+] as const;
 
 export type WidgetType = (typeof WIDGET_TYPES)[number];
 
 export type DashboardMode = "standard" | "drive";
 
 /** Kinds of server-side data a widget can request through /api/widgets/batch. */
-export type DataKind = "weather" | "stock" | "crypto";
+export type DataKind = "weather" | "stock" | "crypto" | "fx";
 
 export type DataRequest =
   | { kind: "weather"; params: { lat: number; lon: number } }
   | { kind: "stock"; params: { symbol: string } }
-  | { kind: "crypto"; params: { id: string; vs: "eur" | "usd" } };
+  | { kind: "crypto"; params: { id: string; vs: "eur" | "usd" } }
+  | { kind: "fx"; params: Record<string, never> };
 
 /** Uniform provider result format (masterplan §11.1). */
 export interface ProviderResult<T = unknown> {
@@ -58,6 +69,8 @@ export interface WidgetBaseMeta<C = Record<string, unknown>> {
   driveSafe: boolean;
   /** null = purely local, no network */
   refreshMs: number | null;
+  /** data age that is still normal (server cache TTL + poll interval); stale marker basis, default refreshMs */
+  staleAfterMs?: number;
   proOnly: boolean;
   fields: FieldSpec[];
   /** server data this widget needs for a given config */
@@ -94,5 +107,7 @@ export function dataKey(req: DataRequest): string {
       return `stock:${req.params.symbol}`;
     case "crypto":
       return `crypto:${req.params.id}:${req.params.vs}`;
+    case "fx":
+      return "fx:ecb";
   }
 }

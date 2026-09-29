@@ -50,6 +50,8 @@ export interface EditorProps {
   initial: { name: string; preset: string; widgets: LayoutWidget[] };
   editable: boolean;
   layouts: EditorLayoutSummary[];
+  /** widget types without a configured data source (not offered) */
+  unavailableTypes?: readonly string[];
 }
 
 interface Doc {
@@ -484,7 +486,7 @@ export function Editor(props: EditorProps) {
               </span>
             </h2>
             <div className="grid grid-cols-2 gap-2">
-              {ACTIVE_WIDGET_TYPES.map((type) => {
+              {ACTIVE_WIDGET_TYPES.filter((type) => !props.unavailableTypes?.includes(type)).map((type) => {
                 const meta = getWidgetMeta(type)!;
                 const proBlocked = meta.proOnly && !limits.proWidgets;
                 const disabled =

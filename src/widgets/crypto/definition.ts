@@ -20,7 +20,9 @@ export const cryptoMeta: WidgetBaseMeta<CryptoConfig> = {
   defaultSize: { w: 4, h: 4 },
   defaultConfig: { coins: ["bitcoin"], vs: "eur" },
   driveSafe: true,
-  refreshMs: 90_000,
+  refreshMs: 5 * 60_000,
+  // CoinMarketCap is cached 10 min server-side (credit budget, D-009), + one poll interval
+  staleAfterMs: 16 * 60_000,
   proOnly: false,
   fields: [
     {

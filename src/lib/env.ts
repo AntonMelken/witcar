@@ -52,21 +52,27 @@ const schema = z
     /** Must be exactly "GO_LIVE" before a sk_live_ key is accepted (owner rule). */
     WITCAR_STRIPE_LIVE: optionalString,
 
-    KV_REST_API_URL: optionalString,
-    KV_REST_API_TOKEN: optionalString,
-
-    WEATHER_PROVIDER: z.enum(["open-meteo", "mock"]).optional(),
+    // Data providers (D-007..D-009, D-031). Free + commercial by default:
+    // MET Norway (weather), Nominatim/OSM (city search), CoinMarketCap Basic, ECB.
+    WEATHER_PROVIDER: z.enum(["met-norway", "open-meteo", "mock"]).optional(),
     WEATHER_API_KEY: optionalString,
-    STOCKS_PROVIDER: z.enum(["finnhub", "mock"]).optional(),
+    /** contact (e-mail or URL) appended to the User-Agent for MET Norway / Nominatim */
+    PROVIDER_CONTACT: optionalString,
+    /** "off" = no licensed quote source: stocks widget is hidden (D-008) */
+    STOCKS_PROVIDER: z.enum(["finnhub", "mock", "off"]).optional(),
     STOCKS_API_KEY: optionalString,
-    CRYPTO_PROVIDER: z.enum(["coingecko", "mock"]).optional(),
+    CRYPTO_PROVIDER: z.enum(["coinmarketcap", "coingecko", "mock"]).optional(),
+    CMC_API_KEY: optionalString,
     CRYPTO_API_KEY: optionalString,
     CRYPTO_API_PLAN: z.enum(["demo", "pro"]).default("demo"),
+    FX_PROVIDER: z.enum(["ecb", "mock"]).optional(),
 
     PROVIDER_DAILY_LIMIT_STOCKS: optionalInt(800),
     PROVIDER_DAILY_LIMIT_WEATHER: optionalInt(5000),
-    PROVIDER_DAILY_LIMIT_CRYPTO: optionalInt(300),
+    // CoinMarketCap Basic: 15,000 credits/month; 450/day stays below it
+    PROVIDER_DAILY_LIMIT_CRYPTO: optionalInt(450),
     PROVIDER_DAILY_LIMIT_GEO: optionalInt(2000),
+    PROVIDER_DAILY_LIMIT_FX: optionalInt(100),
 
     GOOGLE_CLIENT_ID: optionalString,
     GOOGLE_CLIENT_SECRET: optionalString,
@@ -85,9 +91,12 @@ const schema = z
       ...env,
       WITCAR_DB: db,
       WITCAR_AUTH: auth,
-      WEATHER_PROVIDER: env.WEATHER_PROVIDER ?? (db === "pglite" ? "mock" : "open-meteo"),
-      STOCKS_PROVIDER: env.STOCKS_PROVIDER ?? (env.STOCKS_API_KEY ? "finnhub" : "mock"),
-      CRYPTO_PROVIDER: env.CRYPTO_PROVIDER ?? (env.CRYPTO_API_KEY ? "coingecko" : "mock"),
+      // local/CI (PGlite) uses mocks; a real deployment uses the free commercial sources
+      WEATHER_PROVIDER: env.WEATHER_PROVIDER ?? (db === "pglite" ? "mock" : "met-norway"),
+      FX_PROVIDER: env.FX_PROVIDER ?? (db === "pglite" ? "mock" : "ecb"),
+      STOCKS_PROVIDER: env.STOCKS_PROVIDER ?? (env.STOCKS_API_KEY ? "finnhub" : db === "pglite" ? "mock" : "off"),
+      CRYPTO_PROVIDER:
+        env.CRYPTO_PROVIDER ?? (env.CMC_API_KEY ? "coinmarketcap" : env.CRYPTO_API_KEY ? "coingecko" : "mock"),
     } as const;
   })
   .superRefine((env, ctx) => {
@@ -121,8 +130,8 @@ const schema = z
     if (env.STRIPE_SECRET_KEY?.startsWith("sk_live_") && env.WITCAR_STRIPE_LIVE !== "GO_LIVE") {
       issue("Stripe live key refused: owner has not confirmed GO LIVE (WITCAR_STRIPE_LIVE=GO_LIVE)");
     }
-    if ((env.KV_REST_API_URL && !env.KV_REST_API_TOKEN) || (!env.KV_REST_API_URL && env.KV_REST_API_TOKEN)) {
-      issue("KV_REST_API_URL and KV_REST_API_TOKEN must be set together");
+    if (env.CRYPTO_PROVIDER === "coinmarketcap" && !env.CMC_API_KEY) {
+      issue("CRYPTO_PROVIDER=coinmarketcap needs CMC_API_KEY (free Basic key from coinmarketcap.com/api)");
     }
   });
 

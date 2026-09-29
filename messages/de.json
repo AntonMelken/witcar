@@ -32,8 +32,8 @@
     "f3Text": "Letzte Daten bleiben sichtbar und werden dezent als „veraltet“ markiert. Die Verbindung kommt von allein zurück.",
     "f4Title": "Wetter für deine Stadt",
     "f4Text": "Aktuelle Temperatur und Tageswerte für einen Ort deiner Wahl – ohne Standortabfrage.",
-    "f5Title": "Aktien & Krypto",
-    "f5Text": "Verzögerte Kurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
+    "f5Title": "Krypto & Wechselkurse",
+    "f5Text": "Krypto-Kurse und EZB-Referenzkurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
     "f6Title": "Datensparsam, gehostet in Frankfurt",
     "f6Text": "Datenbank und App-Server in Frankfurt am Main (EU), keine Tracker, keine Werbung. Export und Löschung jederzeit.",
     "pricingTitle": "Kostenlos starten, Pro bei Bedarf",
@@ -46,7 +46,7 @@
     "cancelled": "Der Kauf wurde abgebrochen. Es wurde nichts berechnet.",
     "rowWidgets": "Widgets pro Layout",
     "rowLayouts": "Layouts",
-    "rowTickers": "Ticker/Coins pro Widget",
+    "rowTickers": "Kurse pro Widget (Coins, Währungen)",
     "rowDevices": "Gekoppelte Geräte",
     "rowNotes": "Notizen",
     "all": "alle",
@@ -220,6 +220,7 @@
       "demoData": "Demo-Daten",
       "disclaimer": "Kurse verzögert, keine Anlageberatung",
       "unavailable": "Kurs nicht verfügbar",
+      "disabled": "Aktienkurse sind derzeit nicht verfügbar. Ersetze die Kachel im Editor, z. B. durch Wechselkurse.",
       "loading": "Lädt …",
       "fields": {
         "symbols": "Ticker-Symbole",
@@ -232,8 +233,19 @@
       "unavailable": "Kurs nicht verfügbar",
       "loading": "Lädt …",
       "fields": {
-        "coins": "Coins (CoinGecko-ID, z. B. bitcoin)",
+        "coins": "Coins (Kurzname, z. B. bitcoin, ethereum)",
         "vs": "Währung"
+      }
+    },
+    "fx": {
+      "title": "Wechselkurse",
+      "demoData": "Demo-Daten",
+      "credit": "EZB-Referenzkurse {date}",
+      "unavailable": "Kurse gerade nicht verfügbar",
+      "loading": "Lädt …",
+      "fields": {
+        "currencies": "Währungen (ISO-Code, z. B. USD)",
+        "showChange": "Veränderung zum Vortag anzeigen"
       }
     },
     "timer": {
@@ -274,6 +286,7 @@
       "weather": "Wetter",
       "stocks": "Aktien",
       "crypto": "Krypto",
+      "fx": "Wechselkurse",
       "timer": "Timer",
       "notes": "Notiz",
       "calendar": "Kalender"

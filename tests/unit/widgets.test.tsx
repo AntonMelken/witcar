@@ -199,3 +199,62 @@ describe("data-source credits (provider terms)", () => {
     expect(container.querySelectorAll("a")).toHaveLength(0);
   });
 });
+
+describe("fx widget (ECB reference rates)", () => {
+  const fxKey = dataKey({ kind: "fx", params: {} });
+  const fxEntry = (source: string): DataEntry => ({
+    result: {
+      data: { date: "2026-09-28", rates: { USD: 1.1712, JPY: 172.5 }, prevDate: "2026-09-25", prev: { USD: 1.17 } },
+      fetchedAt: new Date().toISOString(),
+      source,
+      stale: false,
+    },
+    error: null,
+  });
+  const fx = (currencies: string[]): RenderWidget => ({
+    ...stock,
+    widgetId: "fx",
+    type: "fx",
+    config: { currencies, showChange: true },
+  });
+
+  it("lists EUR pairs with change vs. previous day and links the ECB", () => {
+    wrap(<WidgetCell widget={fx(["USD", "JPY", "XXX"])} mode="standard" entries={{ [fxKey]: fxEntry("ecb") }} />);
+    expect(screen.getByText("EUR/USD")).toBeTruthy();
+    expect(screen.getByText("1,1712")).toBeTruthy();
+    expect(screen.getByText("172,50")).toBeTruthy();
+    expect(screen.getByText(/\+0,10 %/)).toBeTruthy();
+    expect(screen.getByText("—")).toBeTruthy();
+    const link = screen.getByRole("link", { name: "EZB-Referenzkurse 28.09." });
+    expect(link.getAttribute("href")).toContain("ecb.europa.eu");
+  });
+
+  it("drive mode: one pair, big value, credit as plain text", () => {
+    const { container } = wrap(
+      <WidgetCell widget={fx(["USD", "JPY"])} mode="drive" entries={{ [fxKey]: fxEntry("ecb") }} />,
+    );
+    expect(container.textContent).not.toContain("JPY");
+    expect(container.querySelector("[data-bignumber]")?.textContent).toBe("1,1712");
+    expect(screen.getByText("EZB-Referenzkurse 28.09.")).toBeTruthy();
+    expect(container.querySelectorAll("a")).toHaveLength(0);
+  });
+
+  it("mock data is labeled", () => {
+    wrap(<WidgetCell widget={fx(["USD"])} mode="standard" entries={{ [fxKey]: fxEntry("mock") }} />);
+    expect(screen.getByText("Demo-Daten")).toBeTruthy();
+  });
+});
+
+describe("stocks without a licensed provider", () => {
+  it("shows a hint instead of (old) quotes", () => {
+    wrap(
+      <WidgetCell
+        widget={stock}
+        mode="standard"
+        entries={{ [key]: { result: quote(new Date().toISOString()).result, error: "disabled" } }}
+      />,
+    );
+    expect(screen.getByText(/Aktienkurse sind derzeit nicht verfügbar/)).toBeTruthy();
+    expect(screen.queryByText(/231,40/)).toBeNull();
+  });
+});

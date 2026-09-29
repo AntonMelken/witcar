@@ -96,6 +96,21 @@ export function LocationPicker({
           </ul>
         )
       ) : null}
+      {results && source === "nominatim" ? (
+        // Nominatim results are OpenStreetMap data (ODbL): credit next to the results.
+        <p className="text-dim text-xs">
+          Ortssuche: Daten ©{" "}
+          <a
+            href="https://www.openstreetmap.org/copyright"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            OpenStreetMap-Mitwirkende
+          </a>{" "}
+          (ODbL)
+        </p>
+      ) : null}
       {results && source === "open-meteo-geo" ? (
         // Open-Meteo geocoding data comes from GeoNames (CC BY 4.0): credit + licence link next to the results.
         <p className="text-dim text-xs">

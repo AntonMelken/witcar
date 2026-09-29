@@ -37,14 +37,20 @@ export default function WeatherWidget({ config, mode, data }: WidgetProps<Weathe
   const cond = w ? weatherCondition(w.code, w.isDay) : null;
   const footer = entry?.result ? (
     <span className="flex items-center gap-2 justify-between">
-      {entry.result.source === "open-meteo" ? (
+      {entry.result.source === "met-norway" ? (
+        <SourceCredit
+          label="Wetterdaten: MET Norway"
+          href="https://www.met.no/en/free-meteorological-data/Licensing-and-crediting"
+          mode={mode}
+        />
+      ) : entry.result.source === "open-meteo" ? (
         <SourceCredit label="Wetterdaten: Open-Meteo.com" href="https://open-meteo.com/" mode={mode} />
       ) : (
         <span className="truncate">{entry.result.source === "mock" ? t("demoData") : ""}</span>
       )}
       <StaleBadge
         fetchedAt={entry.result.fetchedAt}
-        refreshMs={weatherMeta.refreshMs!}
+        refreshMs={weatherMeta.staleAfterMs!}
         serverStale={entry.result.stale}
         error={entry.error}
       />
