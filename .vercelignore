@@ -1,0 +1,11 @@
+# Never upload local secrets or local data with `vercel deploy`
+.env*
+!.env.example
+.pglite
+.pglite-tesla
+.next
+node_modules
+test-results
+playwright-report
+blob-report
+coverage

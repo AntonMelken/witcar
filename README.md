@@ -51,6 +51,20 @@ Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch Supabase (Magic-Link-Login
 Hinweis: Der eingebaute Supabase-Mailversand schickt nur an Mitglieder des Supabase-Teams (also deine eigene
 Adresse) und ist nicht für den Produktivbetrieb gedacht → vor dem Launch eigenes SMTP einrichten.
 
+## Website: https://witcar.vercel.app
+
+Gehostet bei Vercel (Projekt `witcar`, Hobby-Plan, Funktionen in Frankfurt `fra1`). Öffentliche Werte und die
+Datenanbieter sind dort bereits als Umgebungsvariablen gesetzt. Nach dem Eintragen der zwei Supabase-Geheimnisse
+in `.env.local` (Abschnitt Supabase):
+
+```bash
+pnpm deploy:vercel   # überträgt DATABASE_URL + Secret Key nach Vercel und veröffentlicht die Seite
+```
+
+In Supabase unter Authentication → URL Configuration zusätzlich eintragen: Site URL `https://witcar.vercel.app`,
+Redirect URL `https://witcar.vercel.app/**`.
+Hinweis: Der Hobby-Plan ist laut Vercel nur für private, nicht-kommerzielle Nutzung → vor dem Verkaufsstart Pro-Plan.
+
 ## Produktion (Owner)
 
 1. ~~Supabase-Projekt anlegen, Migrationen anwenden~~ (erledigt, siehe oben; **nie** `supabase/local/*` anwenden – das ist nur der lokale Stub).

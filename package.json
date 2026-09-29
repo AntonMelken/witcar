@@ -15,7 +15,8 @@
     "e2e": "playwright test",
     "e2e:install": "playwright install chromium",
     "prepare": "husky",
-    "tesla": "bash scripts/tesla-tunnel.sh"
+    "tesla": "bash scripts/tesla-tunnel.sh",
+    "deploy:vercel": "bash scripts/vercel-deploy.sh"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",
