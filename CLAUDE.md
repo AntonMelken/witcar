@@ -9,6 +9,7 @@ Master plan: docs/WITCAR_MASTERPLAN.md (source of truth). Decisions: DECISIONS.m
 
 - pnpm dev | build | typecheck | lint | test | e2e
 - Before marking any task done: pnpm typecheck && pnpm lint && pnpm test
+- After adding/updating dependencies or bundled assets: pnpm licenses:gen (CI runs licenses:check; notices on /lizenzen).
 - Local dev needs no external services: `.env.local` uses PGlite + dev auth + mock providers.
 - E2E: `pnpm e2e` builds and starts the app on :3100 with the local backend (see playwright.config.ts).
 

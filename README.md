@@ -30,6 +30,7 @@ Im Tesla-Browser die angezeigte Adresse mit `/test` öffnen. Details: [docs/inca
 pnpm typecheck && pnpm lint && pnpm test   # vor jedem "fertig"
 pnpm e2e:install                           # einmalig: Chromium für Playwright
 pnpm e2e                                   # Build + Start auf :3100 + E2E
+pnpm licenses:gen                          # nach jeder Änderung an Abhängigkeiten (CI prüft mit licenses:check)
 ```
 
 ## Supabase (Projekt „WitCar“, Frankfurt)

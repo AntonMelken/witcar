@@ -1,5 +1,17 @@
 # Changelog
 
+## [Unreleased]
+
+### Lizenzen & Marken
+
+- Quellenhinweise laut Anbieterbedingungen: „Wetterdaten: Open-Meteo.com“ (CC BY 4.0) im Wetter-Widget, Open-Meteo/GeoNames
+  mit Lizenzlink in der Ortssuche, „Powered by CoinGecko“ als Link und jetzt auch im Fahrmodus (dort als reiner Text).
+- Wetter-Widget kennzeichnet Mock-Daten als „Demo-Daten“ (wie Aktien/Krypto).
+- Neue Seite `/lizenzen` (Datenquellen + Open-Source-Pakete) und `public/third-party-licenses.txt` mit allen Lizenztexten,
+  erzeugt von `pnpm licenses:gen`; CI prüft Aktualität (`pnpm licenses:check`). Footer-Link „Lizenzen & Datenquellen“.
+- Landing/FAQ: „getestet mit Tesla-Fahrzeugen“ ersetzt (G0/G1 noch offen), „aus der EU“ präzisiert auf Hosting in Frankfurt.
+- Disclaimer nennt Fremdmarken allgemein; Lucide-Herkunft einzelner Dashboard-Icons dokumentiert.
+
 ## [0.1.0] – 2026-09-28 – MVP (Phasen 0–4, Test-Modus)
 
 ### Phase 0 – Fundament und Validierung
