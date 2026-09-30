@@ -112,7 +112,7 @@ async function writeWidgets(db: Db, layoutId: string, widgets: readonly LayoutWi
   await db.query("delete from public.widget_configs where layout_id = $1", [layoutId]);
   for (const w of widgets) {
     await db.query(
-      "insert into public.widget_configs (layout_id, widget_id, type, config) values ($1, $2, $3, $4::jsonb)",
+      "insert into public.widget_configs (layout_id, widget_id, type, config) values ($1, $2, $3, $4::text::jsonb)",
       [layoutId, w.widgetId, w.type, json(w.config ?? {})],
     );
   }
@@ -141,7 +141,7 @@ export async function createLayout(db: Db, userId: string, input: CreateLayoutIn
     }
     const rows = await tx.query<Row>(
       `insert into public.layouts (user_id, name, preset, mode, grid, is_default)
-       values ($1, $2, $3, $4, $5::jsonb, $6) returning *`,
+       values ($1, $2, $3, $4, $5::text::jsonb, $6) returning *`,
       [userId, input.name, input.preset, input.mode, json(gridOf(input.widgets)), makeDefault],
     );
     const row = rows[0]!;
@@ -158,7 +158,7 @@ export async function saveLayout(
 ): Promise<Layout | null> {
   return db.tx(async (tx) => {
     const rows = await tx.query<Row>(
-      `update public.layouts set name = $3, preset = $4, grid = $5::jsonb
+      `update public.layouts set name = $3, preset = $4, grid = $5::text::jsonb
        where id = $1 and user_id = $2 returning *`,
       [id, userId, input.name, input.preset, json(gridOf(input.widgets))],
     );

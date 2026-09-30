@@ -5,7 +5,10 @@ export interface Db {
   tx<T>(fn: (db: Db) => Promise<T>): Promise<T>;
 }
 
-/** Serialize a value for a `$n::jsonb` parameter. */
+/**
+ * Serialize a value for a `$n::text::jsonb` parameter. The text cast matters: postgres.js would JSON-encode a
+ * string a second time for a plain `$n::jsonb`, which stores a JSON string instead of the array/object.
+ */
 export function json(value: unknown): string {
   return JSON.stringify(value);
 }
