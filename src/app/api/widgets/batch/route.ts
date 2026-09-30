@@ -7,7 +7,7 @@ import { ProviderUnavailableError } from "@/lib/cache/gateway";
 import { clientIp, handler, HttpError, ok } from "@/lib/http/route";
 import { fetchData } from "@/lib/providers";
 import { COIN_ID_PATTERN } from "@/widgets/crypto/definition";
-import { STOCK_SYMBOL_PATTERN } from "@/widgets/stocks/definition";
+import { STOCK_RANGES, STOCK_SYMBOL_PATTERN } from "@/widgets/stocks/definition";
 import { dataKey, type DataRequest, type ProviderResult } from "@/widgets/types";
 
 const requestSchema = z.discriminatedUnion("kind", [
@@ -20,13 +20,21 @@ const requestSchema = z.discriminatedUnion("kind", [
     params: z.object({ symbol: z.string().regex(new RegExp(STOCK_SYMBOL_PATTERN)) }),
   }),
   z.object({
+    kind: z.literal("history"),
+    params: z.object({ symbol: z.string().regex(new RegExp(STOCK_SYMBOL_PATTERN)), range: z.enum(STOCK_RANGES) }),
+  }),
+  z.object({
     kind: z.literal("crypto"),
     params: z.object({ id: z.string().regex(new RegExp(COIN_ID_PATTERN)), vs: z.enum(["eur", "usd"]) }),
   }),
   z.object({ kind: z.literal("fx"), params: z.object({}).strict() }),
 ]);
 
-const bodySchema = z.object({ requests: z.array(requestSchema).min(1).max(40) });
+const bodySchema = z.object({
+  requests: z.array(requestSchema).min(1).max(40),
+  /** manual refresh button: refetch now (the server keeps a minimum age per provider) */
+  force: z.boolean().optional(),
+});
 
 type ResultOrError = ProviderResult | { error: { code: string } };
 
@@ -48,7 +56,7 @@ export const POST = handler({ auth: "optional", body: bodySchema }, async ({ req
   const entries = await Promise.all(
     [...unique.entries()].map(async ([key, r]): Promise<[string, ResultOrError]> => {
       try {
-        return [key, await fetchData(r, (task) => after(task))];
+        return [key, await fetchData(r, (task) => after(task), body.force === true)];
       } catch (err) {
         const code = err instanceof ProviderUnavailableError ? err.reason : "error";
         return [key, { error: { code } }];

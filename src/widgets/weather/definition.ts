@@ -3,6 +3,17 @@ import type { WeatherConfig } from "./schema";
 
 export type { WeatherConfig, WeatherLocation } from "./schema";
 
+/** One day of the forecast; `date` is the local calendar day at the place (YYYY-MM-DD). */
+export interface ForecastDay {
+  date: string;
+  /** WMO weather code */
+  code: number;
+  highC: number | null;
+  lowC: number | null;
+  precipMm: number | null;
+  windKmh: number | null;
+}
+
 export interface WeatherData {
   tempC: number;
   code: number;
@@ -11,6 +22,8 @@ export interface WeatherData {
   lowC: number | null;
   windKmh: number | null;
   precipProb: number | null;
+  /** next 7 days starting today; missing in data cached before the forecast existed */
+  days?: ForecastDay[];
 }
 
 export const weatherMeta: WidgetBaseMeta<WeatherConfig> = {

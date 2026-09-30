@@ -12,6 +12,38 @@ export interface StockQuote {
   changePct: number | null;
   currency: string | null;
   asOf: string | null;
+  /** optional details some providers deliver (shown in the stocks app) */
+  name?: string | null;
+  open?: number | null;
+  high?: number | null;
+  low?: number | null;
+  prevClose?: number | null;
+  week52High?: number | null;
+  week52Low?: number | null;
+}
+
+/** Chart ranges of the stocks app: 1 day, 1 week, 1 month, 1 year. */
+export const STOCK_RANGES = ["1T", "1W", "1M", "1J"] as const;
+export type StockRange = (typeof STOCK_RANGES)[number];
+
+export interface StockPoint {
+  /** epoch seconds (UTC) */
+  t: number;
+  /** close */
+  c: number;
+}
+
+export interface StockHistory {
+  symbol: string;
+  range: StockRange;
+  currency: string | null;
+  points: StockPoint[];
+}
+
+export interface StockMatch {
+  symbol: string;
+  name: string;
+  exchange: string;
 }
 
 export const stocksMeta: WidgetBaseMeta<StocksConfig> = {

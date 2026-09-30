@@ -18,11 +18,12 @@ export type WidgetType = (typeof WIDGET_TYPES)[number];
 export type DashboardMode = "standard" | "drive";
 
 /** Kinds of server-side data a widget can request through /api/widgets/batch. */
-export type DataKind = "weather" | "stock" | "crypto" | "fx";
+export type DataKind = "weather" | "stock" | "history" | "crypto" | "fx";
 
 export type DataRequest =
   | { kind: "weather"; params: { lat: number; lon: number } }
   | { kind: "stock"; params: { symbol: string } }
+  | { kind: "history"; params: { symbol: string; range: "1T" | "1W" | "1M" | "1J" } }
   | { kind: "crypto"; params: { id: string; vs: "eur" | "usd" } }
   | { kind: "fx"; params: Record<string, never> };
 
@@ -107,6 +108,8 @@ export function dataKey(req: DataRequest): string {
       return `stock:${req.params.symbol}`;
     case "crypto":
       return `crypto:${req.params.id}:${req.params.vs}`;
+    case "history":
+      return `history:${req.params.symbol}:${req.params.range}`;
     case "fx":
       return "fx:ecb";
   }

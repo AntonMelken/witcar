@@ -103,3 +103,46 @@ describe("DataGateway", () => {
     });
   });
 });
+
+describe("DataGateway manual refresh", () => {
+  it("refetches cached data that is older than forceMinAgeMs, serves younger data as is", async () => {
+    const { gw, advance } = setup();
+    let n = 0;
+    const fetcher = vi.fn(async () => ({ n: ++n }));
+    await gw.get(req(fetcher));
+    advance(30_000);
+    const tooYoung = await gw.get({ ...req(fetcher), forceMinAgeMs: 60_000 });
+    expect(fetcher).toHaveBeenCalledTimes(1);
+    expect(tooYoung.data).toEqual({ n: 1 });
+    advance(31_000); // 61 s old, still inside the 60 s TTL window? TTL is 60 s -> expired, forced anyway
+    const forced = await gw.get({ ...req(fetcher), forceMinAgeMs: 60_000 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+    expect(forced).toMatchObject({ data: { n: 2 }, stale: false });
+  });
+
+  it("forced refresh inside the TTL still refetches once the minimum age is reached", async () => {
+    const { gw, advance } = setup();
+    let n = 0;
+    const fetcher = vi.fn(async () => ({ n: ++n }));
+    await gw.get({ ...req(fetcher), ttlMs: 600_000 });
+    advance(20_000);
+    const forced = await gw.get({ ...req(fetcher), ttlMs: 600_000, forceMinAgeMs: 10_000 });
+    expect(forced.data).toEqual({ n: 2 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+
+  it("falls back to the cached copy when the forced refetch fails (and does not retry twice)", async () => {
+    const { gw, advance } = setup();
+    let fail = false;
+    const fetcher = vi.fn(async () => {
+      if (fail) throw new Error("upstream down");
+      return { ok: 1 };
+    });
+    await gw.get({ ...req(fetcher), ttlMs: 600_000 });
+    advance(120_000);
+    fail = true;
+    const res = await gw.get({ ...req(fetcher), ttlMs: 600_000, forceMinAgeMs: 60_000 });
+    expect(res.data).toEqual({ ok: 1 });
+    expect(fetcher).toHaveBeenCalledTimes(2);
+  });
+});
