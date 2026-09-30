@@ -2,11 +2,15 @@
 
 import { useMemo } from "react";
 import type { RenderWidget } from "@/lib/layout/schema";
-import { useDashboardData } from "@/lib/client/useDashboardData";
+import { useDashboardData, type DashboardData } from "@/lib/client/useDashboardData";
 import { getWidgetBaseMeta, widgetDataRequests } from "@/widgets/meta";
 import type { DashboardMode, DataRequest } from "@/widgets/types";
 
-export function useWidgetData(widgets: RenderWidget[], mode: DashboardMode, onUnauthorized?: () => void) {
+export function useWidgetData(
+  widgets: RenderWidget[],
+  mode: DashboardMode,
+  onUnauthorized?: () => void,
+): DashboardData {
   const { requests, refreshMs } = useMemo(() => {
     const reqs: DataRequest[] = [];
     let min = Infinity;

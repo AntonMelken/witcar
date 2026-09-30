@@ -5,6 +5,9 @@ export type { StocksConfig } from "./schema";
 
 export const STOCK_SYMBOL_PATTERN = "^[A-Z0-9][A-Z0-9.\\-]{0,11}$";
 
+/** Symbols one stocks widget can watch. */
+export const STOCK_MAX_SYMBOLS = 20;
+
 export interface StockQuote {
   symbol: string;
   price: number;
@@ -61,7 +64,7 @@ export const stocksMeta: WidgetBaseMeta<StocksConfig> = {
       kind: "list",
       label: "stocks.fields.symbols",
       placeholder: "AAPL",
-      maxItems: 20,
+      maxItems: STOCK_MAX_SYMBOLS,
       pattern: STOCK_SYMBOL_PATTERN,
       transform: "upper",
     },

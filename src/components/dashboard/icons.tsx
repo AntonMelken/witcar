@@ -33,6 +33,9 @@ const PATHS = {
   pencil: ["M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"],
   gauge: ["M12 14l4-4", "M3.3 19a10 10 0 1 1 17.4 0"],
   settings: ["M4 6h9M17 6h3M4 12h3M11 12h9M4 18h11M19 18h1", "M15 4v4M9 10v4M17 16v4"],
+  refresh: ["M20.5 12a8.5 8.5 0 1 1-2.5-6l2.5 2.5", "M20.5 3.5v5h-5"],
+  close: ["M6 6l12 12M18 6L6 18"],
+  expand: ["M14 4h6v6M20 4l-7 7", "M10 20H4v-6M4 20l7-7"],
 } as const;
 
 export type IconName = keyof typeof PATHS;

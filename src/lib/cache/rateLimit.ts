@@ -33,7 +33,7 @@ export const RULES = {
   deviceStart: { name: "device-start", limit: 10, windowSec: 3600 },
   devicePoll: { name: "device-poll", limit: 1, windowSec: 2 },
   deviceApprove: { name: "device-approve", limit: 10, windowSec: 3600 },
-  widgetsUser: { name: "widgets", limit: 60, windowSec: 60 },
+  widgetsUser: { name: "widgets", limit: 180, windowSec: 60 },
   widgetsAnon: { name: "widgets-anon", limit: 20, windowSec: 60 },
   geo: { name: "geo", limit: 30, windowSec: 60 },
   magicLink: { name: "magic-link", limit: 5, windowSec: 3600 },

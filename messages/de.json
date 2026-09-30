@@ -159,7 +159,15 @@
     "edit": "Bearbeiten",
     "driveMode": "Fahrmodus",
     "settings": "Einstellungen",
-    "empty": "Noch keine Widgets. Richte dein Layout im Editor oder am Handy ein."
+    "empty": "Noch keine Widgets. Richte dein Layout im Editor oder am Handy ein.",
+    "refresh": "Daten aktualisieren",
+    "updatedAt": "Aktualisiert {time}",
+    "refreshFailed": "Aktualisierung fehlgeschlagen",
+    "closeApp": "Schließen",
+    "saving": "Speichert …",
+    "saved": "Gespeichert",
+    "saveError": "Speichern fehlgeschlagen",
+    "loadingApp": "Lädt …"
   },
   "drive": {
     "exitHint": "Halten zum Beenden",
@@ -188,7 +196,41 @@
       "fields": {
         "showSeconds": "Sekunden anzeigen",
         "timeZone": "Zeitzone",
-        "label": "Beschriftung"
+        "label": "Beschriftung",
+        "hour12": "12-Stunden-Anzeige (AM/PM)",
+        "zonesHint": "Weitere Zeitzonen und deinen Standort wählst du im Dashboard: Uhr antippen."
+      },
+      "tomorrow": "morgen",
+      "yesterday": "gestern",
+      "app": {
+        "main": "Hauptuhr",
+        "seconds": "Sekunden anzeigen",
+        "hour12": "12-Stunden-Anzeige (AM/PM)",
+        "name": "Bezeichnung",
+        "myLocation": "Mein Standort",
+        "myTime": "Meine Zeit",
+        "myTimeHint": "Die Uhr folgt der Zeitzone dieses Geräts. Im Auto ist das die Einstellung des Fahrzeugs.",
+        "deviceZone": "Zeitzone dieses Geräts: {zone}",
+        "isMain": "Hauptuhr",
+        "useLocal": "Als Hauptuhr",
+        "locate": "Meinen Standort ermitteln",
+        "locating": "Ermittle Standort …",
+        "locateDenied": "Der Standort ist nicht verfügbar oder wurde nicht freigegeben. Wähle unten eine Stadt.",
+        "nearest": "Nächste Stadt: {city}",
+        "kmAway": "{km} km entfernt",
+        "apply": "Übernehmen",
+        "zones": "Weitere Zeitzonen",
+        "zonesHint": "Bis zu {max} weitere Orte neben der Hauptuhr.",
+        "noZones": "Noch keine weiteren Zeitzonen.",
+        "makeMain": "{name} zur Hauptuhr machen",
+        "makeMainShort": "Zur Hauptuhr",
+        "remove": "{name} entfernen",
+        "add": "Zeitzone hinzufügen",
+        "searchPlaceholder": "Stadt, Land oder Zeitzone suchen",
+        "noResults": "Keine Treffer.",
+        "setMain": "{name} zur Hauptuhr machen",
+        "setMainShort": "Zur Hauptuhr",
+        "addZone": "{name} hinzufügen"
       }
     },
     "date": {
@@ -216,7 +258,29 @@
         "storm": "Gewitter"
       },
       "fields": {
-        "location": "Ort"
+        "location": "Ort",
+        "showWeek": "Wochenvorschau anzeigen (bei genug Platz)",
+        "extraHint": "Weitere Orte und die Vorhersage bis Sonntag siehst du im Dashboard: Wetter antippen."
+      },
+      "today": "Heute",
+      "app": {
+        "places": "Orte",
+        "placesHint": "Bis zu {max} Orte. Der Hauptort steht im Widget vorn.",
+        "addPlace": "Ort hinzufügen",
+        "searchPlaceholder": "Stadt suchen",
+        "search": "Suchen",
+        "searchError": "Suche gerade nicht möglich.",
+        "noResults": "Keine Treffer.",
+        "makeMain": "Zum Hauptort",
+        "isMain": "Hauptort",
+        "remove": "{name} entfernen",
+        "high": "Höchstwert",
+        "low": "Tiefstwert",
+        "wind": "Wind",
+        "rain": "Regenrisiko",
+        "week": "Die nächsten 7 Tage",
+        "noForecast": "Die Vorhersage wird geladen. Tippe oben auf Aktualisieren, falls sie fehlt.",
+        "showWeek": "Wochenvorschau im Widget anzeigen (bei genug Platz)"
       }
     },
     "stocks": {
@@ -229,6 +293,47 @@
       "fields": {
         "symbols": "Ticker-Symbole",
         "showChange": "Veränderung anzeigen"
+      },
+      "app": {
+        "noHistoryProvider": "Der Kursverlauf ist mit dem aktuellen Datenanbieter nicht verfügbar.",
+        "historyUnavailable": "Kursverlauf gerade nicht verfügbar. Bitte später erneut versuchen.",
+        "watchlist": "Meine Aktien",
+        "watchlistHint": "Bis zu {max} Werte. Tippe einen Wert an, um den Kursverlauf zu sehen.",
+        "remove": "{symbol} entfernen",
+        "range": "Zeitraum",
+        "ranges": {
+          "1T": "1 T",
+          "1W": "1 W",
+          "1M": "1 M",
+          "1J": "1 J"
+        },
+        "average": "Gleitender Durchschnitt",
+        "averageShort": "Durchschnitt",
+        "chartLabel": "Kursverlauf {symbol}, Zeitraum {range}",
+        "open": "Eröffnung",
+        "dayHigh": "Tageshoch",
+        "dayLow": "Tagestief",
+        "prevClose": "Vortagesschluss",
+        "week52High": "52-Wochen-Hoch",
+        "week52Low": "52-Wochen-Tief",
+        "periodHigh": "Hoch im Zeitraum",
+        "periodLow": "Tief im Zeitraum",
+        "periodChange": "Veränderung im Zeitraum",
+        "add": "Aktie hinzufügen",
+        "searchPlaceholder": "Name oder Symbol suchen",
+        "search": "Suchen",
+        "searchError": "Suche gerade nicht möglich.",
+        "full": "Maximal {max} Werte pro Widget.",
+        "addSymbol": "Symbol {symbol} hinzufügen",
+        "noResults": "Keine Treffer.",
+        "added": "In der Liste",
+        "calc": "Positionsrechner",
+        "calcHint": "Wert deiner Aktien und Gewinn oder Verlust seit dem Kauf. Die Eingaben bleiben auf diesem Gerät.",
+        "quantity": "Stückzahl",
+        "buyPrice": "Kaufkurs pro Stück (optional)",
+        "value": "Aktueller Wert",
+        "cost": "Kaufwert",
+        "gain": "Gewinn / Verlust"
       }
     },
     "crypto": {
@@ -259,17 +364,56 @@
       "start": "Start",
       "reset": "Zurücksetzen",
       "fields": {
-        "durationMin": "Dauer (Minuten)",
+        "duration": "Dauer",
         "label": "Beschriftung"
+      },
+      "app": {
+        "progress": "Fortschritt",
+        "addMinutes": "{min} Min.",
+        "setTime": "Zeit einstellen",
+        "setTimeHint": "Eingestellte Zeit: {time}. Sie wird gespeichert.",
+        "presets": "Schnellwahl",
+        "minutes": "{min} Min.",
+        "hour": "1 Std.",
+        "steps": "Feinjustierung",
+        "stepMinute": "1 Min.",
+        "stepSeconds": "{sec} Sek.",
+        "own": "Eigene Zeit eingeben",
+        "keypad": "Ziffernblock",
+        "backspace": "Letzte Ziffer löschen",
+        "clear": "Leeren",
+        "apply": "{time} einstellen",
+        "applyEmpty": "Zeit eingeben",
+        "tooLong": "Maximal 24 Stunden."
       }
     },
     "notes": {
       "title": "Notiz",
       "empty": "Leere Notiz",
       "fields": {
-        "text": "Text"
+        "hint": "Notizen schreibst und wählst du im Dashboard: Notiz antippen."
+      },
+      "count": "Notiz {index} von {total}",
+      "app": {
+        "list": "Notizen",
+        "count": "{count} von {max}",
+        "new": "Neue Notiz",
+        "none": "Noch keine Notizen.",
+        "untitled": "Ohne Titel",
+        "isShown": "Wird im Widget angezeigt",
+        "show": "{name} im Widget anzeigen",
+        "showShort": "Im Widget anzeigen",
+        "editor": "Notiz",
+        "titleLabel": "Titel",
+        "textLabel": "Text",
+        "showInWidget": "Im Widget anzeigen",
+        "confirmDelete": "Wirklich löschen?",
+        "delete": "Löschen",
+        "cancel": "Abbrechen",
+        "pick": "Wähle links eine Notiz oder lege eine neue an."
       }
-    }
+    },
+    "openApp": "{name} öffnen"
   },
   "editor": {
     "defaultName": "Mein Dashboard",
@@ -353,7 +497,10 @@
     "right": "Nach rechts",
     "earlier": "Früher",
     "later": "Später",
-    "selectHint": "Tippe auf ein Widget, um es zu konfigurieren."
+    "selectHint": "Tippe auf ein Widget, um es zu konfigurieren.",
+    "durationHours": "Stunden",
+    "durationMinutes": "Minuten",
+    "durationSeconds": "Sekunden"
   },
   "presets": {
     "compact": {
