@@ -40,7 +40,7 @@ export async function insertIncarReport(db: Db, r: IncarReportInput): Promise<st
     `insert into public.incar_reports
       (model, software_version, region, build_year, visible_while_driving, counter_kept_running,
        network_active, notes, user_agent, viewport_w, viewport_h, device_pixel_ratio, measurements)
-     values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::jsonb) returning id`,
+     values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13::text::jsonb) returning id`,
     [
       r.model,
       r.softwareVersion,
