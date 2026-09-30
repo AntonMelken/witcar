@@ -196,13 +196,6 @@
     "homepage": "https://swc.rs"
   },
   {
-    "name": "@upstash/redis",
-    "version": "1.39.0",
-    "license": "MIT",
-    "copyright": "Copyright (c) 2021 Upstash, Inc.",
-    "homepage": "https://github.com/upstash/upstash-redis#readme"
-  },
-  {
     "name": "ansi-regex",
     "version": "5.0.1",
     "license": "MIT",
@@ -593,13 +586,6 @@
     "license": "0BSD",
     "copyright": "Copyright (c) Microsoft Corporation.",
     "homepage": "https://www.typescriptlang.org/"
-  },
-  {
-    "name": "uncrypto",
-    "version": "0.1.3",
-    "license": "MIT",
-    "copyright": "Copyright (c) Pooya Parsa <pooya@pi0.io>",
-    "homepage": "https://github.com/unjs/uncrypto#readme"
   },
   {
     "name": "use-intl",

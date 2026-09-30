@@ -1,0 +1,13 @@
+# Never send local secrets, local data or build output into the image build
+.env*
+!.env.example
+.git
+.next
+node_modules
+.pglite
+.pglite-tesla
+.vercel
+test-results
+playwright-report
+blob-report
+coverage

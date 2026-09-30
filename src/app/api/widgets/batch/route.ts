@@ -23,6 +23,7 @@ const requestSchema = z.discriminatedUnion("kind", [
     kind: z.literal("crypto"),
     params: z.object({ id: z.string().regex(new RegExp(COIN_ID_PATTERN)), vs: z.enum(["eur", "usd"]) }),
   }),
+  z.object({ kind: z.literal("fx"), params: z.object({}).strict() }),
 ]);
 
 const bodySchema = z.object({ requests: z.array(requestSchema).min(1).max(40) });

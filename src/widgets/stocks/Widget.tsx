@@ -15,6 +15,14 @@ export default function StocksWidget({ config, mode, data }: WidgetProps<StocksC
   const entries = symbols.map((symbol) => ({ symbol, entry: data[dataKey({ kind: "stock", params: { symbol } })] }));
   const newest = entries.map((e) => e.entry?.result).filter(Boolean)[0];
   const isMock = newest?.source === "mock";
+  // STOCKS_PROVIDER=off: no licensed quote source configured (D-008)
+  if (entries.some((e) => e.entry?.error === "disabled")) {
+    return (
+      <Tile label={t("title")}>
+        <p className="text-dim">{t("disabled")}</p>
+      </Tile>
+    );
+  }
   const footer = (
     <span className="flex items-center gap-2 justify-between">
       <span className="truncate">{isMock ? t("demoData") : t("disclaimer")}</span>

@@ -1,6 +1,7 @@
 import { clockMeta } from "./clock/definition";
 import { cryptoMeta } from "./crypto/definition";
 import { dateMeta } from "./date/definition";
+import { fxMeta } from "./fx/definition";
 import { notesMeta } from "./notes/definition";
 import { stocksMeta } from "./stocks/definition";
 import { timerMeta } from "./timer/definition";
@@ -18,6 +19,7 @@ export const widgetMetas = {
   weather: weatherMeta,
   stocks: stocksMeta,
   crypto: cryptoMeta,
+  fx: fxMeta,
   timer: timerMeta,
   notes: notesMeta,
 } as const satisfies Partial<Record<WidgetType, { type: WidgetType; driveSafe: boolean }>>;

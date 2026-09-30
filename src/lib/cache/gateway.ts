@@ -13,7 +13,7 @@ import type { KV } from "./kv";
 export class ProviderUnavailableError extends Error {
   constructor(
     public readonly provider: string,
-    public readonly reason: "circuit_open" | "quota_exceeded" | "upstream_error",
+    public readonly reason: "circuit_open" | "quota_exceeded" | "upstream_error" | "disabled",
     cause?: unknown,
   ) {
     super(`${provider}: ${reason}`, { cause });

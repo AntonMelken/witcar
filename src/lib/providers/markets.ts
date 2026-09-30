@@ -113,6 +113,54 @@ export function coingeckoCrypto(
   };
 }
 
+interface CmcListing {
+  data?: {
+    slug: string;
+    quote?: Record<string, { price?: number | null; percent_change_24h?: number | null; last_updated?: string }>;
+  }[];
+}
+
+/**
+ * CoinMarketCap Basic (free, commercial use for one product, D-009): ONE call
+ * returns the top 250 coins (1 credit) and is shared by every user and coin.
+ * TTL 10 min -> max. 144 calls/day per currency (15,000 credits/month).
+ * Coins are addressed by slug ("bitcoin", "ethereum"), like the widget config.
+ */
+export function coinmarketcapListings(
+  apiKey: string,
+  fetchImpl: FetchLike = fetch,
+): Provider<{ vs: "eur" | "usd" }, Record<string, CryptoQuote>> {
+  return {
+    id: "coinmarketcap",
+    ttlMs: 10 * 60_000,
+    maxStaleMs: 24 * 3600_000,
+    cacheKey: (i) => `crypto-top:${i.vs}`,
+    async fetch(i, signal) {
+      const convert = i.vs.toUpperCase();
+      const params = new URLSearchParams({ start: "1", limit: "250", convert });
+      const body = await getJson<CmcListing>(
+        fetchImpl,
+        `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?${params}`,
+        { signal, headers: { "x-cmc_pro_api_key": apiKey } },
+      );
+      const out: Record<string, CryptoQuote> = {};
+      for (const coin of body.data ?? []) {
+        const q = coin.quote?.[convert];
+        if (typeof q?.price !== "number") continue;
+        out[coin.slug] = {
+          id: coin.slug,
+          price: q.price,
+          change24hPct: typeof q.percent_change_24h === "number" ? q.percent_change_24h : null,
+          currency: i.vs,
+          asOf: q.last_updated ?? null,
+        };
+      }
+      if (Object.keys(out).length === 0) throw new UpstreamError("coinmarketcap: unexpected payload");
+      return out;
+    },
+  };
+}
+
 export function mockCrypto(now: () => number = Date.now): Provider<{ id: string; vs: "eur" | "usd" }, CryptoQuote> {
   return {
     id: "mock",

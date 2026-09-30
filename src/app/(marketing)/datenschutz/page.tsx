@@ -37,12 +37,13 @@ export default function DatenschutzPage() {
         <li>Supabase (Datenbank und Authentifizierung, Region EU/Frankfurt)</li>
         <li>Vercel (Hosting, Region fra1)</li>
         <li>Stripe (Zahlungsabwicklung)</li>
-        <li>Upstash (Cache, falls aktiviert)</li>
-        <li>
-          Datenanbieter für Wetter/Kurse (nur serverseitig; es werden keine personenbezogenen Daten übermittelt, nur z.
-          B. Koordinaten der gewählten Stadt bzw. Ticker-Symbole)
-        </li>
       </ul>
+      <p>
+        Datenquellen (Abruf nur über unseren Server, deine IP-Adresse und Kontodaten werden nicht übermittelt): MET
+        Norway (Wetter; gerundete Koordinaten der gewählten Stadt), OpenStreetMap Foundation/Nominatim (Ortssuche;
+        eingegebener Suchbegriff), CoinMarketCap (Krypto-Kurse) und Europäische Zentralbank (Wechselkurse). Übersicht
+        und Quellenangaben unter <a href="/lizenzen">Lizenzen &amp; Datenquellen</a>.
+      </p>
       <OwnerTodo>
         AVV mit allen Auftragsverarbeitern abschließen, Drittlandtransfers (Stripe, Vercel) mit Rechtsgrundlage
         ergänzen.

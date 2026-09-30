@@ -45,7 +45,9 @@ test.describe("marketing & legal", () => {
   test("licence notices: page lists dependencies and serves the full texts", async ({ page, request }) => {
     await page.goto("/lizenzen");
     await expect(page.getByRole("cell", { name: "lucide-react" })).toBeVisible();
-    await expect(page.getByText("Open-Meteo.com").first()).toBeVisible();
+    // E2E runs with mock providers: no live source to credit, demo data is explained
+    await expect(page.locator("[data-source]")).toHaveCount(0);
+    await expect(page.getByText(/zeigen die Widgets Demo-Daten/)).toBeVisible();
     const res = await request.get("/third-party-licenses.txt");
     expect(res.status()).toBe(200);
     const text = await res.text();

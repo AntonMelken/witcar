@@ -2,6 +2,20 @@
 
 ## [Unreleased]
 
+### Kostenlose Datenquellen und Self-Hosting
+
+- Wetter: MET Norway statt Open-Meteo (kostenlos, auch kommerziell, CC BY 4.0), Ortssuche über Nominatim/OpenStreetMap
+  mit globalem Limit von 1 Anfrage/s; Quellenangaben im Widget, in der Ortssuche und auf `/lizenzen`.
+- Krypto: CoinMarketCap Basic (kostenloser Key, kommerziell erlaubt) mit einem gemeinsamen Abruf der Top 250 je Währung
+  alle 10 min; CoinGecko-Demo ist nicht kommerziell lizenziert (D-009 korrigiert).
+- Neues Widget „Wechselkurse“ mit EZB-Referenzkursen; Aktien sind ohne lizenzierten Anbieter ausgeblendet
+  (`STOCKS_PROVIDER=off`), bestehende Aktien-Kacheln zeigen einen Hinweis, `/demo` zeigt Wechselkurse.
+- Upstash entfernt: Cache und Rate-Limits laufen über Postgres (`api_cache`), abgelaufene Zeilen werden aufgeräumt.
+- `Dockerfile` + `NEXT_OUTPUT=standalone` und Anleitung `docs/deploy-hetzner.md` (Hetzner + Coolify) als günstige
+  Alternative zu Vercel Pro.
+- `/lizenzen` listet nur die tatsächlich aktiven Datenquellen; Datenschutzerklärung nennt die Datenquellen.
+- Stale-Markierung richtet sich nach der Cache-Dauer des Anbieters (`staleAfterMs`).
+
 ### Lizenzen & Marken
 
 - Quellenhinweise laut Anbieterbedingungen: „Wetterdaten: Open-Meteo.com“ (CC BY 4.0) im Wetter-Widget, Open-Meteo/GeoNames
