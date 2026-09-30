@@ -53,7 +53,7 @@ test.describe("editor", () => {
     await expect(page.locator("[data-widget]")).toHaveCount(2);
   });
 
-  test("free limit: 4th widget blocked in UI and on the server", async ({ page }) => {
+  test("@limits free limit: 4th widget blocked in UI and on the server", async ({ page }) => {
     await login(page);
     await onboard(page.request);
     await createLayout(page.request, [clock("a", 0), clock("b", 4), clock("c", 8)]);

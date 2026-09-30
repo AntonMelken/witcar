@@ -1,11 +1,11 @@
 import { expect, test } from "@playwright/test";
-import { uniqueEmail } from "./helpers";
+import { uniqueName } from "./helpers";
 
 test("onboarding: login -> preset -> 3 widgets -> dashboard, layout persists", async ({ page }) => {
   await page.goto("/dashboard");
   await expect(page).toHaveURL(/\/login\?next=%2Fdashboard/);
-  await page.fill("input[name=email]", uniqueEmail("onboard"));
-  await page.getByRole("button", { name: "Anmelden (lokal)" }).click();
+  await page.fill("input[name=name]", uniqueName("Onboard"));
+  await page.getByRole("button", { name: "Los geht’s" }).click();
   await expect(page).toHaveURL(/\/onboarding/);
 
   await page.getByRole("button", { name: /Ultrabreit/ }).click();

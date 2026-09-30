@@ -57,7 +57,9 @@
     "priceTbd": "Preis folgt",
     "orYearly": "oder {amount} / Jahr",
     "loginToUpgrade": "Anmelden und upgraden",
-    "taxNote": "Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
+    "taxNote": "Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.",
+    "openTitle": "Kostenlos und ohne Einschränkungen",
+    "openText": "Aktuell stehen dir alle Widgets und Funktionen ohne Limit zur Verfügung. Melde dich einfach mit deinem Namen an."
   },
   "billing": {
     "notConfigured": "Der Kauf ist noch nicht freigeschaltet.",
@@ -107,16 +109,18 @@
   },
   "auth": {
     "title": "Anmelden",
-    "subtitle": "Wir schicken dir einen Anmeldelink per E-Mail. Kein Passwort nötig.",
+    "subtitle": "Gib deinen Namen ein – mehr brauchst du nicht. Mit demselben Namen landest du auf jedem Gerät im selben Konto.",
     "linkError": "Der Anmeldelink ist ungültig oder abgelaufen. Bitte fordere einen neuen an.",
-    "carHint": "Bist du gerade im Auto? Melde dich bequem per QR-Code mit dem Handy an.",
+    "carHint": "Im Auto? Gib dort einfach ebenfalls deinen Namen ein – oder melde dich per QR-Code mit dem Handy an.",
     "carButton": "Mit Handy koppeln",
     "sent": "Link gesendet an {email}. Öffne die E-Mail auf diesem Gerät.",
+    "name": "Dein Name",
     "email": "E-Mail-Adresse",
-    "devLogin": "Anmelden (lokal)",
+    "continue": "Los geht’s",
     "sendLink": "Anmeldelink senden",
-    "devHint": "Lokaler Entwicklungsmodus: Anmeldung ohne E-Mail.",
-    "error": "Das hat nicht geklappt. Bitte prüfe die Adresse und versuche es erneut."
+    "nameHint": "Kein Passwort, keine E-Mail. Wer deinen Namen kennt, kann sich in dein Konto einloggen – wähle ihn also nicht zu einfach.",
+    "invalidName": "Bitte einen Namen mit 2–32 Zeichen eingeben (Buchstaben, Zahlen, Leerzeichen, . _ - ').",
+    "error": "Das hat nicht geklappt. Bitte erneut versuchen."
   },
   "pair": {
     "revoked": "Dieses Gerät wurde abgemeldet. Bitte erneut koppeln.",
@@ -416,11 +420,13 @@
     "manageSubscription": "Abo verwalten",
     "downgradeNote": "Bei einem Downgrade werden keine Daten gelöscht; Widgets über dem Free-Limit werden gesperrt angezeigt.",
     "account": "Konto",
-    "signedInAs": "Angemeldet als {email}",
+    "signedInAs": "Angemeldet als {name}",
     "export": "Daten exportieren (JSON)",
     "signOut": "Abmelden",
     "deleteHint": "Konto endgültig löschen: Tippe LÖSCHEN zur Bestätigung. Ein laufendes Abo wird beendet.",
     "deleteConfirmLabel": "Bestätigung",
-    "delete": "Konto löschen"
+    "delete": "Konto löschen",
+    "access": "Zugang",
+    "openAccess": "WitCar ist derzeit für alle kostenlos und ohne Einschränkungen nutzbar."
   }
 }

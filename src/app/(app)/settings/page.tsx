@@ -7,6 +7,7 @@ import { Logo } from "@/components/site/Logo";
 import { requireUserPage } from "@/lib/auth/session";
 import { isBillingConfigured } from "@/lib/billing/stripe";
 import { getDb } from "@/lib/db";
+import { getEnv } from "@/lib/env";
 import { PLAN_LIMITS } from "@/lib/plan";
 import { listDevices } from "@/lib/repo/devices";
 import { ensureProfile } from "@/lib/repo/profiles";
@@ -50,8 +51,9 @@ export default async function SettingsPage(props: PageProps<"/settings">) {
           cancelAtPeriodEnd={subscription?.cancelAtPeriodEnd ?? false}
           hasCustomer={!!subscription?.stripeCustomerId}
           billingConfigured={isBillingConfigured()}
+          openAccess={getEnv().WITCAR_OPEN_ACCESS}
         />
-        <AccountPanel email={user.email} />
+        <AccountPanel name={profile.displayName ?? user.name ?? user.email} />
       </IntlProvider>
     </main>
   );

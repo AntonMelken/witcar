@@ -13,7 +13,9 @@ const sub = (userId: string, status: string) => ({
   },
 });
 
-test("test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhook-driven)", async ({ page }) => {
+test("@limits test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhook-driven)", async ({
+  page,
+}) => {
   const userId = await login(page);
   await onboard(page.request);
   await createLayout(page.request, [clock("a", 0), clock("b", 4), clock("c", 8)]);

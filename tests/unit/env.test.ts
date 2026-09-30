@@ -5,7 +5,8 @@ describe("env validation", () => {
   it("defaults to the local backend in development", () => {
     const env = parseEnv({ NODE_ENV: "development" });
     expect(env.WITCAR_DB).toBe("pglite");
-    expect(env.WITCAR_AUTH).toBe("dev");
+    expect(env.WITCAR_AUTH).toBe("name");
+    expect(env.WITCAR_OPEN_ACCESS).toBe(true);
     expect(env.STOCKS_PROVIDER).toBe("mock");
   });
 
@@ -28,7 +29,7 @@ describe("env validation", () => {
       NEXT_PUBLIC_SUPABASE_URL: "https://x.supabase.co",
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "sb_publishable_x",
     });
-    expect(partial.WITCAR_AUTH).toBe("dev");
+    expect(partial.WITCAR_AUTH).toBe("name");
     expect(partial.WITCAR_DB).toBe("pglite");
     const ok = parseEnv({
       NODE_ENV: "production",
@@ -37,16 +38,30 @@ describe("env validation", () => {
       NEXT_PUBLIC_SUPABASE_ANON_KEY: "anon",
       SUPABASE_SERVICE_ROLE_KEY: "service",
       NEXT_PUBLIC_SITE_URL: "https://witcar.example",
+      WITCAR_AUTH: "supabase",
     });
     expect(ok.WITCAR_DB).toBe("postgres");
     expect(ok.WITCAR_AUTH).toBe("supabase");
-    // a real deployment defaults to the free commercial sources, stocks stay off without a licensed key
+    // a real deployment defaults to the free commercial sources; stocks show labeled demo data without a key
     expect(ok.WEATHER_PROVIDER).toBe("met-norway");
     expect(ok.FX_PROVIDER).toBe("ecb");
-    expect(ok.STOCKS_PROVIDER).toBe("off");
+    expect(ok.STOCKS_PROVIDER).toBe("mock");
     expect(ok.CRYPTO_PROVIDER).toBe("mock");
     expect(parseEnv({ CMC_API_KEY: "k" }).CRYPTO_PROVIDER).toBe("coinmarketcap");
-    expect(parseEnv({ STOCKS_API_KEY: "k" }).STOCKS_PROVIDER).toBe("finnhub");
+    expect(parseEnv({ STOCKS_API_KEY: "k" }).STOCKS_PROVIDER).toBe("twelvedata");
+    expect(parseEnv({ STOCKS_PROVIDER: "off" }).STOCKS_PROVIDER).toBe("off");
+    expect(() => parseEnv({ STOCKS_PROVIDER: "twelvedata" })).toThrow(/STOCKS_API_KEY/);
+  });
+
+  it("signs name sessions in production with an own secret or one derived from the service key", () => {
+    const prod = {
+      NODE_ENV: "production",
+      DATABASE_URL: "postgres://x",
+      NEXT_PUBLIC_SITE_URL: "https://witcar.example",
+    };
+    expect(() => parseEnv(prod)).toThrow(/WITCAR_SESSION_SECRET/);
+    expect(parseEnv({ ...prod, SUPABASE_SERVICE_ROLE_KEY: "service" }).WITCAR_AUTH).toBe("name");
+    expect(parseEnv({ ...prod, WITCAR_SESSION_SECRET: "x".repeat(32) }).WITCAR_AUTH).toBe("name");
   });
 
   it("refuses Stripe live keys until the owner says GO LIVE", () => {

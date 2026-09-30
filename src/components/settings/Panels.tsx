@@ -52,8 +52,8 @@ export function AppearancePanel({ theme, preset }: { theme: string; preset: stri
             void update({ theme: e.target.value });
           }}
         >
-          <option value="dark">{t("themeDark")}</option>
           <option value="light">{t("themeLight")}</option>
+          <option value="dark">{t("themeDark")}</option>
           <option value="auto">{t("themeAuto")}</option>
         </select>
       </label>
@@ -137,6 +137,8 @@ export function BillingPanel(props: {
   cancelAtPeriodEnd: boolean;
   hasCustomer: boolean;
   billingConfigured: boolean;
+  /** everybody has the full feature set (no plans, no payment) */
+  openAccess?: boolean;
 }) {
   const t = useTranslations("settings");
   const [busy, setBusy] = useState(false);
@@ -155,6 +157,13 @@ export function BillingPanel(props: {
   const end = props.periodEnd
     ? new Intl.DateTimeFormat("de-DE", { dateStyle: "long" }).format(new Date(props.periodEnd))
     : null;
+  if (props.openAccess) {
+    return (
+      <Panel title={t("access")}>
+        <p data-testid="plan">{t("openAccess")}</p>
+      </Panel>
+    );
+  }
   return (
     <Panel title={t("billing")}>
       <p data-testid="plan">
@@ -184,7 +193,7 @@ export function BillingPanel(props: {
   );
 }
 
-export function AccountPanel({ email }: { email: string | null }) {
+export function AccountPanel({ name }: { name: string | null }) {
   const t = useTranslations("settings");
   const [confirm, setConfirm] = useState("");
   const [error, setError] = useState(false);
@@ -213,7 +222,7 @@ export function AccountPanel({ email }: { email: string | null }) {
   };
   return (
     <Panel title={t("account")}>
-      {email ? <p className="text-sm text-dim">{t("signedInAs", { email })}</p> : null}
+      {name ? <p className="text-sm text-dim">{t("signedInAs", { name })}</p> : null}
       <div className="flex flex-wrap gap-2">
         <a href="/api/account/export" className="btn" download>
           {t("export")}
