@@ -3,7 +3,7 @@
 export default function GlobalError({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
     <html lang="de">
-      <body style={{ background: "#0f1114", color: "#f2f4f6", fontFamily: "system-ui, sans-serif" }}>
+      <body style={{ background: "#efeff1", color: "#0e0e10", fontFamily: "system-ui, sans-serif" }}>
         <main
           style={{
             minHeight: "100dvh",
