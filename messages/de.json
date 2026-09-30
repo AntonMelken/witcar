@@ -19,26 +19,26 @@
   },
   "landing": {
     "headline": "Dein Überblick im Auto-Browser.",
-    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, mit Fokus auf Tesla-Fahrzeuge.",
+    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, mit Fokus auf Tesla-Fahrzeuge. Tippe ein Widget an und öffne die passende App dazu.",
     "ctaStart": "Kostenlos starten",
     "ctaCar": "Im Auto anmelden (QR)",
     "ctaDemo": "Demo ansehen",
     "positioning": "Ideal beim Laden und Parken. Fahrmodus experimentell.",
     "f1Title": "Große, klare Widgets",
     "f1Text": "Wenige Informationen, große Zahlen, ruhige Darstellung. Du ordnest alles im Stand an.",
-    "f2Title": "Anmelden per QR-Code",
-    "f2Text": "Im Auto tippt niemand Passwörter: QR-Code mit dem Handy scannen, bestätigen, fertig.",
+    "f2Title": "Anmelden mit deinem Namen",
+    "f2Text": "Kein Passwort, keine E-Mail: Name eingeben, fertig. Im Auto geht es auch per QR-Code mit dem Handy.",
     "f3Title": "Funktioniert auch bei Funklöchern",
     "f3Text": "Letzte Daten bleiben sichtbar und werden dezent als „veraltet“ markiert. Die Verbindung kommt von allein zurück.",
-    "f4Title": "Wetter für deine Stadt",
-    "f4Text": "Aktuelle Temperatur und Tageswerte für einen Ort deiner Wahl – ohne Standortabfrage.",
-    "f5Title": "Krypto & Wechselkurse",
-    "f5Text": "Krypto-Kurse und EZB-Referenzkurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
+    "f4Title": "Wetter und Zeit an mehreren Orten",
+    "f4Text": "Wochenvorschau von Montag bis Sonntag, mehrere Orte und eine Weltuhr mit eigenen Zeitzonen – ohne Standortabfrage.",
+    "f5Title": "Aktien, Krypto & Wechselkurse",
+    "f5Text": "Aktien mit Kursverlauf und einfachen Werkzeugen, Krypto-Kurse und EZB-Referenzkurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
     "f6Title": "Datensparsam, gehostet in Frankfurt",
     "f6Text": "Datenbank und App-Server in Frankfurt am Main (EU), keine Tracker, keine Werbung. Export und Löschung jederzeit.",
-    "pricingTitle": "Kostenlos starten, Pro bei Bedarf",
-    "pricingText": "Free mit 3 Widgets. Pro mit allen Widgets, mehreren Layouts und bis zu 5 Geräten.",
-    "pricingCta": "Preise ansehen"
+    "pricingTitle": "Aktuell kostenlos und ohne Einschränkungen",
+    "pricingText": "Alle Widgets und Funktionen stehen dir ohne Limit zur Verfügung.",
+    "pricingCta": "Mehr erfahren"
   },
   "pricing": {
     "title": "Preise",
@@ -92,7 +92,7 @@
     },
     "login": {
       "q": "Wie melde ich mich im Auto an?",
-      "a": "Öffne WitCar im Auto und wähle „Mit Handy anmelden“. Scanne den QR-Code mit dem Handy und bestätige. Alternativ gibst du den Code am Handy von Hand ein."
+      "a": "Gib in WitCar einfach deinen Namen ein – mit demselben Namen landest du auf jedem Gerät im selben Konto. Im Auto kannst du alternativ „Mit Handy anmelden“ wählen und den QR-Code mit dem Handy scannen."
     },
     "offline": {
       "q": "Was passiert bei Funklöchern?",
@@ -100,11 +100,23 @@
     },
     "data": {
       "q": "Welche Daten speichert WitCar?",
-      "a": "Nur das Nötigste: E-Mail, deine Layouts und Einstellungen, gekoppelte Geräte und den Abo-Status. Keine Tracker, keine Standortabfrage."
+      "a": "Nur das Nötigste: den Namen, mit dem du dich anmeldest, deine Layouts und Einstellungen (inklusive Notizen) und gekoppelte Geräte. Keine Tracker, keine Standortabfrage."
     },
     "cancel": {
       "q": "Wie kündige ich Pro?",
-      "a": "Jederzeit in den Einstellungen über „Abo verwalten“. Bei einem Downgrade werden keine Daten gelöscht."
+      "a": "Aktuell ist WitCar kostenlos und ohne Abo nutzbar. Sollte es später Pro geben, kündigst du jederzeit in den Einstellungen über „Abo verwalten“; bei einem Downgrade werden keine Daten gelöscht."
+    },
+    "account": {
+      "q": "Brauche ich ein Passwort?",
+      "a": "Nein. WitCar fragt nur nach einem Namen. Bedenke: Wer deinen Namen kennt, kann sich in dein Konto einloggen. Lege dort deshalb keine vertraulichen Notizen ab und wähle einen Namen, den nicht jeder errät."
+    },
+    "apps": {
+      "q": "Was passiert, wenn ich ein Widget antippe?",
+      "a": "Es öffnet sich die passende App: Bei der Uhr wählst du Zeitzonen und deinen Standort, beim Wetter Orte und die Vorhersage bis Sonntag, bei Aktien Kursverlauf und einfache Werkzeuge, beim Timer die Zeit und bei Notizen mehrere Notizen. Änderungen werden automatisch gespeichert."
+    },
+    "refresh": {
+      "q": "Die Daten wirken veraltet – was tun?",
+      "a": "Tippe im Dashboard auf „Daten aktualisieren“. WitCar holt die Werte dann sofort neu, soweit die Datenanbieter es erlauben (Wetter mindestens alle 5 Minuten, Kurse etwa jede Minute). Ist das Netz weg, bleiben die letzten Werte sichtbar."
     }
   },
   "auth": {
