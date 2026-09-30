@@ -7,12 +7,25 @@ import { IntlProvider } from "@/components/site/IntlProvider";
 import { getUserSession } from "@/lib/auth/session";
 import { getDisplayPrices } from "@/lib/billing/prices";
 import { isBillingConfigured } from "@/lib/billing/stripe";
+import { getEnv } from "@/lib/env";
 import { PLAN_LIMITS } from "@/lib/plan";
 
 export const metadata: Metadata = { title: "Preise" };
 
 export default async function PricingPage(props: PageProps<"/pricing">) {
   const t = await getTranslations("pricing");
+  if (getEnv().WITCAR_OPEN_ACCESS) {
+    // no plans and no payment for now: everybody has everything (D-034)
+    return (
+      <main className="mx-auto max-w-3xl px-5 py-12 space-y-6">
+        <h1 className="text-4xl font-bold tracking-tight">{t("openTitle")}</h1>
+        <p className="text-dim text-lg">{t("openText")}</p>
+        <Link href="/login" className="btn btn-primary">
+          {t("startFree")}
+        </Link>
+      </main>
+    );
+  }
   const sp = await props.searchParams;
   const [user, prices] = await Promise.all([getUserSession(), getDisplayPrices()]);
   const monthly = prices.find((p) => p.interval === "monthly");

@@ -9,10 +9,11 @@ Masterplan: [docs/WITCAR_MASTERPLAN.md](docs/WITCAR_MASTERPLAN.md) · Entscheidu
 
 ```bash
 pnpm install
-pnpm dev            # http://localhost:3000 – PGlite + Dev-Login + Mock-Daten (siehe .env.local)
+pnpm dev            # http://localhost:3000 – PGlite + Namens-Login + Mock-Daten (siehe .env.local)
 ```
 
-- Anmelden: `/login` → beliebige E-Mail → „Anmelden (lokal)“
+- Anmelden: `/login` → beliebiger Name → „Los geht’s“ (gleicher Name = gleiches Konto, kein Passwort)
+- Widget antippen → App (Zeitzonen, Wochenvorschau, Aktien-Kursverlauf, Timer, Notizen); Aktualisieren-Button unten rechts
 - Auto simulieren: zweites Browserfenster (privat) → `/pair`, Code am „Handy“ unter `/link` eingeben
 - Demo ohne Konto: `/demo` · Werkzeuge: `/tools/drive-test`, `/tools/calibrate`
 
@@ -44,11 +45,11 @@ Einmalig im [Dashboard](https://supabase.com/dashboard/project/smyejbxtbivqvztpv
    in `.env.local` bei `DATABASE_URL=` eintragen.
 3. **Secret Key**: Project Settings → API Keys → _Secret keys_ → Key (`sb_secret_…`) in `.env.local` bei
    `SUPABASE_SERVICE_ROLE_KEY=` eintragen.
-4. **Login-Weiterleitungen**: Authentication → URL Configuration
+4. **Login-Weiterleitungen** (nur für `WITCAR_AUTH=supabase`, den alten E-Mail-Link): Authentication → URL Configuration
    - Site URL: `http://localhost:3000` (später die echte Domain)
    - Redirect URLs: `http://localhost:3000/**` und `https://*.trycloudflare.com/**`
 
-Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch Supabase (Magic-Link-Login per E-Mail).
+Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch die Supabase-Datenbank; angemeldet wird nur mit einem Namen (D-034).
 Hinweis: Der eingebaute Supabase-Mailversand schickt nur an Mitglieder des Supabase-Teams (also deine eigene
 Adresse) und ist nicht für den Produktivbetrieb gedacht → vor dem Launch eigenes SMTP einrichten.
 

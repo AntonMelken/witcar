@@ -25,7 +25,9 @@ export default async function LoginPage(props: PageProps<"/login">) {
         <div className="card p-7 space-y-5">
           <h1 className="text-2xl font-bold">{t("title")}</h1>
           <p className="text-dim">{t("subtitle")}</p>
-          {sp.error ? <p className="text-negative text-sm">{t("linkError")}</p> : null}
+          {sp.error && getEnv().WITCAR_AUTH === "supabase" ? (
+            <p className="text-negative text-sm">{t("linkError")}</p>
+          ) : null}
           <IntlProvider namespaces={["auth"]}>
             <LoginForm mode={getEnv().WITCAR_AUTH} next={next} />
           </IntlProvider>

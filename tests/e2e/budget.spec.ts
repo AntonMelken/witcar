@@ -33,5 +33,6 @@ test("dashboard initial JS stays within 150 kB gzip", async ({ page }) => {
     total += gz;
   }
   console.log(`dashboard JS: ${(total / 1024).toFixed(1)} kB gzip in ${scripts.size} files`);
+  for (const [name, gz] of sizes.sort((x, y) => y[1] - x[1])) console.log(`  ${(gz / 1024).toFixed(1)} kB  ${name}`);
   expect(total).toBeLessThanOrEqual(150 * 1024);
 });

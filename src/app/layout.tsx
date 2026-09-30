@@ -24,17 +24,18 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  themeColor: "#0f1114",
-  colorScheme: "dark light",
+  themeColor: "#efeff1",
+  colorScheme: "light dark",
 };
 
 const THEMES = new Set(["auto", "dark", "light"]);
+const DEFAULT_THEME = "light";
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {
   const jar = await cookies();
-  const themeCookie = jar.get(THEME_COOKIE)?.value ?? "dark";
+  const themeCookie = jar.get(THEME_COOKIE)?.value ?? DEFAULT_THEME;
   // Theme is resolved on the server -> no flash before first paint (§12.2)
-  const theme = THEMES.has(themeCookie) ? themeCookie : "dark";
+  const theme = THEMES.has(themeCookie) ? themeCookie : DEFAULT_THEME;
   const locale = await getLocale();
   return (
     <html lang={locale} data-theme={theme} className={inter.variable}>

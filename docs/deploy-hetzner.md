@@ -70,6 +70,6 @@ Hetzner Storage Box. Alternativ Supabase Pro (tägliche Backups inklusive).
 ```bash
 NEXT_OUTPUT=standalone WITCAR_ENV_CHECK=off NEXT_PUBLIC_SITE_URL=http://localhost:3000 pnpm build
 cp -r public .next/standalone/ && cp -r .next/static .next/standalone/.next/
-cd .next/standalone && WITCAR_DB=pglite WITCAR_AUTH=dev WITCAR_ALLOW_DEV_BACKEND=1 \
+cd .next/standalone && WITCAR_DB=pglite WITCAR_ALLOW_DEV_BACKEND=1 \
   WITCAR_SESSION_SECRET=local-standalone-secret-0123456789abcdef node server.js
 ```

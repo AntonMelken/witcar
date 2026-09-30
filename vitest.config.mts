@@ -13,6 +13,8 @@ export default defineConfig({
   test: {
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     environment: "node",
+    // unit tests cover the Free/Pro limit logic; open access is tested explicitly
+    env: { WITCAR_OPEN_ACCESS: "0" },
     testTimeout: 30_000,
     hookTimeout: 60_000,
   },

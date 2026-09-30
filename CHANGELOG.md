@@ -2,6 +2,27 @@
 
 ## [Unreleased]
 
+### Apps in den Widgets, Zeitzonen, Wochenvorschau, Aktien-App, Namens-Login, weißes Design
+
+- **Widget-Apps:** Ein Widget antippen öffnet eine Vollbild-App (Standardmodus; im Fahrmodus gibt es keine). Änderungen
+  werden automatisch gespeichert (`PATCH /api/layouts/:id/widgets/:widgetId`), die öffentliche Demo speichert nicht.
+- **Uhr:** Hauptuhr in beliebiger Zeitzone oder Ortszeit des Geräts, eigene Bezeichnung („Mein Standort“), Standort
+  ermitteln (nächste Stadt, nur auf Tipp, nichts wird gesendet), bis zu 6 weitere Zeitzonen mit Stadt-/Land-Suche,
+  12/24 h; das Widget passt sich der Größe an (Liste oder Spalten).
+- **Wetter:** Vorhersage Heute bis Sonntag (Wochentage), bis zu 6 Orte (Ortssuche), Hauptort wählbar; Wochenstreifen im
+  Widget bei genug Höhe, mehrere Orte als Liste.
+- **Aktien wieder normal bedienbar + Aktien-App:** Watchlist, Suche, Kursverlauf (1 T/1 W/1 M/1 J) als Diagramm mit
+  Fadenkreuz, gleitender Durchschnitt, Kennzahlen (Eröffnung, Hoch/Tief, 52 Wochen, Zeitraum), Positionsrechner.
+  Anbieter Twelve Data (Verlauf/Suche) oder Finnhub; ohne Schlüssel gekennzeichnete Demo-Daten (D-033).
+- **Timer:** freie Zeit von 1 s bis 24 h (Ziffernblock wie Mikrowelle, Schnellwahl, Feinjustierung, +1/+5 Min.), im
+  Editor Stunden/Minuten/Sekunden; Zustand gilt für Widget und App.
+- **Notizen:** bis zu 12 Notizen mit Titel, auswählen/bearbeiten/löschen, eine im Widget anzeigen.
+- **Daten aktualisieren:** Button im Dashboard und in jeder App; „Aktualisiert 14:32“ bzw. Fehlerhinweis (D-036).
+- **Anmeldung nur mit Namen**, voller Zugang ohne Einschränkungen (D-034); Dev-Login entfernt, Free/Pro bleibt per
+  `WITCAR_OPEN_ACCESS=0` schaltbar.
+- **Design:** Weiß/Schwarz, Standard weiß (D-035).
+- Dashboard-Bundle 147,6 kB gzip durch Lazy-Loading je Widget-Typ; FAQ/Datenschutz/Landing angepasst.
+
 ### Kostenlose Datenquellen und Self-Hosting
 
 - Wetter: MET Norway statt Open-Meteo (kostenlos, auch kommerziell, CC BY 4.0), Ortssuche über Nominatim/OpenStreetMap

@@ -4,9 +4,19 @@ import { ProviderUnavailableError } from "@/lib/cache/gateway";
 import { rateLimit } from "@/lib/cache/rateLimit";
 import { getEnv } from "@/lib/env";
 import type { CryptoQuote } from "@/widgets/crypto/definition";
+import type { StockHistory, StockMatch, StockQuote, StockRange } from "@/widgets/stocks/definition";
 import type { DataRequest, ProviderResult } from "@/widgets/types";
 import { ecbRates, mockFx } from "./fx";
-import { coingeckoCrypto, coinmarketcapListings, finnhubStocks, mockCrypto, mockStocks } from "./markets";
+import { coingeckoCrypto, coinmarketcapListings, finnhubStocks, mockCrypto } from "./markets";
+import {
+  finnhubSearch,
+  mockStockHistory,
+  mockStockQuote,
+  mockStockSearch,
+  twelveDataHistory,
+  twelveDataQuote,
+  twelveDataSearch,
+} from "./stocks";
 import { UpstreamError, type Provider } from "./types";
 import {
   metNorwayWeather,
@@ -20,10 +30,17 @@ import {
 
 type CryptoIn = { id: string; vs: "eur" | "usd" };
 
+interface StocksSet {
+  quote: Provider<{ symbol: string }, StockQuote>;
+  /** null: this vendor has no price history on its free key (Finnhub) */
+  history: Provider<{ symbol: string; range: StockRange }, StockHistory> | null;
+  search: Provider<{ q: string }, StockMatch[]>;
+}
+
 interface ProviderSet {
   weather: Provider<{ lat: number; lon: number }, unknown>;
-  /** null = switched off (STOCKS_PROVIDER=off, no licensed source) */
-  stock: Provider<{ symbol: string }, unknown> | null;
+  /** null = switched off (STOCKS_PROVIDER=off) */
+  stocks: StocksSet | null;
   crypto:
     | { kind: "single"; provider: Provider<CryptoIn, CryptoQuote> }
     | { kind: "listing"; provider: Provider<{ vs: "eur" | "usd" }, Record<string, CryptoQuote>> };
@@ -50,6 +67,34 @@ async function nominatimThrottle(): Promise<void> {
   throw new ProviderUnavailableError("nominatim", "quota_exceeded");
 }
 
+/** Twelve Data free plan: 8 credits per minute (shared by quotes, history and search). */
+async function twelveDataGate(): Promise<void> {
+  const rl = await rateLimit(getKV(), { name: "twelvedata-min", limit: 8, windowSec: 60 }, "global");
+  if (!rl.ok) throw new ProviderUnavailableError("twelvedata", "quota_exceeded");
+}
+
+function buildStocks(): StocksSet | null {
+  const env = getEnv();
+  switch (env.STOCKS_PROVIDER) {
+    case "off":
+      return null;
+    case "twelvedata":
+      return {
+        quote: twelveDataQuote(env.STOCKS_API_KEY!, twelveDataGate),
+        history: twelveDataHistory(env.STOCKS_API_KEY!, twelveDataGate),
+        search: twelveDataSearch(env.STOCKS_API_KEY!, twelveDataGate),
+      };
+    case "finnhub":
+      return {
+        quote: finnhubStocks(env.STOCKS_API_KEY!),
+        history: null,
+        search: finnhubSearch(env.STOCKS_API_KEY!),
+      };
+    default:
+      return { quote: mockStockQuote(), history: mockStockHistory(), search: mockStockSearch() };
+  }
+}
+
 export function getProviders(): ProviderSet {
   if (providers) return providers;
   const env = getEnv();
@@ -67,12 +112,7 @@ export function getProviders(): ProviderSet {
         : env.WEATHER_PROVIDER === "open-meteo"
           ? openMeteoGeocoding(env.WEATHER_API_KEY)
           : mockGeocoding(),
-    stock:
-      env.STOCKS_PROVIDER === "off"
-        ? null
-        : env.STOCKS_PROVIDER === "finnhub" && env.STOCKS_API_KEY
-          ? finnhubStocks(env.STOCKS_API_KEY)
-          : mockStocks(),
+    stocks: buildStocks(),
     crypto:
       env.CRYPTO_PROVIDER === "coinmarketcap" && env.CMC_API_KEY
         ? { kind: "listing", provider: coinmarketcapListings(env.CMC_API_KEY) }
@@ -87,50 +127,74 @@ export function getProviders(): ProviderSet {
 /** Data sources that are live right now (for the credits on /lizenzen). */
 export function activeSources(): string[] {
   const p = getProviders();
-  const crypto = p.crypto.provider.id;
-  return [p.weather.id, p.geo.id, crypto, p.fx.id, p.stock?.id ?? "off"].filter((id) => id !== "mock" && id !== "off");
+  const ids = [p.weather.id, p.geo.id, p.crypto.provider.id, p.fx.id, p.stocks?.quote.id ?? "off"];
+  return ids.filter((id, k) => id !== "mock" && id !== "off" && ids.indexOf(id) === k);
 }
+
+/** Default minimum age before a manual refresh may bypass the cache. */
+const DEFAULT_FORCE_MIN_AGE_MS = 120_000;
 
 function through<TIn, TOut>(
   provider: Provider<TIn, TOut>,
   input: TIn,
   background?: (task: Promise<unknown>) => void,
+  force = false,
 ): Promise<ProviderResult<TOut>> {
   return getGateway().get<TOut>({
     provider: provider.id,
     key: `${provider.id}:${provider.cacheKey(input)}`,
-    ttlMs: provider.ttlMs,
+    ttlMs: provider.ttlFor?.(input) ?? provider.ttlMs,
     maxStaleMs: provider.maxStaleMs,
     fetcher: (signal) => provider.fetch(input, signal),
     background,
+    forceMinAgeMs: force ? (provider.forceMinAgeMs ?? DEFAULT_FORCE_MIN_AGE_MS) : undefined,
   });
 }
 
-async function fetchCrypto(req: CryptoIn, background?: (task: Promise<unknown>) => void): Promise<ProviderResult> {
+async function fetchCrypto(
+  req: CryptoIn,
+  background?: (task: Promise<unknown>) => void,
+  force = false,
+): Promise<ProviderResult> {
   const c = getProviders().crypto;
-  if (c.kind === "single") return through(c.provider, req, background);
+  if (c.kind === "single") return through(c.provider, req, background, force);
   // one shared top-250 listing per currency serves every coin (credit budget)
-  const listing = await through(c.provider, { vs: req.vs }, background);
+  const listing = await through(c.provider, { vs: req.vs }, background, force);
   const quote = listing.data[req.id];
   if (!quote) throw new UpstreamError(`${c.provider.id}: unknown coin`, 404);
   return { ...listing, data: quote };
 }
 
-export function fetchData(req: DataRequest, background?: (task: Promise<unknown>) => void): Promise<ProviderResult> {
+/** `force`: manual refresh (button); the gateway still protects provider quotas with a minimum age. */
+export function fetchData(
+  req: DataRequest,
+  background?: (task: Promise<unknown>) => void,
+  force = false,
+): Promise<ProviderResult> {
   const p = getProviders();
   switch (req.kind) {
     case "weather":
-      return through(p.weather, req.params, background);
+      return through(p.weather, req.params, background, force);
     case "stock":
-      if (!p.stock) return Promise.reject(new ProviderUnavailableError("stocks", "disabled"));
-      return through(p.stock, req.params, background);
+      if (!p.stocks) return Promise.reject(new ProviderUnavailableError("stocks", "disabled"));
+      return through(p.stocks.quote, req.params, background, force);
+    case "history":
+      if (!p.stocks) return Promise.reject(new ProviderUnavailableError("stocks", "disabled"));
+      if (!p.stocks.history) return Promise.reject(new ProviderUnavailableError("stocks", "unsupported"));
+      return through(p.stocks.history, req.params, background, force);
     case "crypto":
-      return fetchCrypto(req.params, background);
+      return fetchCrypto(req.params, background, force);
     case "fx":
-      return through(p.fx, req.params, background);
+      return through(p.fx, req.params, background, force);
   }
 }
 
 export function searchPlaces(q: string, lang: string): Promise<ProviderResult<GeoResult[]>> {
   return through(getProviders().geo, { q, lang });
+}
+
+export function searchStocks(q: string): Promise<ProviderResult<StockMatch[]>> {
+  const p = getProviders();
+  if (!p.stocks) return Promise.reject(new ProviderUnavailableError("stocks", "disabled"));
+  return through(p.stocks.search, { q });
 }

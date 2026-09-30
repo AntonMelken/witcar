@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { redirect } from "next/navigation";
 import { getTranslations } from "next-intl/server";
 import { DashboardView } from "@/components/dashboard/DashboardView";
-import { DriveSafetyGate } from "@/components/dashboard/DriveSafetyGate";
-import { DriveView } from "@/components/dashboard/DriveView";
 import { LiteIntl } from "@/components/site/LiteIntl";
 import { requirePrincipalPage } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
@@ -17,6 +16,10 @@ import { getWidgetMeta } from "@/widgets/registry";
 export const metadata: Metadata = { title: "Dashboard", robots: { index: false } };
 
 const NAMESPACES = ["widgets", "dashboard", "drive"] as const;
+
+// Drive mode code is only downloaded in drive mode (/dashboard initial JS budget, §17).
+const DriveView = dynamic(() => import("@/components/dashboard/DriveView").then((m) => m.DriveView));
+const DriveSafetyGate = dynamic(() => import("@/components/dashboard/DriveSafetyGate").then((m) => m.DriveSafetyGate));
 
 export default async function DashboardPage(props: PageProps<"/dashboard">) {
   const sp = await props.searchParams;
@@ -62,7 +65,7 @@ export default async function DashboardPage(props: PageProps<"/dashboard">) {
 
   return (
     <LiteIntl namespaces={NAMESPACES}>
-      <DashboardView widgets={widgets} isDevice={isDevice} emptyHint={t("empty")} />
+      <DashboardView widgets={widgets} isDevice={isDevice} emptyHint={t("empty")} layoutId={layout?.id ?? null} />
     </LiteIntl>
   );
 }

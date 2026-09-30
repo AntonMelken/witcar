@@ -64,6 +64,35 @@ export async function saveLayoutForUser(
   return saved ? { ok: true, value: saved } : { ok: false, status: 404, code: "not_found" };
 }
 
+/**
+ * Changes the config of ONE widget (used by the apps inside the widgets).
+ * Everything else in the layout stays untouched; the new config is validated
+ * like a full save, so it can never be invalid or exceed the plan limits.
+ */
+export async function saveWidgetConfigForUser(
+  db: Db,
+  userId: string,
+  layoutId: string,
+  widgetId: string,
+  config: Record<string, unknown>,
+): Promise<ServiceResult<LayoutWidget>> {
+  const existing = await repo.getLayout(db, userId, layoutId);
+  if (!existing) return { ok: false, status: 404, code: "not_found" };
+  const { plan } = await getUserPlan(db, userId);
+  if (!(await isEditable(db, userId, existing, plan))) return { ok: false, status: 403, code: "read_only" };
+  if (!existing.widgets.some((w) => w.widgetId === widgetId)) return { ok: false, status: 404, code: "not_found" };
+  const widgets = existing.widgets.map((w) => (w.widgetId === widgetId ? { ...w, config } : w));
+  const v = validateLayout(widgets, existing.mode, plan);
+  if (!v.ok) return { ok: false, status: 422, code: v.code, widgetId: v.widgetId };
+  const saved = await repo.saveLayout(db, userId, layoutId, {
+    name: existing.name,
+    preset: existing.preset,
+    widgets: prepareWidgets(v.widgets, existing.mode),
+  });
+  const widget = saved?.widgets.find((w) => w.widgetId === widgetId);
+  return saved && widget ? { ok: true, value: widget } : { ok: false, status: 404, code: "not_found" };
+}
+
 export async function duplicateLayoutForUser(db: Db, userId: string, id: string, name: string) {
   const source = await repo.getLayout(db, userId, id);
   if (!source) return { ok: false as const, status: 404, code: "not_found" as const };

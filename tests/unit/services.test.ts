@@ -54,7 +54,13 @@ describe("layout service", () => {
     const loaded = await getLayout(db, user, res.value.id);
     expect(loaded!.name).toBe("Renamed");
     expect(loaded!.widgets.map((w) => w.widgetId)).toEqual(["c1", "c2"]);
-    expect(loaded!.widgets[0]!.config).toEqual({ showSeconds: false, timeZone: "local", label: "" });
+    expect(loaded!.widgets[0]!.config).toEqual({
+      showSeconds: false,
+      hour12: false,
+      timeZone: "local",
+      label: "",
+      zones: [],
+    });
   });
 
   it("enforces free limits server-side (widgets, layouts)", async () => {

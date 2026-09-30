@@ -11,10 +11,14 @@ export default function DatenschutzPage() {
       <p>[Name, Anschrift, E-Mail laut Impressum]</p>
       <h2>2. Welche Daten wir verarbeiten</h2>
       <ul>
-        <li>Konto: E-Mail-Adresse (Anmeldung per Magic Link).</li>
         <li>
-          Einstellungen: Layouts, Widget-Konfiguration (z. B. gewählte Stadt, Ticker, Notiztext), Theme,
-          Fahrzeug-Preset.
+          Konto: der Name, den du zum Anmelden eingibst (kein Passwort, keine E-Mail-Adresse). Er dient als Anzeigename
+          und Schlüssel zu deinem Konto; in der Authentifizierungsdatenbank liegt dafür ein Datensatz mit einer daraus
+          abgeleiteten Platzhalteradresse.
+        </li>
+        <li>
+          Einstellungen: Layouts, Widget-Konfiguration (z. B. gewählte Städte und Zeitzonen, Ticker, Notizen), Theme,
+          Fahrzeug-Preset. Eingaben im Positionsrechner der Aktien-App bleiben nur in deinem Browser.
         </li>
         <li>
           Geräte: gekoppelte Geräte mit Bezeichnung, Zeitpunkt der letzten Nutzung; das Geräte-Token wird nur als Hash
@@ -29,8 +33,8 @@ export default function DatenschutzPage() {
       </p>
       <h2>3. Cookies</h2>
       <p>
-        Technisch notwendige Cookies: Sitzungs-Cookie (Anmeldung), Geräte-Cookie (gekoppeltes Fahrzeug, 90 Tage
-        rollierend), Theme-Cookie. Rechtsgrundlage: § 25 Abs. 2 TDDDG, Art. 6 Abs. 1 lit. b DSGVO.
+        Technisch notwendige Cookies: Sitzungs-Cookie (Anmeldung, signiert), Geräte-Cookie (gekoppeltes Fahrzeug, 90
+        Tage rollierend), Theme-Cookie. Rechtsgrundlage: § 25 Abs. 2 TDDDG, Art. 6 Abs. 1 lit. b DSGVO.
       </p>
       <h2>4. Empfänger / Auftragsverarbeiter</h2>
       <ul>
@@ -41,8 +45,9 @@ export default function DatenschutzPage() {
       <p>
         Datenquellen (Abruf nur über unseren Server, deine IP-Adresse und Kontodaten werden nicht übermittelt): MET
         Norway (Wetter; gerundete Koordinaten der gewählten Stadt), OpenStreetMap Foundation/Nominatim (Ortssuche;
-        eingegebener Suchbegriff), CoinMarketCap (Krypto-Kurse) und Europäische Zentralbank (Wechselkurse). Übersicht
-        und Quellenangaben unter <a href="/lizenzen">Lizenzen &amp; Datenquellen</a>.
+        eingegebener Suchbegriff), CoinMarketCap (Krypto-Kurse), Twelve Data bzw. Finnhub (Aktienkurse und Kursverlauf,
+        nur wenn aktiviert; Ticker-Symbol bzw. Suchbegriff) und Europäische Zentralbank (Wechselkurse). Übersicht und
+        Quellenangaben unter <a href="/lizenzen">Lizenzen &amp; Datenquellen</a>.
       </p>
       <OwnerTodo>
         AVV mit allen Auftragsverarbeitern abschließen, Drittlandtransfers (Stripe, Vercel) mit Rechtsgrundlage

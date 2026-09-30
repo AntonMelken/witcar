@@ -25,7 +25,7 @@ export const POST = handler(
       type: "svg",
       errorCorrectionLevel: "M",
       margin: 1,
-      color: { dark: "#0f1114", light: "#ffffff" },
+      color: { dark: "#0e0e10", light: "#ffffff" },
     });
     return ok({
       deviceCode,

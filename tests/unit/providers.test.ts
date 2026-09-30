@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { ecbRates, mockFx, parseEcbXml } from "@/lib/providers/fx";
 import { coingeckoCrypto, coinmarketcapListings, finnhubStocks, mockCrypto, mockStocks } from "@/lib/providers/markets";
 import {
+  metDays,
   metNorwayWeather,
   metSymbolToWmo,
   mockWeather,
@@ -18,11 +19,31 @@ describe("provider adapters", () => {
   it("open-meteo: parses forecast, uses customer host with api key", async () => {
     const f = jsonFetch({
       current: { temperature_2m: 12.3, weather_code: 61, is_day: 1, wind_speed_10m: 14 },
-      daily: { temperature_2m_max: [15], temperature_2m_min: [7], precipitation_probability_max: [80] },
+      daily: {
+        time: ["2026-09-29", "2026-09-30"],
+        weather_code: [61, 3],
+        temperature_2m_max: [15, 17],
+        temperature_2m_min: [7, 8],
+        precipitation_sum: [4.2, 0],
+        precipitation_probability_max: [80, 10],
+        wind_speed_10m_max: [22, 15],
+      },
     });
     const p = openMeteoWeather("KEY", f);
     const data = await p.fetch({ lat: 52.5201, lon: 13.4049 }, signal);
-    expect(data).toEqual({ tempC: 12.3, code: 61, isDay: true, highC: 15, lowC: 7, windKmh: 14, precipProb: 80 });
+    expect(data).toEqual({
+      tempC: 12.3,
+      code: 61,
+      isDay: true,
+      highC: 15,
+      lowC: 7,
+      windKmh: 14,
+      precipProb: 80,
+      days: [
+        { date: "2026-09-29", code: 61, highC: 15, lowC: 7, precipMm: 4.2, windKmh: 22 },
+        { date: "2026-09-30", code: 3, highC: 17, lowC: 8, precipMm: 0, windKmh: 15 },
+      ],
+    });
     const url = String(f.mock.calls[0]![0]);
     expect(url).toContain("https://customer-api.open-meteo.com/v1/forecast");
     expect(url).toContain("apikey=KEY");
@@ -106,7 +127,19 @@ describe("provider adapters", () => {
     const now = () => Date.parse("2026-09-29T09:20:00Z");
     const p = metNorwayWeather("WitCar/0.1 (+https://witcar.example)", f, now);
     const data = await p.fetch({ lat: 52.52013, lon: 13.40494 }, signal);
-    expect(data).toEqual({ tempC: 11.4, code: 80, isDay: true, highC: 16, lowC: 2, windKmh: 18, precipProb: null });
+    expect(data).toEqual({
+      tempC: 11.4,
+      code: 80,
+      isDay: true,
+      highC: 16,
+      lowC: 2,
+      windKmh: 18,
+      precipProb: null,
+      days: [
+        { date: "2026-09-29", code: 80, highC: 16, lowC: 9, precipMm: null, windKmh: 18 },
+        { date: "2026-09-30", code: 3, highC: 30, lowC: 2, precipMm: null, windKmh: 18 },
+      ],
+    });
     const [url, init] = f.mock.calls[0]!;
     expect(String(url)).toBe("https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=52.52&lon=13.4");
     expect((init!.headers as Record<string, string>)["user-agent"]).toContain("witcar.example");
@@ -114,6 +147,50 @@ describe("provider adapters", () => {
     await expect(
       metNorwayWeather("ua", jsonFetch({ properties: {} })).fetch({ lat: 1, lon: 2 }, signal),
     ).rejects.toThrow(/unexpected/);
+  });
+
+  it("met-norway: daily summary sums precipitation once and cuts days at solar midnight", () => {
+    const hourly = (time: string, t: number, mm: number, symbol: string) => ({
+      time,
+      data: {
+        instant: { details: { air_temperature: t, wind_speed: 10 } },
+        next_1_hours: { summary: { symbol_code: symbol }, details: { precipitation_amount: mm } },
+      },
+    });
+    const sixHourly = (time: string, t: number, mm: number, symbol: string) => ({
+      time,
+      data: {
+        instant: { details: { air_temperature: t, wind_speed: 2 } },
+        next_6_hours: { summary: { symbol_code: symbol }, details: { precipitation_amount: mm } },
+      },
+    });
+    // lon 150 = UTC+10 solar time: 15:00Z is already the next day locally
+    const days = metDays(
+      [
+        hourly("2026-09-29T02:00:00Z", 10, 0.5, "rain"),
+        hourly("2026-09-29T03:00:00Z", 12, 1, "rain"),
+        sixHourly("2026-09-29T15:00:00Z", 8, 3, "cloudy"),
+      ],
+      150,
+    );
+    expect(days.map((d) => d.date)).toEqual(["2026-09-29", "2026-09-30"]);
+    expect(days[0]).toMatchObject({ highC: 12, lowC: 10, precipMm: 1.5, windKmh: 36, code: 63 });
+    expect(days[1]).toMatchObject({ highC: 8, lowC: 8, precipMm: 3, windKmh: 7, code: 3 });
+    expect(metDays([], 0)).toEqual([]);
+    expect(
+      metDays(
+        Array.from({ length: 10 }, (_, k) =>
+          hourly(`2026-10-${String(k + 1).padStart(2, "0")}T12:00:00Z`, k, 0, "fair"),
+        ),
+        0,
+      ),
+    ).toHaveLength(7);
+  });
+
+  it("mock weather returns a seven day forecast", async () => {
+    const data = await mockWeather(() => 1_790_000_000_000).fetch({ lat: 52.52, lon: 13.41 }, signal);
+    expect(data.days).toHaveLength(7);
+    expect(new Set(data.days!.map((d) => d.date)).size).toBe(7);
   });
 
   it("met-norway symbols map to WMO codes", () => {

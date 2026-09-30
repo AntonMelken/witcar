@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import { z } from "zod";
-import { DEV_SESSION_COOKIE, DEVICE_COOKIE } from "@/lib/auth/cookies";
+import { SESSION_COOKIE, DEVICE_COOKIE } from "@/lib/auth/cookies";
 import { createSupabaseAdminClient, createSupabaseServerClient } from "@/lib/auth/supabase";
 import { getStripe } from "@/lib/billing/stripe";
 import { getDb } from "@/lib/db";
@@ -41,7 +41,7 @@ export const DELETE = handler(
       await deleteAuthUserRow(db, principal.userId);
     }
     const jar = await cookies();
-    jar.delete(DEV_SESSION_COOKIE);
+    jar.delete(SESSION_COOKIE);
     jar.delete(DEVICE_COOKIE);
     return ok({ ok: true });
   },

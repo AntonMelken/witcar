@@ -1,5 +1,6 @@
 import type { CryptoQuote } from "@/widgets/crypto/definition";
 import type { StockQuote } from "@/widgets/stocks/definition";
+import { mockQuote } from "./stocks";
 import { getJson, seeded, UpstreamError, type FetchLike, type Provider } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -10,6 +11,9 @@ interface FinnhubQuote {
   c: number; // current price
   d: number | null; // change
   dp: number | null; // percent change
+  o?: number; // open
+  h?: number; // day high
+  l?: number; // day low
   pc: number; // previous close
   t: number; // unix seconds
 }
@@ -36,6 +40,10 @@ export function finnhubStocks(apiKey: string, fetchImpl: FetchLike = fetch): Pro
         changePct: q.dp ?? null,
         currency: null,
         asOf: q.t ? new Date(q.t * 1000).toISOString() : null,
+        open: q.o || null,
+        high: q.h || null,
+        low: q.l || null,
+        prevClose: q.pc || null,
       };
     },
   };
@@ -47,21 +55,7 @@ export function mockStocks(now: () => number = Date.now): Provider<{ symbol: str
     ttlMs: 2 * 60_000,
     maxStaleMs: 24 * 3600_000,
     cacheKey: (i) => `mock-stock:${i.symbol}`,
-    async fetch(i) {
-      const bucket = Math.floor(now() / 120_000);
-      const base = 20 + seeded(i.symbol) * 480;
-      const drift = (seeded(`${i.symbol}:${bucket}`) - 0.5) * 0.06;
-      const price = Math.round(base * (1 + drift) * 100) / 100;
-      const change = Math.round((price - base) * 100) / 100;
-      return {
-        symbol: i.symbol,
-        price,
-        change,
-        changePct: Math.round((change / base) * 10000) / 100,
-        currency: "USD",
-        asOf: new Date(bucket * 120_000).toISOString(),
-      };
-    },
+    fetch: async (i) => mockQuote(i.symbol, now()),
   };
 }
 

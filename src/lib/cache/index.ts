@@ -30,6 +30,7 @@ export function getGateway(): DataGateway {
         nominatim: env.PROVIDER_DAILY_LIMIT_GEO,
         "open-meteo-geo": env.PROVIDER_DAILY_LIMIT_GEO,
         finnhub: env.PROVIDER_DAILY_LIMIT_STOCKS,
+        twelvedata: env.PROVIDER_DAILY_LIMIT_STOCKS,
         coinmarketcap: env.PROVIDER_DAILY_LIMIT_CRYPTO,
         coingecko: env.PROVIDER_DAILY_LIMIT_CRYPTO,
         ecb: env.PROVIDER_DAILY_LIMIT_FX,

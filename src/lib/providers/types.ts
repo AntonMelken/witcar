@@ -6,6 +6,10 @@ export interface Provider<TIn, TOut> {
   id: string;
   ttlMs: number;
   maxStaleMs: number;
+  /** cache lifetime that depends on the input (e.g. chart range); overrides ttlMs */
+  ttlFor?(input: TIn): number;
+  /** minimum age (ms) before a manual refresh may bypass the cache; default 120 s (protects provider quotas) */
+  forceMinAgeMs?: number;
   cacheKey(input: TIn): string;
   fetch(input: TIn, signal: AbortSignal): Promise<TOut>;
 }

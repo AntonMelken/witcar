@@ -4,7 +4,19 @@ import { Prose } from "@/components/site/Prose";
 
 export const metadata: Metadata = { title: "FAQ" };
 
-const KEYS = ["what", "tesla", "driving", "hotspot", "login", "offline", "data", "cancel"] as const;
+const KEYS = [
+  "what",
+  "tesla",
+  "driving",
+  "hotspot",
+  "login",
+  "account",
+  "apps",
+  "refresh",
+  "offline",
+  "data",
+  "cancel",
+] as const;
 
 export default async function FaqPage() {
   const t = await getTranslations("faq");
