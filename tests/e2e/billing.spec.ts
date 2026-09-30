@@ -13,7 +13,9 @@ const sub = (userId: string, status: string) => ({
   },
 });
 
-test("test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhook-driven)", async ({ page }) => {
+test("@limits test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhook-driven)", async ({
+  page,
+}) => {
   const userId = await login(page);
   await onboard(page.request);
   await createLayout(page.request, [clock("a", 0), clock("b", 4), clock("c", 8)]);
@@ -66,7 +68,15 @@ test("test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhoo
         clock("a", 0),
         clock("b", 4),
         clock("c", 8),
-        { widgetId: "n", type: "notes", x: 0, y: 4, w: 4, h: 4, config: { text: "Hallo" } },
+        {
+          widgetId: "n",
+          type: "notes",
+          x: 0,
+          y: 4,
+          w: 4,
+          h: 4,
+          config: { notes: [{ id: "n1", title: "", text: "Hallo" }], activeId: "n1" },
+        },
       ],
     },
   });
@@ -92,7 +102,7 @@ test("test-mode purchase -> Pro -> cancel -> downgrade without data loss (webhoo
   await expect(page.locator("[data-locked=true]")).toHaveCount(1);
   const full = (await (await page.request.get(`/api/layouts/${id}`)).json()).layout;
   expect(full.widgets).toHaveLength(4);
-  expect(full.widgets.find((w: { type: string }) => w.type === "notes").config.text).toBe("Hallo");
+  expect(full.widgets.find((w: { type: string }) => w.type === "notes").config.notes[0].text).toBe("Hallo");
 });
 
 test("webhook rejects missing or invalid signatures", async ({ request }) => {

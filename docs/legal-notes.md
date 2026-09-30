@@ -7,10 +7,18 @@
 
 - [ ] Impressum (§ 5 DDG) mit ladungsfähiger Anschrift, Kontakt, Hinweis § 19 UStG
 - [ ] Datenschutzerklärung vollständig (Empfänger, Drittlandtransfers, Rechtsgrundlagen, Speicherdauer, Rechte)
-- [ ] AVV abgeschlossen mit: Supabase, Vercel, Stripe, Upstash (falls genutzt), ggf. Error-Tracking
+- [ ] AVV abgeschlossen mit: Supabase, Hosting (Hetzner oder Vercel), Stripe, E-Mail-Versand (z. B. Brevo), ggf.
+      Error-Tracking
 - [ ] AGB (Leistungsbeschreibung, Laufzeit/Kündigung, Haftung, Nutzung im Fahrzeug)
 - [ ] Widerrufsbelehrung + Muster-Widerrufsformular (digitale Dienstleistung)
-- [ ] Datenlizenzen geklärt (G2: D-007, D-008, D-009)
+- [ ] Datenlizenzen: kostenlose kommerzielle Quellen eingebaut (MET Norway, Nominatim/OSM, CoinMarketCap Basic, EZB;
+      D-007, D-009, D-031). Originalbedingungen einmal selbst lesen (waren aus der Entwicklungsumgebung gesperrt):
+      api.met.no/doc/TermsOfService, operations.osmfoundation.org/policies/nominatim, coinmarketcap.com/api (Basic-Plan
+      und Commercial Terms), EZB-Weiterverwendungsregeln für Statistiken
+- [ ] **Aktienkurse:** öffentliche Anzeige nur mit bezahltem Business-/Display-Tarif des Anbieters (D-033); bis dahin Demo-Daten
+      (`STOCKS_PROVIDER=mock`) oder ausgeblendet (`off`); Nutzungsbedingungen und Börsengebühren des gewählten Anbieters lesen
+- [ ] **Namens-Login ohne Passwort** (D-034): Risiko „Konto per Name übernehmbar“ in Datenschutz/AGB benennen; vor Go-Live Passwort
+      oder E-Mail-Bestätigung ergänzen oder bewusst akzeptieren
 - [ ] Markenrecherche „WitCar“ (DPMA/EUIPO), Domain – siehe Abschnitt „Markenrecherche“ unten
 - [x] Quellenhinweise Open-Meteo/GeoNames/CoinGecko und Open-Source-Lizenzhinweise (`/lizenzen`, D-029)
 - [ ] GitHub-Repo ist öffentlich: bewusst so lassen oder privat stellen (D-028)

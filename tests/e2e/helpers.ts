@@ -5,15 +5,16 @@ import { BASE_URL, E2E_ENV } from "../../playwright.config";
 export const ORIGIN = { origin: BASE_URL };
 
 let counter = 0;
-export function uniqueEmail(prefix = "user"): string {
+/** A fresh account name (letters/digits only, unique per call). */
+export function uniqueName(prefix = "user"): string {
   counter++;
-  return `${prefix}-${Date.now().toString(36)}-${counter}@example.com`;
+  return `${prefix} ${Date.now().toString(36)}${counter}`;
 }
 
-/** Dev-auth login (E2E runs with WITCAR_AUTH=dev). Returns the user id. */
-export async function login(ctx: BrowserContext | Page, email = uniqueEmail()): Promise<string> {
+/** Name login (E2E runs with WITCAR_AUTH=name). Creates the account when the name is new. Returns the user id. */
+export async function login(ctx: BrowserContext | Page, name = uniqueName()): Promise<string> {
   const request: APIRequestContext = "request" in ctx ? ctx.request : (ctx as BrowserContext).request;
-  const res = await request.post("/api/auth/dev-login", { data: { email }, headers: ORIGIN });
+  const res = await request.post("/api/auth/name-login", { data: { name }, headers: ORIGIN });
   expect(res.ok()).toBeTruthy();
   return ((await res.json()) as { userId: string }).userId;
 }

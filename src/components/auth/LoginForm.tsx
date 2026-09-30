@@ -3,22 +3,27 @@
 import { useTranslations } from "next-intl";
 import { useState, type FormEvent } from "react";
 
-export function LoginForm({ mode, next }: { mode: "supabase" | "dev"; next: string }) {
+/** Name-only sign-in (default) or the legacy e-mail link (Supabase mode). */
+export function LoginForm({ mode, next }: { mode: "name" | "supabase"; next: string }) {
   const t = useTranslations("auth");
-  const [email, setEmail] = useState("");
-  const [state, setState] = useState<"idle" | "busy" | "sent" | "error">("idle");
+  const [value, setValue] = useState("");
+  const [state, setState] = useState<"idle" | "busy" | "sent" | "error" | "invalid">("idle");
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
     setState("busy");
     try {
-      const res = await fetch(mode === "dev" ? "/api/auth/dev-login" : "/api/auth/magic-link", {
+      const res = await fetch(mode === "name" ? "/api/auth/name-login" : "/api/auth/magic-link", {
         method: "POST",
         headers: { "content-type": "application/json" },
-        body: JSON.stringify(mode === "dev" ? { email } : { email, next }),
+        body: JSON.stringify(mode === "name" ? { name: value } : { email: value, next }),
       });
+      if (res.status === 400 && mode === "name") {
+        setState("invalid");
+        return;
+      }
       if (!res.ok) throw new Error(String(res.status));
-      if (mode === "dev") window.location.assign(next);
+      if (mode === "name") window.location.assign(next);
       else setState("sent");
     } catch {
       setState("error");
@@ -27,8 +32,8 @@ export function LoginForm({ mode, next }: { mode: "supabase" | "dev"; next: stri
 
   if (state === "sent") {
     return (
-      <p className="rounded-xl border border-accent/50 bg-accent/10 p-4" role="status">
-        {t("sent", { email })}
+      <p className="rounded-xl border border-border bg-surface-2 p-4" role="status">
+        {t("sent", { email: value })}
       </p>
     );
   }
@@ -36,22 +41,30 @@ export function LoginForm({ mode, next }: { mode: "supabase" | "dev"; next: stri
   return (
     <form onSubmit={submit} className="space-y-4">
       <label className="block space-y-2">
-        <span className="text-sm font-medium">{t("email")}</span>
+        <span className="text-sm font-medium">{mode === "name" ? t("name") : t("email")}</span>
         <input
           className="input"
-          type="email"
-          name="email"
-          autoComplete="email"
-          inputMode="email"
+          name={mode === "name" ? "name" : "email"}
+          type={mode === "name" ? "text" : "email"}
+          autoComplete={mode === "name" ? "nickname" : "email"}
+          inputMode={mode === "name" ? "text" : "email"}
+          maxLength={mode === "name" ? 32 : 254}
+          minLength={mode === "name" ? 2 : undefined}
           required
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          autoFocus={mode === "name"}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
         />
       </label>
-      <button type="submit" className="btn btn-primary w-full" disabled={state === "busy"}>
-        {mode === "dev" ? t("devLogin") : t("sendLink")}
+      <button type="submit" className="btn btn-primary w-full" disabled={state === "busy" || value.trim().length < 2}>
+        {mode === "name" ? t("continue") : t("sendLink")}
       </button>
-      {mode === "dev" ? <p className="text-xs text-warning">{t("devHint")}</p> : null}
+      {mode === "name" ? <p className="text-xs text-dim">{t("nameHint")}</p> : null}
+      {state === "invalid" ? (
+        <p className="text-negative text-sm" role="alert">
+          {t("invalidName")}
+        </p>
+      ) : null}
       {state === "error" ? (
         <p className="text-negative text-sm" role="alert">
           {t("error")}

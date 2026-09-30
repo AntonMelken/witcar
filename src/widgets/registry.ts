@@ -2,6 +2,7 @@ import type { z } from "zod";
 import { clockSchema } from "./clock/schema";
 import { cryptoSchema } from "./crypto/schema";
 import { dateSchema } from "./date/schema";
+import { fxSchema } from "./fx/schema";
 import { ACTIVE_WIDGET_TYPES, getWidgetBaseMeta, isActiveWidgetType, widgetMetas, type ActiveWidgetType } from "./meta";
 import { notesSchema } from "./notes/schema";
 import { stocksSchema } from "./stocks/schema";
@@ -24,6 +25,7 @@ export const widgetSchemas: Record<ActiveWidgetType, z.ZodType> = {
   weather: weatherSchema,
   stocks: stocksSchema,
   crypto: cryptoSchema,
+  fx: fxSchema,
   timer: timerSchema,
   notes: notesSchema,
 };

@@ -19,26 +19,26 @@
   },
   "landing": {
     "headline": "Dein Überblick im Auto-Browser.",
-    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, mit Fokus auf Tesla-Fahrzeuge.",
+    "subline": "Uhrzeit, Wetter, Kurse, Timer und Notizen als ruhiges Widget-Dashboard – gemacht für den Browser deines Fahrzeugs, mit Fokus auf Tesla-Fahrzeuge. Tippe ein Widget an und öffne die passende App dazu.",
     "ctaStart": "Kostenlos starten",
     "ctaCar": "Im Auto anmelden (QR)",
     "ctaDemo": "Demo ansehen",
     "positioning": "Ideal beim Laden und Parken. Fahrmodus experimentell.",
     "f1Title": "Große, klare Widgets",
     "f1Text": "Wenige Informationen, große Zahlen, ruhige Darstellung. Du ordnest alles im Stand an.",
-    "f2Title": "Anmelden per QR-Code",
-    "f2Text": "Im Auto tippt niemand Passwörter: QR-Code mit dem Handy scannen, bestätigen, fertig.",
+    "f2Title": "Anmelden mit deinem Namen",
+    "f2Text": "Kein Passwort, keine E-Mail: Name eingeben, fertig. Im Auto geht es auch per QR-Code mit dem Handy.",
     "f3Title": "Funktioniert auch bei Funklöchern",
     "f3Text": "Letzte Daten bleiben sichtbar und werden dezent als „veraltet“ markiert. Die Verbindung kommt von allein zurück.",
-    "f4Title": "Wetter für deine Stadt",
-    "f4Text": "Aktuelle Temperatur und Tageswerte für einen Ort deiner Wahl – ohne Standortabfrage.",
-    "f5Title": "Aktien & Krypto",
-    "f5Text": "Verzögerte Kurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
+    "f4Title": "Wetter und Zeit an mehreren Orten",
+    "f4Text": "Wochenvorschau von Montag bis Sonntag, mehrere Orte und eine Weltuhr mit eigenen Zeitzonen – ohne Standortabfrage.",
+    "f5Title": "Aktien, Krypto & Wechselkurse",
+    "f5Text": "Aktien mit Kursverlauf und einfachen Werkzeugen, Krypto-Kurse und EZB-Referenzkurse mit klarer Richtungsanzeige. Keine Anlageberatung.",
     "f6Title": "Datensparsam, gehostet in Frankfurt",
     "f6Text": "Datenbank und App-Server in Frankfurt am Main (EU), keine Tracker, keine Werbung. Export und Löschung jederzeit.",
-    "pricingTitle": "Kostenlos starten, Pro bei Bedarf",
-    "pricingText": "Free mit 3 Widgets. Pro mit allen Widgets, mehreren Layouts und bis zu 5 Geräten.",
-    "pricingCta": "Preise ansehen"
+    "pricingTitle": "Aktuell kostenlos und ohne Einschränkungen",
+    "pricingText": "Alle Widgets und Funktionen stehen dir ohne Limit zur Verfügung.",
+    "pricingCta": "Mehr erfahren"
   },
   "pricing": {
     "title": "Preise",
@@ -46,7 +46,7 @@
     "cancelled": "Der Kauf wurde abgebrochen. Es wurde nichts berechnet.",
     "rowWidgets": "Widgets pro Layout",
     "rowLayouts": "Layouts",
-    "rowTickers": "Ticker/Coins pro Widget",
+    "rowTickers": "Kurse pro Widget (Coins, Währungen)",
     "rowDevices": "Gekoppelte Geräte",
     "rowNotes": "Notizen",
     "all": "alle",
@@ -57,7 +57,9 @@
     "priceTbd": "Preis folgt",
     "orYearly": "oder {amount} / Jahr",
     "loginToUpgrade": "Anmelden und upgraden",
-    "taxNote": "Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet."
+    "taxNote": "Endpreise. Gemäß § 19 UStG wird keine Umsatzsteuer berechnet.",
+    "openTitle": "Kostenlos und ohne Einschränkungen",
+    "openText": "Aktuell stehen dir alle Widgets und Funktionen ohne Limit zur Verfügung. Melde dich einfach mit deinem Namen an."
   },
   "billing": {
     "notConfigured": "Der Kauf ist noch nicht freigeschaltet.",
@@ -90,7 +92,7 @@
     },
     "login": {
       "q": "Wie melde ich mich im Auto an?",
-      "a": "Öffne WitCar im Auto und wähle „Mit Handy anmelden“. Scanne den QR-Code mit dem Handy und bestätige. Alternativ gibst du den Code am Handy von Hand ein."
+      "a": "Gib in WitCar einfach deinen Namen ein – mit demselben Namen landest du auf jedem Gerät im selben Konto. Im Auto kannst du alternativ „Mit Handy anmelden“ wählen und den QR-Code mit dem Handy scannen."
     },
     "offline": {
       "q": "Was passiert bei Funklöchern?",
@@ -98,25 +100,39 @@
     },
     "data": {
       "q": "Welche Daten speichert WitCar?",
-      "a": "Nur das Nötigste: E-Mail, deine Layouts und Einstellungen, gekoppelte Geräte und den Abo-Status. Keine Tracker, keine Standortabfrage."
+      "a": "Nur das Nötigste: den Namen, mit dem du dich anmeldest, deine Layouts und Einstellungen (inklusive Notizen) und gekoppelte Geräte. Keine Tracker, keine Standortabfrage."
     },
     "cancel": {
       "q": "Wie kündige ich Pro?",
-      "a": "Jederzeit in den Einstellungen über „Abo verwalten“. Bei einem Downgrade werden keine Daten gelöscht."
+      "a": "Aktuell ist WitCar kostenlos und ohne Abo nutzbar. Sollte es später Pro geben, kündigst du jederzeit in den Einstellungen über „Abo verwalten“; bei einem Downgrade werden keine Daten gelöscht."
+    },
+    "account": {
+      "q": "Brauche ich ein Passwort?",
+      "a": "Nein. WitCar fragt nur nach einem Namen. Bedenke: Wer deinen Namen kennt, kann sich in dein Konto einloggen. Lege dort deshalb keine vertraulichen Notizen ab und wähle einen Namen, den nicht jeder errät."
+    },
+    "apps": {
+      "q": "Was passiert, wenn ich ein Widget antippe?",
+      "a": "Es öffnet sich die passende App: Bei der Uhr wählst du Zeitzonen und deinen Standort, beim Wetter Orte und die Vorhersage bis Sonntag, bei Aktien Kursverlauf und einfache Werkzeuge, beim Timer die Zeit und bei Notizen mehrere Notizen. Änderungen werden automatisch gespeichert."
+    },
+    "refresh": {
+      "q": "Die Daten wirken veraltet – was tun?",
+      "a": "Tippe im Dashboard auf „Daten aktualisieren“. WitCar holt die Werte dann sofort neu, soweit die Datenanbieter es erlauben (Wetter mindestens alle 5 Minuten, Kurse etwa jede Minute). Ist das Netz weg, bleiben die letzten Werte sichtbar."
     }
   },
   "auth": {
     "title": "Anmelden",
-    "subtitle": "Wir schicken dir einen Anmeldelink per E-Mail. Kein Passwort nötig.",
+    "subtitle": "Gib deinen Namen ein – mehr brauchst du nicht. Mit demselben Namen landest du auf jedem Gerät im selben Konto.",
     "linkError": "Der Anmeldelink ist ungültig oder abgelaufen. Bitte fordere einen neuen an.",
-    "carHint": "Bist du gerade im Auto? Melde dich bequem per QR-Code mit dem Handy an.",
+    "carHint": "Im Auto? Gib dort einfach ebenfalls deinen Namen ein – oder melde dich per QR-Code mit dem Handy an.",
     "carButton": "Mit Handy koppeln",
     "sent": "Link gesendet an {email}. Öffne die E-Mail auf diesem Gerät.",
+    "name": "Dein Name",
     "email": "E-Mail-Adresse",
-    "devLogin": "Anmelden (lokal)",
+    "continue": "Los geht’s",
     "sendLink": "Anmeldelink senden",
-    "devHint": "Lokaler Entwicklungsmodus: Anmeldung ohne E-Mail.",
-    "error": "Das hat nicht geklappt. Bitte prüfe die Adresse und versuche es erneut."
+    "nameHint": "Kein Passwort, keine E-Mail. Wer deinen Namen kennt, kann sich in dein Konto einloggen – wähle ihn also nicht zu einfach.",
+    "invalidName": "Bitte einen Namen mit 2–32 Zeichen eingeben (Buchstaben, Zahlen, Leerzeichen, . _ - ').",
+    "error": "Das hat nicht geklappt. Bitte erneut versuchen."
   },
   "pair": {
     "revoked": "Dieses Gerät wurde abgemeldet. Bitte erneut koppeln.",
@@ -155,7 +171,15 @@
     "edit": "Bearbeiten",
     "driveMode": "Fahrmodus",
     "settings": "Einstellungen",
-    "empty": "Noch keine Widgets. Richte dein Layout im Editor oder am Handy ein."
+    "empty": "Noch keine Widgets. Richte dein Layout im Editor oder am Handy ein.",
+    "refresh": "Daten aktualisieren",
+    "updatedAt": "Aktualisiert {time}",
+    "refreshFailed": "Aktualisierung fehlgeschlagen",
+    "closeApp": "Schließen",
+    "saving": "Speichert …",
+    "saved": "Gespeichert",
+    "saveError": "Speichern fehlgeschlagen",
+    "loadingApp": "Lädt …"
   },
   "drive": {
     "exitHint": "Halten zum Beenden",
@@ -184,7 +208,41 @@
       "fields": {
         "showSeconds": "Sekunden anzeigen",
         "timeZone": "Zeitzone",
-        "label": "Beschriftung"
+        "label": "Beschriftung",
+        "hour12": "12-Stunden-Anzeige (AM/PM)",
+        "zonesHint": "Weitere Zeitzonen und deinen Standort wählst du im Dashboard: Uhr antippen."
+      },
+      "tomorrow": "morgen",
+      "yesterday": "gestern",
+      "app": {
+        "main": "Hauptuhr",
+        "seconds": "Sekunden anzeigen",
+        "hour12": "12-Stunden-Anzeige (AM/PM)",
+        "name": "Bezeichnung",
+        "myLocation": "Mein Standort",
+        "myTime": "Meine Zeit",
+        "myTimeHint": "Die Uhr folgt der Zeitzone dieses Geräts. Im Auto ist das die Einstellung des Fahrzeugs.",
+        "deviceZone": "Zeitzone dieses Geräts: {zone}",
+        "isMain": "Hauptuhr",
+        "useLocal": "Als Hauptuhr",
+        "locate": "Meinen Standort ermitteln",
+        "locating": "Ermittle Standort …",
+        "locateDenied": "Der Standort ist nicht verfügbar oder wurde nicht freigegeben. Wähle unten eine Stadt.",
+        "nearest": "Nächste Stadt: {city}",
+        "kmAway": "{km} km entfernt",
+        "apply": "Übernehmen",
+        "zones": "Weitere Zeitzonen",
+        "zonesHint": "Bis zu {max} weitere Orte neben der Hauptuhr.",
+        "noZones": "Noch keine weiteren Zeitzonen.",
+        "makeMain": "{name} zur Hauptuhr machen",
+        "makeMainShort": "Zur Hauptuhr",
+        "remove": "{name} entfernen",
+        "add": "Zeitzone hinzufügen",
+        "searchPlaceholder": "Stadt, Land oder Zeitzone suchen",
+        "noResults": "Keine Treffer.",
+        "setMain": "{name} zur Hauptuhr machen",
+        "setMainShort": "Zur Hauptuhr",
+        "addZone": "{name} hinzufügen"
       }
     },
     "date": {
@@ -212,7 +270,29 @@
         "storm": "Gewitter"
       },
       "fields": {
-        "location": "Ort"
+        "location": "Ort",
+        "showWeek": "Wochenvorschau anzeigen (bei genug Platz)",
+        "extraHint": "Weitere Orte und die Vorhersage bis Sonntag siehst du im Dashboard: Wetter antippen."
+      },
+      "today": "Heute",
+      "app": {
+        "places": "Orte",
+        "placesHint": "Bis zu {max} Orte. Der Hauptort steht im Widget vorn.",
+        "addPlace": "Ort hinzufügen",
+        "searchPlaceholder": "Stadt suchen",
+        "search": "Suchen",
+        "searchError": "Suche gerade nicht möglich.",
+        "noResults": "Keine Treffer.",
+        "makeMain": "Zum Hauptort",
+        "isMain": "Hauptort",
+        "remove": "{name} entfernen",
+        "high": "Höchstwert",
+        "low": "Tiefstwert",
+        "wind": "Wind",
+        "rain": "Regenrisiko",
+        "week": "Die nächsten 7 Tage",
+        "noForecast": "Die Vorhersage wird geladen. Tippe oben auf Aktualisieren, falls sie fehlt.",
+        "showWeek": "Wochenvorschau im Widget anzeigen (bei genug Platz)"
       }
     },
     "stocks": {
@@ -220,10 +300,52 @@
       "demoData": "Demo-Daten",
       "disclaimer": "Kurse verzögert, keine Anlageberatung",
       "unavailable": "Kurs nicht verfügbar",
+      "disabled": "Aktienkurse sind derzeit nicht verfügbar. Ersetze die Kachel im Editor, z. B. durch Wechselkurse.",
       "loading": "Lädt …",
       "fields": {
         "symbols": "Ticker-Symbole",
         "showChange": "Veränderung anzeigen"
+      },
+      "app": {
+        "noHistoryProvider": "Der Kursverlauf ist mit dem aktuellen Datenanbieter nicht verfügbar.",
+        "historyUnavailable": "Kursverlauf gerade nicht verfügbar. Bitte später erneut versuchen.",
+        "watchlist": "Meine Aktien",
+        "watchlistHint": "Bis zu {max} Werte. Tippe einen Wert an, um den Kursverlauf zu sehen.",
+        "remove": "{symbol} entfernen",
+        "range": "Zeitraum",
+        "ranges": {
+          "1T": "1 T",
+          "1W": "1 W",
+          "1M": "1 M",
+          "1J": "1 J"
+        },
+        "average": "Gleitender Durchschnitt",
+        "averageShort": "Durchschnitt",
+        "chartLabel": "Kursverlauf {symbol}, Zeitraum {range}",
+        "open": "Eröffnung",
+        "dayHigh": "Tageshoch",
+        "dayLow": "Tagestief",
+        "prevClose": "Vortagesschluss",
+        "week52High": "52-Wochen-Hoch",
+        "week52Low": "52-Wochen-Tief",
+        "periodHigh": "Hoch im Zeitraum",
+        "periodLow": "Tief im Zeitraum",
+        "periodChange": "Veränderung im Zeitraum",
+        "add": "Aktie hinzufügen",
+        "searchPlaceholder": "Name oder Symbol suchen",
+        "search": "Suchen",
+        "searchError": "Suche gerade nicht möglich.",
+        "full": "Maximal {max} Werte pro Widget.",
+        "addSymbol": "Symbol {symbol} hinzufügen",
+        "noResults": "Keine Treffer.",
+        "added": "In der Liste",
+        "calc": "Positionsrechner",
+        "calcHint": "Wert deiner Aktien und Gewinn oder Verlust seit dem Kauf. Die Eingaben bleiben auf diesem Gerät.",
+        "quantity": "Stückzahl",
+        "buyPrice": "Kaufkurs pro Stück (optional)",
+        "value": "Aktueller Wert",
+        "cost": "Kaufwert",
+        "gain": "Gewinn / Verlust"
       }
     },
     "crypto": {
@@ -232,8 +354,19 @@
       "unavailable": "Kurs nicht verfügbar",
       "loading": "Lädt …",
       "fields": {
-        "coins": "Coins (CoinGecko-ID, z. B. bitcoin)",
+        "coins": "Coins (Kurzname, z. B. bitcoin, ethereum)",
         "vs": "Währung"
+      }
+    },
+    "fx": {
+      "title": "Wechselkurse",
+      "demoData": "Demo-Daten",
+      "credit": "EZB-Referenzkurse {date}",
+      "unavailable": "Kurse gerade nicht verfügbar",
+      "loading": "Lädt …",
+      "fields": {
+        "currencies": "Währungen (ISO-Code, z. B. USD)",
+        "showChange": "Veränderung zum Vortag anzeigen"
       }
     },
     "timer": {
@@ -243,17 +376,56 @@
       "start": "Start",
       "reset": "Zurücksetzen",
       "fields": {
-        "durationMin": "Dauer (Minuten)",
+        "duration": "Dauer",
         "label": "Beschriftung"
+      },
+      "app": {
+        "progress": "Fortschritt",
+        "addMinutes": "{min} Min.",
+        "setTime": "Zeit einstellen",
+        "setTimeHint": "Eingestellte Zeit: {time}. Sie wird gespeichert.",
+        "presets": "Schnellwahl",
+        "minutes": "{min} Min.",
+        "hour": "1 Std.",
+        "steps": "Feinjustierung",
+        "stepMinute": "1 Min.",
+        "stepSeconds": "{sec} Sek.",
+        "own": "Eigene Zeit eingeben",
+        "keypad": "Ziffernblock",
+        "backspace": "Letzte Ziffer löschen",
+        "clear": "Leeren",
+        "apply": "{time} einstellen",
+        "applyEmpty": "Zeit eingeben",
+        "tooLong": "Maximal 24 Stunden."
       }
     },
     "notes": {
       "title": "Notiz",
       "empty": "Leere Notiz",
       "fields": {
-        "text": "Text"
+        "hint": "Notizen schreibst und wählst du im Dashboard: Notiz antippen."
+      },
+      "count": "Notiz {index} von {total}",
+      "app": {
+        "list": "Notizen",
+        "count": "{count} von {max}",
+        "new": "Neue Notiz",
+        "none": "Noch keine Notizen.",
+        "untitled": "Ohne Titel",
+        "isShown": "Wird im Widget angezeigt",
+        "show": "{name} im Widget anzeigen",
+        "showShort": "Im Widget anzeigen",
+        "editor": "Notiz",
+        "titleLabel": "Titel",
+        "textLabel": "Text",
+        "showInWidget": "Im Widget anzeigen",
+        "confirmDelete": "Wirklich löschen?",
+        "delete": "Löschen",
+        "cancel": "Abbrechen",
+        "pick": "Wähle links eine Notiz oder lege eine neue an."
       }
-    }
+    },
+    "openApp": "{name} öffnen"
   },
   "editor": {
     "defaultName": "Mein Dashboard",
@@ -274,6 +446,7 @@
       "weather": "Wetter",
       "stocks": "Aktien",
       "crypto": "Krypto",
+      "fx": "Wechselkurse",
       "timer": "Timer",
       "notes": "Notiz",
       "calendar": "Kalender"
@@ -336,7 +509,10 @@
     "right": "Nach rechts",
     "earlier": "Früher",
     "later": "Später",
-    "selectHint": "Tippe auf ein Widget, um es zu konfigurieren."
+    "selectHint": "Tippe auf ein Widget, um es zu konfigurieren.",
+    "durationHours": "Stunden",
+    "durationMinutes": "Minuten",
+    "durationSeconds": "Sekunden"
   },
   "presets": {
     "compact": {
@@ -403,11 +579,13 @@
     "manageSubscription": "Abo verwalten",
     "downgradeNote": "Bei einem Downgrade werden keine Daten gelöscht; Widgets über dem Free-Limit werden gesperrt angezeigt.",
     "account": "Konto",
-    "signedInAs": "Angemeldet als {email}",
+    "signedInAs": "Angemeldet als {name}",
     "export": "Daten exportieren (JSON)",
     "signOut": "Abmelden",
     "deleteHint": "Konto endgültig löschen: Tippe LÖSCHEN zur Bestätigung. Ein laufendes Abo wird beendet.",
     "deleteConfirmLabel": "Bestätigung",
-    "delete": "Konto löschen"
+    "delete": "Konto löschen",
+    "access": "Zugang",
+    "openAccess": "WitCar ist derzeit für alle kostenlos und ohne Einschränkungen nutzbar."
   }
 }

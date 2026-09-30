@@ -33,7 +33,7 @@ jobs:
         env:
           NEXT_PUBLIC_SITE_URL: http://localhost:3100
           WITCAR_DB: pglite
-          WITCAR_AUTH: dev
+          WITCAR_AUTH: name
           WITCAR_ALLOW_DEV_BACKEND: "1"
           WITCAR_SESSION_SECRET: e2e-session-secret-0123456789-abcdefghij
           WEATHER_PROVIDER: mock

@@ -1,5 +1,6 @@
 import type { CryptoQuote } from "@/widgets/crypto/definition";
 import type { StockQuote } from "@/widgets/stocks/definition";
+import { mockQuote } from "./stocks";
 import { getJson, seeded, UpstreamError, type FetchLike, type Provider } from "./types";
 
 // ---------------------------------------------------------------------------
@@ -10,6 +11,9 @@ interface FinnhubQuote {
   c: number; // current price
   d: number | null; // change
   dp: number | null; // percent change
+  o?: number; // open
+  h?: number; // day high
+  l?: number; // day low
   pc: number; // previous close
   t: number; // unix seconds
 }
@@ -36,6 +40,10 @@ export function finnhubStocks(apiKey: string, fetchImpl: FetchLike = fetch): Pro
         changePct: q.dp ?? null,
         currency: null,
         asOf: q.t ? new Date(q.t * 1000).toISOString() : null,
+        open: q.o || null,
+        high: q.h || null,
+        low: q.l || null,
+        prevClose: q.pc || null,
       };
     },
   };
@@ -47,21 +55,7 @@ export function mockStocks(now: () => number = Date.now): Provider<{ symbol: str
     ttlMs: 2 * 60_000,
     maxStaleMs: 24 * 3600_000,
     cacheKey: (i) => `mock-stock:${i.symbol}`,
-    async fetch(i) {
-      const bucket = Math.floor(now() / 120_000);
-      const base = 20 + seeded(i.symbol) * 480;
-      const drift = (seeded(`${i.symbol}:${bucket}`) - 0.5) * 0.06;
-      const price = Math.round(base * (1 + drift) * 100) / 100;
-      const change = Math.round((price - base) * 100) / 100;
-      return {
-        symbol: i.symbol,
-        price,
-        change,
-        changePct: Math.round((change / base) * 10000) / 100,
-        currency: "USD",
-        asOf: new Date(bucket * 120_000).toISOString(),
-      };
-    },
+    fetch: async (i) => mockQuote(i.symbol, now()),
   };
 }
 
@@ -109,6 +103,54 @@ export function coingeckoCrypto(
         currency: i.vs,
         asOf: typeof updated === "number" ? new Date(updated * 1000).toISOString() : null,
       };
+    },
+  };
+}
+
+interface CmcListing {
+  data?: {
+    slug: string;
+    quote?: Record<string, { price?: number | null; percent_change_24h?: number | null; last_updated?: string }>;
+  }[];
+}
+
+/**
+ * CoinMarketCap Basic (free, commercial use for one product, D-009): ONE call
+ * returns the top 250 coins (1 credit) and is shared by every user and coin.
+ * TTL 10 min -> max. 144 calls/day per currency (15,000 credits/month).
+ * Coins are addressed by slug ("bitcoin", "ethereum"), like the widget config.
+ */
+export function coinmarketcapListings(
+  apiKey: string,
+  fetchImpl: FetchLike = fetch,
+): Provider<{ vs: "eur" | "usd" }, Record<string, CryptoQuote>> {
+  return {
+    id: "coinmarketcap",
+    ttlMs: 10 * 60_000,
+    maxStaleMs: 24 * 3600_000,
+    cacheKey: (i) => `crypto-top:${i.vs}`,
+    async fetch(i, signal) {
+      const convert = i.vs.toUpperCase();
+      const params = new URLSearchParams({ start: "1", limit: "250", convert });
+      const body = await getJson<CmcListing>(
+        fetchImpl,
+        `https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest?${params}`,
+        { signal, headers: { "x-cmc_pro_api_key": apiKey } },
+      );
+      const out: Record<string, CryptoQuote> = {};
+      for (const coin of body.data ?? []) {
+        const q = coin.quote?.[convert];
+        if (typeof q?.price !== "number") continue;
+        out[coin.slug] = {
+          id: coin.slug,
+          price: q.price,
+          change24hPct: typeof q.percent_change_24h === "number" ? q.percent_change_24h : null,
+          currency: i.vs,
+          asOf: q.last_updated ?? null,
+        };
+      }
+      if (Object.keys(out).length === 0) throw new UpstreamError("coinmarketcap: unexpected payload");
+      return out;
     },
   };
 }

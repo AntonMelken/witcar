@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { decodeDevSession, encodeDevSession } from "@/lib/auth/dev";
+import { cleanName, decodeSession, encodeSession, nameEmail, nameKey } from "@/lib/auth/name";
 import { safeNext } from "@/lib/auth/redirect";
 import { formatUserCode, generateUserCode, normalizeUserCode, sha256, USER_CODE_ALPHABET } from "@/lib/auth/tokens";
 
@@ -26,18 +26,43 @@ describe("device codes", () => {
   });
 });
 
-describe("dev session cookie", () => {
+describe("name session cookie", () => {
   const secret = "s".repeat(40);
   it("round-trips and rejects tampering/expiry", () => {
-    const v = encodeDevSession({ uid: "u1", email: "a@b.c", exp: 2_000 }, secret);
-    expect(decodeDevSession(v, secret, 1_000)).toEqual({ uid: "u1", email: "a@b.c", exp: 2_000 });
-    expect(decodeDevSession(v, secret, 3_000)).toBeNull();
-    expect(decodeDevSession(v, "other".repeat(10), 1_000)).toBeNull();
+    const v = encodeSession({ uid: "u1", name: "Anton", exp: 2_000 }, secret);
+    expect(decodeSession(v, secret, 1_000)).toEqual({ uid: "u1", name: "Anton", exp: 2_000 });
+    expect(decodeSession(v, secret, 3_000)).toBeNull();
+    expect(decodeSession(v, "other".repeat(10), 1_000)).toBeNull();
     const [payload] = v.split(".");
-    const forged = Buffer.from(JSON.stringify({ uid: "admin", email: "x", exp: 9e15 })).toString("base64url");
-    expect(decodeDevSession(`${forged}.${v.split(".")[1]}`, secret, 1_000)).toBeNull();
-    expect(decodeDevSession(`${payload}.`, secret, 1_000)).toBeNull();
-    expect(decodeDevSession(undefined, secret)).toBeNull();
+    const forged = Buffer.from(JSON.stringify({ uid: "admin", name: "x", exp: 9e15 })).toString("base64url");
+    expect(decodeSession(`${forged}.${v.split(".")[1]}`, secret, 1_000)).toBeNull();
+    expect(decodeSession(`${payload}.`, secret, 1_000)).toBeNull();
+    expect(decodeSession(undefined, secret)).toBeNull();
+  });
+});
+
+describe("account names", () => {
+  it("accepts ordinary names and cleans whitespace", () => {
+    expect(cleanName("  Anton   Melken ")).toBe("Anton Melken");
+    expect(cleanName("Zoë")).toBe("Zoë");
+    expect(cleanName("Юрий")).toBe("Юрий");
+    expect(cleanName("O'Neil-Smith")).toBe("O'Neil-Smith");
+  });
+
+  it("rejects too short/long names and markup or control characters", () => {
+    expect(cleanName("A")).toBeNull();
+    expect(cleanName("x".repeat(33))).toBeNull();
+    expect(cleanName("<script>")).toBeNull();
+    expect(cleanName("a\u0000b")).toBeNull();
+    expect(cleanName(" .abc")).toBeNull();
+    expect(cleanName("")).toBeNull();
+  });
+
+  it("identifies a name case-insensitively and maps it to a stable placeholder address", () => {
+    expect(nameKey("  ANTON  Melken")).toBe(nameKey("anton melken"));
+    expect(nameEmail(nameKey("Anton"))).toBe(nameEmail(nameKey("anton ")));
+    expect(nameEmail("a")).not.toBe(nameEmail("b"));
+    expect(nameEmail("a")).toMatch(/^[0-9a-f]{64}@name\.witcar\.invalid$/);
   });
 });
 

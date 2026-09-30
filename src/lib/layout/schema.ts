@@ -125,7 +125,7 @@ export function applyPlanForDisplay(widgets: readonly LayoutWidget[], plan: Plan
     if (meta && !locked) {
       const parsed = meta.configSchema.safeParse(w.config ?? {});
       config = (parsed.success ? parsed.data : meta.defaultConfig) as Record<string, unknown>;
-      for (const key of ["symbols", "coins"]) {
+      for (const key of ["symbols", "coins", "currencies"]) {
         const list = config[key];
         if (Array.isArray(list) && list.length > limits.tickersPerWidget) {
           config = { ...config, [key]: list.slice(0, limits.tickersPerWidget) };

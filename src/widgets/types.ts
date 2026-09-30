@@ -1,19 +1,31 @@
 import type { ComponentType } from "react";
 import type { z } from "zod";
 
-export const WIDGET_TYPES = ["clock", "date", "weather", "stocks", "crypto", "timer", "notes", "calendar"] as const;
+export const WIDGET_TYPES = [
+  "clock",
+  "date",
+  "weather",
+  "stocks",
+  "crypto",
+  "fx",
+  "timer",
+  "notes",
+  "calendar",
+] as const;
 
 export type WidgetType = (typeof WIDGET_TYPES)[number];
 
 export type DashboardMode = "standard" | "drive";
 
 /** Kinds of server-side data a widget can request through /api/widgets/batch. */
-export type DataKind = "weather" | "stock" | "crypto";
+export type DataKind = "weather" | "stock" | "history" | "crypto" | "fx";
 
 export type DataRequest =
   | { kind: "weather"; params: { lat: number; lon: number } }
   | { kind: "stock"; params: { symbol: string } }
-  | { kind: "crypto"; params: { id: string; vs: "eur" | "usd" } };
+  | { kind: "history"; params: { symbol: string; range: "1T" | "1W" | "1M" | "1J" } }
+  | { kind: "crypto"; params: { id: string; vs: "eur" | "usd" } }
+  | { kind: "fx"; params: Record<string, never> };
 
 /** Uniform provider result format (masterplan §11.1). */
 export interface ProviderResult<T = unknown> {
@@ -44,7 +56,11 @@ export type FieldSpec =
       pattern: string;
       transform?: "upper" | "lower";
     }
-  | { key: string; kind: "location"; label: string };
+  | { key: string; kind: "location"; label: string }
+  /** whole seconds, edited as hours / minutes / seconds */
+  | { key: string; kind: "duration"; label: string; minSec: number; maxSec: number }
+  /** explanatory text without a value (e.g. "edit this in the dashboard") */
+  | { key: string; kind: "hint"; label: string };
 
 /** Zod-free metadata: safe to ship in the dashboard bundle (§17 budget). */
 export interface WidgetBaseMeta<C = Record<string, unknown>> {
@@ -58,6 +74,8 @@ export interface WidgetBaseMeta<C = Record<string, unknown>> {
   driveSafe: boolean;
   /** null = purely local, no network */
   refreshMs: number | null;
+  /** data age that is still normal (server cache TTL + poll interval); stale marker basis, default refreshMs */
+  staleAfterMs?: number;
   proOnly: boolean;
   fields: FieldSpec[];
   /** server data this widget needs for a given config */
@@ -81,6 +99,33 @@ export interface WidgetProps<C = Record<string, unknown>> {
 
 export type WidgetComponent<C = Record<string, unknown>> = ComponentType<WidgetProps<C>>;
 
+export type SaveState = "idle" | "saving" | "saved" | "error";
+
+/**
+ * Props of a widget app: the full-screen detail view that opens when a widget
+ * is tapped (standard mode only). Apps read and change the widget config;
+ * changes are saved to the layout by the dashboard.
+ */
+export interface AppProps<C = Record<string, unknown>> {
+  instanceId: string;
+  config: C;
+  /** data of the dashboard requests (all widgets), keyed like the batch response */
+  data: Record<string, DataEntry>;
+  /** replaces the widget config (validated and saved by the dashboard, debounced) */
+  setConfig: (next: C) => void;
+  saveState: SaveState;
+  /** true on the public demo: changes stay in this browser tab */
+  demo: boolean;
+  /** forced refresh of all dashboard data */
+  refresh: () => Promise<boolean>;
+  refreshing: boolean;
+  /** an app that loads its own data registers a function here that the refresh button also calls */
+  registerRefresh: (fn: (() => Promise<unknown>) | null) => void;
+  close: () => void;
+}
+
+export type WidgetAppComponent<C = Record<string, unknown>> = ComponentType<AppProps<C>>;
+
 /** Full definition as described in masterplan §9.1 (meta + schema + client component). */
 export interface WidgetDefinition<S extends z.ZodType = z.ZodType> extends WidgetMeta<S> {
   Component: WidgetComponent<z.infer<S>>;
@@ -94,5 +139,9 @@ export function dataKey(req: DataRequest): string {
       return `stock:${req.params.symbol}`;
     case "crypto":
       return `crypto:${req.params.id}:${req.params.vs}`;
+    case "history":
+      return `history:${req.params.symbol}:${req.params.range}`;
+    case "fx":
+      return "fx:ecb";
   }
 }

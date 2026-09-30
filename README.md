@@ -9,10 +9,11 @@ Masterplan: [docs/WITCAR_MASTERPLAN.md](docs/WITCAR_MASTERPLAN.md) · Entscheidu
 
 ```bash
 pnpm install
-pnpm dev            # http://localhost:3000 – PGlite + Dev-Login + Mock-Daten (siehe .env.local)
+pnpm dev            # http://localhost:3000 – PGlite + Namens-Login + Mock-Daten (siehe .env.local)
 ```
 
-- Anmelden: `/login` → beliebige E-Mail → „Anmelden (lokal)“
+- Anmelden: `/login` → beliebiger Name → „Los geht’s“ (gleicher Name = gleiches Konto, kein Passwort)
+- Widget antippen → App (Zeitzonen, Wochenvorschau, Aktien-Kursverlauf, Timer, Notizen); Aktualisieren-Button unten rechts
 - Auto simulieren: zweites Browserfenster (privat) → `/pair`, Code am „Handy“ unter `/link` eingeben
 - Demo ohne Konto: `/demo` · Werkzeuge: `/tools/drive-test`, `/tools/calibrate`
 
@@ -44,11 +45,11 @@ Einmalig im [Dashboard](https://supabase.com/dashboard/project/smyejbxtbivqvztpv
    in `.env.local` bei `DATABASE_URL=` eintragen.
 3. **Secret Key**: Project Settings → API Keys → _Secret keys_ → Key (`sb_secret_…`) in `.env.local` bei
    `SUPABASE_SERVICE_ROLE_KEY=` eintragen.
-4. **Login-Weiterleitungen**: Authentication → URL Configuration
+4. **Login-Weiterleitungen** (nur für `WITCAR_AUTH=supabase`, den alten E-Mail-Link): Authentication → URL Configuration
    - Site URL: `http://localhost:3000` (später die echte Domain)
    - Redirect URLs: `http://localhost:3000/**` und `https://*.trycloudflare.com/**`
 
-Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch Supabase (Magic-Link-Login per E-Mail).
+Danach nutzt `pnpm dev` bzw. `pnpm tesla` automatisch die Supabase-Datenbank; angemeldet wird nur mit einem Namen (D-034).
 Hinweis: Der eingebaute Supabase-Mailversand schickt nur an Mitglieder des Supabase-Teams (also deine eigene
 Adresse) und ist nicht für den Produktivbetrieb gedacht → vor dem Launch eigenes SMTP einrichten.
 
@@ -64,15 +65,30 @@ pnpm deploy:vercel   # überträgt DATABASE_URL + Secret Key nach Vercel und ver
 
 In Supabase unter Authentication → URL Configuration zusätzlich eintragen: Site URL `https://witcar.vercel.app`,
 Redirect URL `https://witcar.vercel.app/**`.
-Hinweis: Der Hobby-Plan ist laut Vercel nur für private, nicht-kommerzielle Nutzung → vor dem Verkaufsstart Pro-Plan.
+Hinweis: Der Hobby-Plan ist laut Vercel nur für private, nicht-kommerzielle Nutzung. Für den Verkaufsstart entweder
+Vercel Pro oder – günstiger – ein eigener Server: [docs/deploy-hetzner.md](docs/deploy-hetzner.md) (Hetzner + Coolify,
+`Dockerfile` im Repo).
+
+## Datenquellen (kostenlos, kommerziell erlaubt)
+
+| Widget       | Anbieter                       | Schlüssel                   | Lizenz / Hinweis                                |
+| ------------ | ------------------------------ | --------------------------- | ----------------------------------------------- |
+| Wetter       | MET Norway                     | keiner (`PROVIDER_CONTACT`) | CC BY 4.0, User-Agent mit Kontakt, 30 min Cache |
+| Ortssuche    | Nominatim (OpenStreetMap)      | keiner                      | ODbL, max. 1 Anfrage/s, 7 Tage Cache            |
+| Krypto       | CoinMarketCap Basic            | `CMC_API_KEY` (gratis)      | 15.000 Credits/Monat → Top 250, 10 min Cache    |
+| Wechselkurse | EZB-Referenzkurse              | keiner                      | Quelle nennen, täglich aktualisiert             |
+| Aktien       | – (aus, `STOCKS_PROVIDER=off`) | –                           | keine kostenlose kommerzielle Quelle (D-008)    |
+
+Lokal/CI laufen alle Widgets mit Mock-Daten („Demo-Daten“). Quellenangaben erscheinen automatisch auf `/lizenzen`.
 
 ## Produktion (Owner)
 
 1. ~~Supabase-Projekt anlegen, Migrationen anwenden~~ (erledigt, siehe oben; **nie** `supabase/local/*` anwenden – das ist nur der lokale Stub).
 2. Supabase Auth: Site-URL + Redirect `https://<domain>/auth/callback` auf die echte Domain umstellen, eigenes SMTP.
-3. Vercel-Projekt (Region `fra1`), Env-Variablen laut `.env.example` setzen (`DATABASE_URL` = Pooler-URL, Transaction-Mode).
-4. Upstash Redis (EU) für Cache/Rate-Limits → `KV_REST_API_URL`, `KV_REST_API_TOKEN`.
+3. Hosting: Hetzner + Coolify ([Anleitung](docs/deploy-hetzner.md)) oder Vercel Pro (Region `fra1`); Env-Variablen laut
+   `.env.example` setzen (`DATABASE_URL` = Pooler-URL, Transaction-Mode). Cache/Rate-Limits laufen über Postgres.
+4. Kostenlosen CoinMarketCap-Key holen (`CMC_API_KEY`) und `PROVIDER_CONTACT` (Kontakt-E-Mail) setzen.
 5. Stripe **Test-Modus**: Produkt „WitCar Pro“ mit Monats-/Jahrespreis, Webhook auf `/api/stripe/webhook`
    (Events: `checkout.session.completed`, `customer.subscription.*`, `invoice.payment_failed`), Customer Portal aktivieren.
-6. Datenanbieter nach Gate G2 (siehe DECISIONS D-007–D-009) konfigurieren.
+6. Datenanbieter: Standard sind die kostenlosen Quellen oben (DECISIONS D-007–D-009, D-031); Aktien nur mit lizenziertem Anbieter.
 7. Live-Schaltung erst nach „GO LIVE“ des Owners: `sk_live_…` + `WITCAR_STRIPE_LIVE=GO_LIVE`.

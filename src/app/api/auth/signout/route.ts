@@ -1,5 +1,5 @@
 import { cookies } from "next/headers";
-import { DEV_SESSION_COOKIE, DEVICE_COOKIE } from "@/lib/auth/cookies";
+import { SESSION_COOKIE, DEVICE_COOKIE } from "@/lib/auth/cookies";
 import { getDevicePrincipal } from "@/lib/auth/session";
 import { createSupabaseServerClient } from "@/lib/auth/supabase";
 import { getDb } from "@/lib/db";
@@ -16,7 +16,7 @@ export const POST = handler({ auth: "none" }, async () => {
     await revokeDevice(db, device.userId, device.deviceId);
   }
   jar.delete(DEVICE_COOKIE);
-  if (getEnv().WITCAR_AUTH === "dev") jar.delete(DEV_SESSION_COOKIE);
+  if (getEnv().WITCAR_AUTH === "name") jar.delete(SESSION_COOKIE);
   else await (await createSupabaseServerClient()).auth.signOut();
   return ok({ ok: true });
 });

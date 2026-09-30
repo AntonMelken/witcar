@@ -3,6 +3,7 @@
 import { MapPin, Search } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
+import { GeoCredit } from "@/components/apps/GeoCredit";
 import type { WeatherLocation } from "@/widgets/weather/definition";
 
 interface GeoResult {
@@ -96,29 +97,7 @@ export function LocationPicker({
           </ul>
         )
       ) : null}
-      {results && source === "open-meteo-geo" ? (
-        // Open-Meteo geocoding data comes from GeoNames (CC BY 4.0): credit + licence link next to the results.
-        <p className="text-dim text-xs">
-          Ortssuche:{" "}
-          <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer" className="underline">
-            Open-Meteo.com
-          </a>
-          , Ortsdaten:{" "}
-          <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer" className="underline">
-            GeoNames
-          </a>{" "}
-          (
-          <a
-            href="https://creativecommons.org/licenses/by/4.0/deed.de"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline"
-          >
-            CC BY 4.0
-          </a>
-          )
-        </p>
-      ) : null}
+      {results ? <GeoCredit source={source} /> : null}
     </div>
   );
 }

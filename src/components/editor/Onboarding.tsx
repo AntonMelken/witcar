@@ -12,18 +12,33 @@ import type { WeatherLocation } from "@/widgets/weather/definition";
 import { LocationPicker } from "./LocationPicker";
 import { PresetShape } from "./PresetShape";
 
-const CHOICES = (Object.keys(widgetRegistry) as ActiveWidgetType[]).filter((t) => !widgetRegistry[t].proOnly);
 const MAX_START = 3;
 
 /** Onboarding steps 2–4 (step 1 = login), phone-first (§13). */
-export function Onboarding({ initialPreset, siteHost }: { initialPreset: string; siteHost: string }) {
+export function Onboarding({
+  initialPreset,
+  siteHost,
+  unavailableTypes = [],
+}: {
+  initialPreset: string;
+  siteHost: string;
+  /** widget types without a configured data source (not offered) */
+  unavailableTypes?: readonly string[];
+}) {
+  const CHOICES = (Object.keys(widgetRegistry) as ActiveWidgetType[]).filter(
+    (t) => !widgetRegistry[t].proOnly && !unavailableTypes.includes(t),
+  );
   const t = useTranslations("onboarding");
   const tp = useTranslations("presets");
   const tw = useTranslations("widgets");
   const router = useRouter();
   const [step, setStep] = useState(0);
   const [preset, setPreset] = useState(initialPreset);
-  const [types, setTypes] = useState<ActiveWidgetType[]>(["clock", "weather", "stocks"]);
+  const [types, setTypes] = useState<ActiveWidgetType[]>(() =>
+    ["clock", "weather", unavailableTypes.includes("stocks") ? "fx" : "stocks"].filter((t): t is ActiveWidgetType =>
+      CHOICES.includes(t as ActiveWidgetType),
+    ),
+  );
   const [location, setLocation] = useState<WeatherLocation | null>({ name: "Berlin", lat: 52.52, lon: 13.41 });
   const [safety, setSafety] = useState(false);
   const [busy, setBusy] = useState(false);

@@ -3,9 +3,9 @@
 import { writeFileSync } from "node:fs";
 import { deflateSync } from "node:zlib";
 
-const BG = [0x0f, 0x11, 0x14];
-const ACCENT = [0x38, 0xbd, 0xf8];
-const LIGHT = [0xf2, 0xf4, 0xf6];
+const BG = [0x0e, 0x0e, 0x10];
+const ACCENT = [0xff, 0xff, 0xff];
+const LIGHT = [0xff, 0xff, 0xff];
 
 function crc32(buf) {
   let c;
@@ -42,9 +42,9 @@ function png(size, maskable) {
   const k = (size - 2 * pad) / size;
   const rects = [
     [2, 2, 16, 12, ACCENT, 1],
-    [20, 2, 10, 12, LIGHT, 0.85],
-    [2, 16, 10, 14, LIGHT, 0.85],
-    [14, 16, 16, 14, ACCENT, 0.55],
+    [20, 2, 10, 12, LIGHT, 0.6],
+    [2, 16, 10, 14, LIGHT, 0.6],
+    [14, 16, 16, 14, ACCENT, 0.85],
   ];
   const raw = Buffer.alloc((size * 3 + 1) * size);
   for (let y = 0; y < size; y++) {

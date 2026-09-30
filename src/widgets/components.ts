@@ -1,20 +1,21 @@
+import { lazy, type LazyExoticComponent } from "react";
 import type { ActiveWidgetType } from "./meta";
 import type { WidgetComponent } from "./types";
-import ClockWidget from "./clock/Widget";
-import CryptoWidget from "./crypto/Widget";
-import DateWidget from "./date/Widget";
-import NotesWidget from "./notes/Widget";
-import StocksWidget from "./stocks/Widget";
-import TimerWidget from "./timer/Widget";
-import WeatherWidget from "./weather/Widget";
 
-/** Client-side component map; keep in sync with registry.ts. */
-export const widgetComponents: Record<ActiveWidgetType, WidgetComponent<never>> = {
-  clock: ClockWidget,
-  date: DateWidget,
-  weather: WeatherWidget,
-  stocks: StocksWidget,
-  crypto: CryptoWidget,
-  timer: TimerWidget,
-  notes: NotesWidget,
+type LazyWidget = LazyExoticComponent<WidgetComponent<never>>;
+
+/**
+ * Client-side component map; keep in sync with registry.ts. Every widget is
+ * its own chunk, so a dashboard only downloads the widget types it shows
+ * (/dashboard initial JS budget, §17).
+ */
+export const widgetComponents: Record<ActiveWidgetType, LazyWidget> = {
+  clock: lazy(() => import("./clock/Widget")),
+  date: lazy(() => import("./date/Widget")),
+  weather: lazy(() => import("./weather/Widget")),
+  stocks: lazy(() => import("./stocks/Widget")),
+  crypto: lazy(() => import("./crypto/Widget")),
+  fx: lazy(() => import("./fx/Widget")),
+  timer: lazy(() => import("./timer/Widget")),
+  notes: lazy(() => import("./notes/Widget")),
 };

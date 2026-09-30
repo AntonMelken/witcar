@@ -45,16 +45,21 @@ export function formatSignedPercent(value: number, locale = "de-DE"): string {
   return `${sign}${s} %`;
 }
 
-export function formatTime(date: Date, opts: { seconds: boolean; timeZone?: string }, locale = "de-DE"): string {
+export function formatTime(
+  date: Date,
+  opts: { seconds: boolean; timeZone?: string; hour12?: boolean },
+  locale = "de-DE",
+): string {
   const tz = opts.timeZone && opts.timeZone !== "local" ? opts.timeZone : undefined;
+  const h12 = !!opts.hour12;
   return memo(
-    `t:${locale}:${opts.seconds}:${tz ?? ""}`,
+    `t:${locale}:${opts.seconds}:${h12}:${tz ?? ""}`,
     () =>
       new Intl.DateTimeFormat(locale, {
-        hour: "2-digit",
+        hour: h12 ? "numeric" : "2-digit",
         minute: "2-digit",
         second: opts.seconds ? "2-digit" : undefined,
-        hourCycle: "h23",
+        hourCycle: h12 ? "h12" : "h23",
         timeZone: tz,
       }),
   ).format(date);

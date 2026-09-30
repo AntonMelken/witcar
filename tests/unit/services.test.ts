@@ -54,7 +54,13 @@ describe("layout service", () => {
     const loaded = await getLayout(db, user, res.value.id);
     expect(loaded!.name).toBe("Renamed");
     expect(loaded!.widgets.map((w) => w.widgetId)).toEqual(["c1", "c2"]);
-    expect(loaded!.widgets[0]!.config).toEqual({ showSeconds: false, timeZone: "local", label: "" });
+    expect(loaded!.widgets[0]!.config).toEqual({
+      showSeconds: false,
+      hour12: false,
+      timeZone: "local",
+      label: "",
+      zones: [],
+    });
   });
 
   it("enforces free limits server-side (widgets, layouts)", async () => {
@@ -242,7 +248,7 @@ describe("account export", () => {
   });
 });
 
-describe("PostgresKV (api_cache fallback)", () => {
+describe("PostgresKV (api_cache)", () => {
   it("get/set/incr with expiry", async () => {
     const kv = new PostgresKV(async () => db);
     await kv.set("a", "hello", 60);
@@ -253,5 +259,15 @@ describe("PostgresKV (api_cache fallback)", () => {
     expect(await kv.incr("n", 60)).toBe(1);
     await kv.del("a");
     expect(await kv.get("a")).toBeNull();
+  });
+
+  it("sweeps expired rows now and then", async () => {
+    const kv = new PostgresKV(async () => db, 1);
+    await db.query(
+      "insert into public.api_cache (key, value, expires_at) values ('old', '{}', now() - interval '1 minute')",
+    );
+    await kv.set("fresh", "x", 60);
+    const rows = await db.query<{ key: string }>("select key from public.api_cache where key in ('old', 'fresh')");
+    expect(rows.map((r) => r.key)).toEqual(["fresh"]);
   });
 });

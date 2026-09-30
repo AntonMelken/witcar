@@ -90,6 +90,10 @@ export function ConfigForm({
               <label key={f.key} className="block space-y-1">
                 <span className="text-sm font-medium">{t(f.label)}</span>
                 <select className="input" value={String(value ?? "")} onChange={(e) => onChange(f.key, e.target.value)}>
+                  {/* a value set in the widget app (e.g. another time zone) that is not in the list */}
+                  {typeof value === "string" && !f.options.some((o) => o.value === value) ? (
+                    <option value={value}>{value}</option>
+                  ) : null}
                   {f.options.map((o) => (
                     <option key={o.value} value={o.value}>
                       {o.label.includes(".") ? t(o.label) : o.label}
@@ -111,6 +115,23 @@ export function ConfigForm({
                 onChange={(items) => onChange(f.key, items)}
               />
             );
+          case "duration":
+            return (
+              <DurationField
+                key={f.key}
+                label={t(f.label)}
+                seconds={typeof value === "number" ? value : f.minSec}
+                min={f.minSec}
+                max={f.maxSec}
+                onChange={(sec) => onChange(f.key, sec, true)}
+              />
+            );
+          case "hint":
+            return (
+              <p key={f.key} className="text-sm text-dim">
+                {t(f.label)}
+              </p>
+            );
           case "location":
             return (
               <div key={f.key} className="space-y-1">
@@ -123,6 +144,53 @@ export function ConfigForm({
             );
         }
       })}
+    </fieldset>
+  );
+}
+
+function DurationField({
+  label,
+  seconds,
+  min,
+  max,
+  onChange,
+}: {
+  label: string;
+  seconds: number;
+  min: number;
+  max: number;
+  onChange: (seconds: number) => void;
+}) {
+  const t = useTranslations("editor");
+  const h = Math.floor(seconds / 3600);
+  const m = Math.floor((seconds % 3600) / 60);
+  const s = seconds % 60;
+  const set = (nh: number, nm: number, ns: number) => onChange(Math.min(max, Math.max(min, nh * 3600 + nm * 60 + ns)));
+  const part = (name: string, value: number, limit: number, apply: (n: number) => void) => (
+    <label className="block flex-1 space-y-1">
+      <span className="text-xs text-dim">{name}</span>
+      <input
+        className="input"
+        type="number"
+        inputMode="numeric"
+        min={0}
+        max={limit}
+        value={value}
+        onChange={(e) => {
+          const n = Number.parseInt(e.target.value, 10);
+          if (Number.isFinite(n)) apply(Math.min(limit, Math.max(0, n)));
+        }}
+      />
+    </label>
+  );
+  return (
+    <fieldset className="space-y-1">
+      <legend className="text-sm font-medium">{label}</legend>
+      <div className="flex gap-2">
+        {part(t("durationHours"), h, 23, (n) => set(n, m, s))}
+        {part(t("durationMinutes"), m, 59, (n) => set(h, n, s))}
+        {part(t("durationSeconds"), s, 59, (n) => set(h, m, n))}
+      </div>
     </fieldset>
   );
 }

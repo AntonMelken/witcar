@@ -18,8 +18,8 @@ describe("rateLimit", () => {
 
   it("supports weighted requests (batch items)", async () => {
     const kv = new MemoryKV();
-    expect((await rateLimit(kv, RULES.widgetsUser, "u", 0, 50)).ok).toBe(true);
-    expect((await rateLimit(kv, RULES.widgetsUser, "u", 0, 11)).ok).toBe(false);
+    expect((await rateLimit(kv, RULES.widgetsUser, "u", 0, 150)).ok).toBe(true);
+    expect((await rateLimit(kv, RULES.widgetsUser, "u", 0, 31)).ok).toBe(false);
   });
 
   it("device poll: max 1 per 2 s", async () => {

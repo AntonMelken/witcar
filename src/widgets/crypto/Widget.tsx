@@ -19,7 +19,9 @@ export default function CryptoWidget({ config, mode, data }: WidgetProps<CryptoC
   const newest = entries.map((e) => e.entry?.result).filter(Boolean)[0];
   const footer = (
     <span className="flex items-center gap-2 justify-between">
-      {newest?.source === "coingecko" ? (
+      {newest?.source === "coinmarketcap" ? (
+        <SourceCredit label="Daten: CoinMarketCap" href="https://coinmarketcap.com/" mode={mode} />
+      ) : newest?.source === "coingecko" ? (
         <SourceCredit label="Powered by CoinGecko" href="https://www.coingecko.com/" mode={mode} />
       ) : (
         <span className="truncate">{newest?.source === "mock" ? t("demoData") : ""}</span>
@@ -27,7 +29,7 @@ export default function CryptoWidget({ config, mode, data }: WidgetProps<CryptoC
       {newest ? (
         <StaleBadge
           fetchedAt={newest.fetchedAt}
-          refreshMs={cryptoMeta.refreshMs!}
+          refreshMs={cryptoMeta.staleAfterMs!}
           serverStale={newest.stale}
           error={entries[0]?.entry?.error}
         />

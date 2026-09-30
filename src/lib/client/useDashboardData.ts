@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { dataKey, type DataEntry, type DataRequest, type ProviderResult } from "@/widgets/types";
 import { readJson, writeJson } from "./storage";
 
@@ -23,12 +23,27 @@ interface Options {
   endpoint?: string;
 }
 
+export interface DashboardData {
+  entries: Record<string, DataEntry>;
+  /**
+   * Manual refresh (button): asks the server to bypass its cache; the server
+   * still protects provider quotas with a minimum age. Resolves true when
+   * the request succeeded.
+   */
+  refresh: () => Promise<boolean>;
+  refreshing: boolean;
+  /** time of the last successful fetch (ms since epoch), null before the first one */
+  updatedAt: number | null;
+  /** the last fetch failed (network or server) */
+  failed: boolean;
+}
+
 /**
  * Bundles all widget data into ONE request (POST /api/widgets/batch),
  * pauses while hidden, backs off exponentially on errors, and keeps the last
  * known data in localStorage for offline starts (masterplan §11.4, §17).
  */
-export function useDashboardData(requests: DataRequest[], opts: Options): Record<string, DataEntry> {
+export function useDashboardData(requests: DataRequest[], opts: Options): DashboardData {
   const unique = useMemo(() => {
     const map = new Map<string, DataRequest>();
     for (const r of requests) map.set(dataKey(r), r);
@@ -36,6 +51,10 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
   }, [requests]);
   const signature = unique.map(dataKey).sort().join("|");
   const [entries, setEntries] = useState<Record<string, DataEntry>>({});
+  const [refreshing, setRefreshing] = useState(false);
+  const [updatedAt, setUpdatedAt] = useState<number | null>(null);
+  const [failed, setFailed] = useState(false);
+  const runNow = useRef<((force: boolean) => Promise<boolean>) | null>(null);
   const onUnauthorized = useRef(opts.onUnauthorized);
   useEffect(() => {
     onUnauthorized.current = opts.onUnauthorized;
@@ -60,32 +79,36 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
 
     const schedule = (delay: number) => {
       if (timer) clearTimeout(timer);
-      timer = setTimeout(run, delay);
+      timer = setTimeout(tick, delay);
     };
 
-    async function run() {
-      if (stopped) return;
-      if (document.hidden) return; // resumes on visibilitychange
+    async function run(force = false): Promise<boolean> {
+      if (stopped) return false;
+      if (document.hidden && !force) return false; // resumes on visibilitychange
       lastRun = Date.now();
       controller?.abort();
       controller = new AbortController();
+      let success = false;
       try {
         const res = await fetch(opts.endpoint ?? "/api/widgets/batch", {
           method: "POST",
           headers: { "content-type": "application/json" },
-          body: JSON.stringify({ requests: unique }),
+          body: JSON.stringify(force ? { requests: unique, force: true } : { requests: unique }),
           cache: "no-store",
           signal: controller.signal,
         });
         if (res.status === 401) {
           onUnauthorized.current?.();
-          return;
+          return false;
         }
         if (!res.ok) throw new Error(`batch ${res.status}`);
         const body = (await res.json()) as {
           results: Record<string, ProviderResult | { error: { code: string } }>;
         };
         failures = 0;
+        success = true;
+        setFailed(false);
+        setUpdatedAt(Date.now());
         // persist outside the state updater: React may run updaters lazily
         const persisted = readJson<Stored>(STORE_KEY) ?? {};
         for (const [k, v] of Object.entries(body.results)) if (!("error" in v)) persisted[k] = v;
@@ -101,8 +124,10 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
         if (keys.length > 100) for (const k of keys.slice(0, keys.length - 100)) delete persisted[k];
         writeJson(STORE_KEY, persisted);
       } catch (err) {
-        if ((err as Error).name === "AbortError" && stopped) return;
+        // aborted by a newer request (manual refresh) or on unmount: that one takes over
+        if ((err as Error).name === "AbortError") return false;
         failures++;
+        setFailed(true);
         setEntries((prev) => {
           const next = { ...prev };
           for (const r of unique) {
@@ -113,7 +138,10 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
         });
       }
       if (!stopped) schedule(nextDelay(opts.refreshMs, failures));
+      return success;
     }
+    const tick = () => void run();
+    runNow.current = run;
 
     const onVisible = () => {
       if (!document.hidden && Date.now() - lastRun > Math.max(MIN_INTERVAL_MS, opts.refreshMs)) schedule(0);
@@ -131,6 +159,7 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
       stopped = true;
       if (timer) clearTimeout(timer);
       controller?.abort();
+      runNow.current = null;
       document.removeEventListener("visibilitychange", onVisible);
       window.removeEventListener("online", onOnline);
     };
@@ -138,5 +167,16 @@ export function useDashboardData(requests: DataRequest[], opts: Options): Record
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [signature, opts.refreshMs, opts.endpoint]);
 
-  return entries;
+  const refresh = useCallback(async () => {
+    const run = runNow.current;
+    if (!run) return false;
+    setRefreshing(true);
+    try {
+      return await run(true);
+    } finally {
+      setRefreshing(false);
+    }
+  }, []);
+
+  return { entries, refresh, refreshing, updatedAt, failed };
 }

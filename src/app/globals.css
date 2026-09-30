@@ -91,6 +91,11 @@ textarea.input {
   min-height: 7rem;
 }
 
+input[type="checkbox"],
+input[type="radio"] {
+  accent-color: var(--accent);
+}
+
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -115,6 +120,47 @@ textarea.input {
   grid-row: var(--y) / span var(--h);
   min-width: 0;
   min-height: 0;
+  position: relative;
+}
+/* Tapping a widget opens its app: a transparent button over the whole tile. */
+.wc-open {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: clamp(8px, 4cqmin, 16px);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+.wc-open:active {
+  background: color-mix(in srgb, var(--text) 6%, transparent);
+}
+.wc-open:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: -3px;
+}
+/* Controls inside a widget (e.g. timer buttons) must stay above the stretched button. */
+.wc-interactive {
+  position: relative;
+  z-index: 2;
+}
+.wc-spin {
+  animation: wc-spin 0.9s linear infinite;
+}
+@keyframes wc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wc-spin {
+    animation: none;
+  }
 }
 .wc-tile {
   container-type: size;
@@ -154,11 +200,11 @@ textarea.input {
   user-select: none;
 }
 .wc-drive[data-night="true"] {
-  --text: #cfd5db;
-  --text-dim: #7f8993;
-  --accent: #2c9fd0;
-  --surface: #121418;
-  --border: #1d2227;
+  --text: #d2d2d6;
+  --text-dim: #85858c;
+  --accent: #d2d2d6;
+  --surface: #0d0d0e;
+  --border: #1e1e21;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -8,12 +8,14 @@ import type { KV } from "./kv";
  * - request coalescing: concurrent misses on one key trigger a single upstream call
  * - circuit breaker per provider: after repeated failures only cache is served for 60 s
  * - daily cost brake per provider: above the limit only cache is served (+ log warning)
+ * - manual refresh (forceMinAgeMs): cached data older than the minimum age is refetched right away,
+ *   younger data is served as is, so a refresh button cannot exhaust a provider's quota
  */
 
 export class ProviderUnavailableError extends Error {
   constructor(
     public readonly provider: string,
-    public readonly reason: "circuit_open" | "quota_exceeded" | "upstream_error",
+    public readonly reason: "circuit_open" | "quota_exceeded" | "upstream_error" | "disabled" | "unsupported",
     cause?: unknown,
   ) {
     super(`${provider}: ${reason}`, { cause });
@@ -52,6 +54,8 @@ export interface GatewayRequest<T> {
   fetcher: (signal: AbortSignal) => Promise<T>;
   /** schedule a background promise (e.g. next/server `after`) */
   background?: (task: Promise<unknown>) => void;
+  /** manual refresh: refetch now when the cached copy is at least this old (ms) */
+  forceMinAgeMs?: number;
 }
 
 export class DataGateway {
@@ -81,6 +85,22 @@ export class DataGateway {
   async get<T>(req: GatewayRequest<T>): Promise<ProviderResult<T>> {
     const cached = await this.read<T>(req.key);
     const now = this.now();
+    const forced = !!cached && req.forceMinAgeMs !== undefined && now - cached.fetchedAt >= req.forceMinAgeMs;
+    let attempted = false;
+    if (cached && forced) {
+      attempted = true;
+      try {
+        const fresh = await this.refresh(req);
+        return {
+          data: fresh.data as T,
+          fetchedAt: new Date(fresh.fetchedAt).toISOString(),
+          source: fresh.source,
+          stale: false,
+        };
+      } catch {
+        // provider down or over quota: keep serving what we have
+      }
+    }
     if (cached && now < cached.expiresAt) {
       return {
         data: cached.data,
@@ -91,7 +111,7 @@ export class DataGateway {
     }
     if (cached) {
       // stale-while-revalidate: answer now, refresh in the background
-      if (!this.isOpen(req.provider)) {
+      if (!attempted && !this.isOpen(req.provider)) {
         const task = this.refresh(req).catch(() => undefined);
         if (req.background) req.background(task);
       }
@@ -152,7 +172,10 @@ export class DataGateway {
       this.breakers.delete(req.provider);
       return entry;
     } catch (err) {
-      this.recordFailure(req.provider);
+      // our own rate limiter saying "later" is no sign of a broken provider
+      if (!(err instanceof ProviderUnavailableError && err.reason === "quota_exceeded")) {
+        this.recordFailure(req.provider);
+      }
       if (err instanceof ProviderUnavailableError) throw err;
       throw new ProviderUnavailableError(req.provider, "upstream_error", err);
     } finally {

@@ -39,7 +39,7 @@ export function isNight(now: number): boolean {
  */
 export function DriveView({ widgets, isDevice }: { widgets: RenderWidget[]; isDevice: boolean }) {
   const t = useT("drive");
-  const entries = useWidgetData(widgets, "drive", () => {
+  const { entries } = useWidgetData(widgets, "drive", () => {
     window.location.replace(isDevice ? "/pair?revoked=1" : "/login?next=/dashboard");
   });
   useWakeLock(true);

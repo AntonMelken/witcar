@@ -4,6 +4,7 @@ import { Editor } from "@/components/editor/Editor";
 import { IntlProvider } from "@/components/site/IntlProvider";
 import { requirePrincipalPage } from "@/lib/auth/session";
 import { getDb } from "@/lib/db";
+import { unavailableWidgetTypes } from "@/lib/providers/availability";
 import { getDefaultLayout, getLayout, listLayouts } from "@/lib/repo/layouts";
 import { ensureProfile } from "@/lib/repo/profiles";
 import { layoutEditability } from "@/lib/services/layouts";
@@ -42,6 +43,7 @@ export default async function EditorPage(props: PageProps<"/editor">) {
         mode={mode}
         layoutId={layout?.id ?? null}
         initial={initial}
+        unavailableTypes={unavailableWidgetTypes()}
         editable={layout ? editability[layout.id] !== false : true}
         layouts={summaries.map((s) => ({
           id: s.id,

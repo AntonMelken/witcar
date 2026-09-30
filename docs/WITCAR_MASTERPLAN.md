@@ -117,7 +117,7 @@ Use Cases:
 - Dashboard-Editor (Drag & Drop, Raster, nur im Edit Mode)
 - Modell-Presets (Layout-Größen)
 - Dark/Light/Auto
-- Auth: E-Mail-Magic-Link + Geräte-Code/QR
+- Auth: Name (D-034; ursprünglich E-Mail-Magic-Link) + Geräte-Code/QR
 - Abo: Free (3 Widgets) / Pro (alle Widgets, mehrere Layouts)
 - Drive Mode
 - PWA-Installierbarkeit + Offline-Fallback
@@ -446,7 +446,7 @@ Jeder Anbieter hinter Interface `Provider<TIn, TOut>` in `src/lib/providers/`. A
 - Kein Blau/Rot-Zwang zur Bedeutung allein: Kursänderungen zusätzlich mit Pfeil/Vorzeichen (Farbenblindheit).
 
 ### 12.2 Themes
-`auto` (folgt `prefers-color-scheme`), `dark`, `light`. Standard **dark**. Kein Flackern beim Laden (Theme im `<html>` vor erstem Paint setzen).
+`auto` (folgt `prefers-color-scheme`), `dark`, `light`. Standard **light** (weiß, D-035; ursprünglich dark). Kein Flackern beim Laden (Theme im `<html>` vor erstem Paint setzen).
 
 ### 12.3 Komponenten-Prinzipien
 - Große Zahlen, wenig Text. Hauptwert im Drive Mode ≥ 64 CSS-px Höhe.
@@ -460,7 +460,7 @@ Jeder Anbieter hinter Interface `Provider<TIn, TOut>` in `src/lib/providers/`. A
 - Seiten: `/` (Landing), `/pricing`, `/faq`, `/impressum`, `/datenschutz`, `/agb`, `/widerruf`, `/disclaimer`.
 - Landing: Nutzenversprechen, Screenshot-Mockups **ohne Fahrzeugfotos**, Preis, "Kostenlos starten".
 - Onboarding (max. 4 Schritte, Handy-first):
-  1. Konto (Magic Link)
+  1. Konto (nur Name, D-034; ursprünglich Magic Link)
   2. Modell/Preset wählen (neutrale Namen)
   3. 3 Start-Widgets wählen (Vorschlag: Uhr, Wetter, Aktie)
   4. QR-Code für das Auto
