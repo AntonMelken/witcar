@@ -11,7 +11,9 @@
 - [ ] AGB (Leistungsbeschreibung, Laufzeit/Kündigung, Haftung, Nutzung im Fahrzeug)
 - [ ] Widerrufsbelehrung + Muster-Widerrufsformular (digitale Dienstleistung)
 - [ ] Datenlizenzen geklärt (G2: D-007, D-008, D-009)
-- [ ] Markenrecherche „WitCar“ (DPMA/EUIPO), Domain
+- [ ] Markenrecherche „WitCar“ (DPMA/EUIPO), Domain – siehe Abschnitt „Markenrecherche“ unten
+- [x] Quellenhinweise Open-Meteo/GeoNames/CoinGecko und Open-Source-Lizenzhinweise (`/lizenzen`, D-029)
+- [ ] GitHub-Repo ist öffentlich: bewusst so lassen oder privat stellen (D-028)
 - [ ] Steuerlicher Status (Kleinunternehmer § 19 UStG; OSS bei EU-Verbrauchern prüfen) mit Steuerberater
 - [ ] Stripe: Konto verifiziert, Produkt/Preise im **Test-Modus** angelegt, Customer Portal aktiviert (Kündigung erlauben)
 
@@ -30,6 +32,22 @@ Hinweise für die Prüfung:
 - Bestätigung auf dauerhaftem Datenträger: Stripe-Rechnung/E-Mail oder eigene Bestätigungsmail – Owner entscheidet.
 - „Kündigungsbutton“ (§ 312k BGB): Kündigung ist über das Stripe Customer Portal möglich; ob zusätzlich ein eigener
   Kündigungsbutton auf der Website nötig ist, prüfen lassen.
+
+## Markenrecherche „WitCar“
+
+Aus der Entwicklungsumgebung nicht möglich (Register gesperrt); eine Websuche am 2026-09-29 fand kein gleichnamiges
+Produkt, das ersetzt aber keine Registerrecherche. Vorgehen (kostenlos):
+
+1. [TMview](https://www.tmdn.org/tmview/) (DE, EU und viele weitere Ämter in einem): Suche nach „WitCar“, „Wit Car“,
+   „Witcar“ und ähnlich klingenden Namen (z. B. „Witkar“, „WittCar“).
+2. Relevante Nizza-Klassen: **9** (Software, Apps), **42** (SaaS, Webanwendungen), ggf. **12** (Fahrzeugzubehör) und
+   **38** (Datenübertragung).
+3. Treffer mit gleichem/ähnlichem Namen in diesen Klassen → vor Launch mit Anwältin/Anwalt klären oder Namen ändern.
+4. Optional eigene Anmeldung beim [DPMA](https://www.dpma.de/marken/) (online, bis 3 Klassen; aktuelle Gebühr dort
+   prüfen) – schützt den Namen gegen Nachahmer.
+
+Die Nennung von „Tesla“ bleibt rein beschreibend (D-030): kein Logo, keine Tesla-Schrift, keine Fahrzeugbilder, nicht im
+Produkt- oder Domainnamen.
 
 ## Sicherheitshinweis Fahrmodus
 

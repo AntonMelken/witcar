@@ -26,6 +26,7 @@ jobs:
       - run: pnpm typecheck
       - run: pnpm lint
       - run: pnpm format:check
+      - run: pnpm licenses:check
       - run: pnpm test
       - name: Build (local backend, CI only)
         run: pnpm build

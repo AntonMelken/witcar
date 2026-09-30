@@ -11,6 +11,7 @@ export async function SiteFooter() {
     ["/agb", t("terms")],
     ["/widerruf", t("withdrawal")],
     ["/disclaimer", t("disclaimer")],
+    ["/lizenzen", t("licenses")],
   ] as const;
   return (
     <footer className="border-t border-border mt-16">

@@ -5,6 +5,7 @@ import { useT } from "@/i18n/lite";
 import { BigNumber } from "@/components/dashboard/BigNumber";
 import { StaleBadge } from "@/components/dashboard/StaleBadge";
 import { Tile } from "@/components/dashboard/Tile";
+import { SourceCredit } from "@/widgets/shared/SourceCredit";
 import { formatNumber } from "@/lib/client/format";
 import { dataKey, type WidgetProps } from "../types";
 import { weatherMeta, type WeatherConfig, type WeatherData } from "./definition";
@@ -35,12 +36,19 @@ export default function WeatherWidget({ config, mode, data }: WidgetProps<Weathe
   const w = entry?.result?.data as WeatherData | undefined;
   const cond = w ? weatherCondition(w.code, w.isDay) : null;
   const footer = entry?.result ? (
-    <StaleBadge
-      fetchedAt={entry.result.fetchedAt}
-      refreshMs={weatherMeta.refreshMs!}
-      serverStale={entry.result.stale}
-      error={entry.error}
-    />
+    <span className="flex items-center gap-2 justify-between">
+      {entry.result.source === "open-meteo" ? (
+        <SourceCredit label="Wetterdaten: Open-Meteo.com" href="https://open-meteo.com/" mode={mode} />
+      ) : (
+        <span className="truncate">{entry.result.source === "mock" ? t("demoData") : ""}</span>
+      )}
+      <StaleBadge
+        fetchedAt={entry.result.fetchedAt}
+        refreshMs={weatherMeta.refreshMs!}
+        serverStale={entry.result.stale}
+        error={entry.error}
+      />
+    </span>
   ) : null;
 
   return (

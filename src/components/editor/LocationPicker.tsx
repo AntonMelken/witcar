@@ -24,6 +24,7 @@ export function LocationPicker({
   const t = useTranslations("editor.location");
   const [q, setQ] = useState("");
   const [results, setResults] = useState<GeoResult[] | null>(null);
+  const [source, setSource] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState(false);
 
@@ -34,7 +35,9 @@ export function LocationPicker({
     try {
       const res = await fetch(`/api/geo/search?q=${encodeURIComponent(q.trim())}`);
       if (!res.ok) throw new Error(String(res.status));
-      setResults(((await res.json()) as { results: GeoResult[] }).results);
+      const body = (await res.json()) as { results: GeoResult[]; source?: string };
+      setResults(body.results);
+      setSource(body.source ?? null);
     } catch {
       setError(true);
     } finally {
@@ -92,6 +95,29 @@ export function LocationPicker({
             ))}
           </ul>
         )
+      ) : null}
+      {results && source === "open-meteo-geo" ? (
+        // Open-Meteo geocoding data comes from GeoNames (CC BY 4.0): credit + licence link next to the results.
+        <p className="text-dim text-xs">
+          Ortssuche:{" "}
+          <a href="https://open-meteo.com/" target="_blank" rel="noopener noreferrer" className="underline">
+            Open-Meteo.com
+          </a>
+          , Ortsdaten:{" "}
+          <a href="https://www.geonames.org/" target="_blank" rel="noopener noreferrer" className="underline">
+            GeoNames
+          </a>{" "}
+          (
+          <a
+            href="https://creativecommons.org/licenses/by/4.0/deed.de"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline"
+          >
+            CC BY 4.0
+          </a>
+          )
+        </p>
       ) : null}
     </div>
   );

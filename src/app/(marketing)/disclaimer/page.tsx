@@ -25,7 +25,8 @@ export default function DisclaimerPage() {
       <h2>Marken</h2>
       <p>
         WitCar ist ein unabhängiges Produkt und steht in keiner Verbindung zu Tesla, Inc. „Tesla“ wird ausschließlich
-        beschreibend verwendet.
+        beschreibend verwendet. Alle genannten Marken- und Produktnamen (z. B. Tesla, CoinGecko, Stripe) gehören ihren
+        jeweiligen Inhabern.
       </p>
     </Prose>
   );
